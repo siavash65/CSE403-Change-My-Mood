@@ -3,5 +3,5 @@ CSE403-CaMyM-
 Hunlan Lin
 Hyunjoon Lee
 Youngmin Lee
-Siavash Baratch
+Siavash Baratchi
 Software Engineering Class
