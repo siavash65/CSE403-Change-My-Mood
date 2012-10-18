@@ -1,0 +1,6 @@
+venv
+*.pyc
+.project
+.pydevproject
+*.diff
+*.prefs
