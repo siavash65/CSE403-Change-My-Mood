@@ -2,7 +2,7 @@
 import dj_database_url
 import os.path
 
-DEPLOY = True
+DEPLOY = False
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -107,10 +107,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'hellodjango.urls'
+ROOT_URLCONF = 'server.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'hellodjango.wsgi.application'
+WSGI_APPLICATION = 'server.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
@@ -125,10 +125,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     
-    'hellodjango.somedata',
-    'hellodjango.flickr',
-    'hellodjango.myapi',
-    'hellodjango.oauth',
+    'server.somedata',
+    'server.flickr',
+    'server.myapi',
     
     'django.contrib.messages',
     'django.contrib.staticfiles',

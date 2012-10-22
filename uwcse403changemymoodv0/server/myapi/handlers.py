@@ -3,12 +3,12 @@ Created on Oct 6, 2012
 
 @author: hunlan
 '''
-from hellodjango.somedata.models import Characters
+from server.somedata.models import Characters
 from piston.handler import BaseHandler
 import json
 import flickrapi
 import random
-from hellodjango.flickr.models import FlickModel
+from server.flickr.models import FlickModel
 
 
 api_key = 'f9691e72075ff63d137fefa44511fbaa'

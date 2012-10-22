@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include
 from testProgram import storeData, storeData_form, displayData, clearData
-from hellodjango.testProgram import searchFlickr
+from server.testProgram import searchFlickr
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -8,8 +8,7 @@ from hellodjango.testProgram import searchFlickr
 
 urlpatterns = patterns('',
     (r'^$', storeData_form),
-    (r'^api/', include('hellodjango.myapi.urls')),
-    (r'^oauth/', include('hellodjango.oauth.urls')),
+    (r'^api/', include('server.myapi.urls')),
     (r'^dbadd/$', storeData),
     (r'^dbdisplay/$', displayData),
     (r'^dbclear/$', clearData),
