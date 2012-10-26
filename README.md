@@ -5,3 +5,8 @@ Hyunjoon Lee
 Youngmin Lee
 Siavash Baratchi
 Software Engineering Class
+
+
+Release 1:
+
+
