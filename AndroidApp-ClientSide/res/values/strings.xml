@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">CMM</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">CMM</string>
+    <string name="logo_desc">this is a logo</string>
+    <string name="skip_login">Continue</string>
+    <string name="app_id">343378635757581</string>
+
+</resources>
