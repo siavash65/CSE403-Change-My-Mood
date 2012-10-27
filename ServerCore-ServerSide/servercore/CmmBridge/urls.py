@@ -12,10 +12,10 @@ content_handler = Resource(ContentHandler)
 
 urlpatterns = patterns('',
     # returns a HTTP Get hello world.
-    url(r'^helloworld/', hello_handler),
+    url(r'^(?i)helloworld/', hello_handler),
     url(r'^(?i)getContent/', content_handler),
-    url(r'^rateContent/', hello_handler),
-    url(r'^updateUserInfo/', hello_handler),
-    url(r'^getAbouts/', hello_handler),
-    url(r'^sendMessage/', hello_handler),
+    url(r'^(?i)rateContent/', hello_handler),
+    url(r'^(?i)updateUserInfo/', hello_handler),
+    url(r'^(?i)getAbouts/', hello_handler),
+    url(r'^(?i)sendMessage/', hello_handler),
 )
