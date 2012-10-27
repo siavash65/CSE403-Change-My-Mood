@@ -28,10 +28,25 @@ class ContentHandler(BaseHandler):
     def read(self, request):
         
         if (Contents.name() in request.GET) and (Moods.name() in request.GET):
-            #dostuff
-            myMood = int(request.GET[Moods.name()])
-            myContent = int(request.GET[Contents.name()])
-            return ApiDataProvider.getContent(myMood, myContent)
+            myMood = None
+            myContent = None
+            
+            # check if input is integer
+            try:
+                myMood = int(request.GET[Moods.name()])
+                myContent = int(request.GET[Contents.name()])
+            except Exception:
+                return ApiDataProvider.returnError('bad input')
+            
+            # check if input is within bounds
+            if not((myMood in Moods.all) and (myContent in Contents.all)):
+                return ApiDataProvider.returnError('input out of bounds')
+            
+            # save guard
+            try:
+                return ApiDataProvider.getContent(myMood, myContent)
+            except Exception:
+                return ApiDataProvider.returnError('unexpected error')
         else :
             return ApiDataProvider.returnError('bad request')
             
