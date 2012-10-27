@@ -2,7 +2,7 @@
 import dj_database_url
 import os.path
 
-DEPLOY = False
+DEPLOY = True
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -14,17 +14,17 @@ MANAGERS = ADMINS
 
 if DEPLOY:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': '',                      # Or path to database file if using sqlite3.
-            'USER': '',                      # Not used with sqlite3.
-            'PASSWORD': '',                  # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-        }
+      'default': {
+      'ENGINE': 'django.db.backends.postgresql_psycopg2',
+      'NAME': 'd842t5r76dd2k4',
+      'HOST': 'ec2-54-243-229-87.compute-1.amazonaws.com',
+      'PORT': 5432,
+      'USER': 'sgfrtvzsvrxwtf',
+      'PASSWORD': '7C-bMke0lvqwWxCwDIpBuKPg0S'
+      }
     }
 else:
-     DATABASES = {'default': dj_database_url.config(default='postgres://postgres@localhost:5432/test_cmm')}
+    DATABASES = {'default': dj_database_url.config(default='postgres://postgres@localhost:5432/test_cmm')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -109,7 +109,7 @@ ROOT_URLCONF = 'servercore.urls'
 WSGI_APPLICATION = 'servercore.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\', '/'),
     
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
