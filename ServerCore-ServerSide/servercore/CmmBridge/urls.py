@@ -4,7 +4,7 @@ Created on Oct 26, 2012
 @author: hunlan
 '''
 from django.conf.urls import patterns, url
-from servercore.CmmCore.ApiDataProvider.ApiDataProvider import HelloHandler
+from servercore.CmmBridge.handler import HelloHandler
 from piston.resource import Resource
 
 hello_handler = Resource(HelloHandler)

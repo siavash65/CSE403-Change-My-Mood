@@ -6,5 +6,5 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     # Linking to API urls
-    (r'^api/', include('servercore.CmmCore.ApiDataProvider.urls')),
+    (r'^api/', include('servercore.CmmBridge.urls')),
 )
