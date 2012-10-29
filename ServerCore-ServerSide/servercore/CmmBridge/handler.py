@@ -9,6 +9,10 @@ from servercore.CmmBridge.models.hellodata.models import Hello
 from servercore.CmmBridge.models.content_model.models import ContentModel
 from servercore.util.contents import Contents
 from servercore.util.moods import Moods
+from servercore.CmmBridge.models.rank_model.models import RankModel
+from servercore.util.ranks import Ranks
+from servercore.util.datanames import DataNames
+from piston.utils import rc
 
 class HelloHandler(BaseHandler):
     allowed_methods = ('GET',)
@@ -50,7 +54,33 @@ class ContentHandler(BaseHandler):
         else :
             return ApiDataProvider.returnError('bad request')
             
+class RankHandler(BaseHandler):
+    allowed_methods = ('POST',)
+    model = RankModel
+    
+    def create(self, request):
+        if (Ranks.name() in request.POST) and (DataNames.MID in request.POST):
+            myRank = None
+            myMid = None
             
+            # check input is integer
+            try:
+                myRank = int(request.POST[Ranks.name()])
+                myMid = int(request.POST[DataNames.MID])
+            except Exception:
+                return ApiDataProvider.returnError('bad input')
+            
+                        # check if input is within bounds
+            if not(myRank in Ranks.all):
+                return ApiDataProvider.returnError('input out of bounds')
+            
+            # save guard
+            #try:
+            return ApiDataProvider.rateContent(myMid, myRank)
+            #except Exception:
+                #return ApiDataProvider.returnError('unexpected error')
+        else :
+            return ApiDataProvider.returnError('bad request')
             
             
             
