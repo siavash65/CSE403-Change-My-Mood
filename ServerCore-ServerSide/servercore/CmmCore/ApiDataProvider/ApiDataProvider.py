@@ -14,6 +14,10 @@ from piston.utils import rc
 from servercore.util.ranks import Ranks
 
 class ApiDataProvider():
+    STATUS_SUCCESS = 'success'
+    STATUS_ERROR = 'error'
+    PARAM_URL = 'url'
+    
     @staticmethod
     def helloworld():
         return json.dumps({'hello': 'world'}, sort_keys=True)
@@ -43,7 +47,7 @@ class ApiDataProvider():
                 cur_pic = Pictures.objects.get(mid = cur_content.mid)
                 assert isinstance(cur_pic, Pictures)
             
-                return {'url': cur_pic.url} #json.dumps({'url': cur_pic.url})
+                return {ApiDataProvider.PARAM_URL: cur_pic.url} #json.dumps({'url': cur_pic.url})
             except Exception:
                 return ApiDataProvider.returnError('database corrupted')
         elif myContent == Contents.VIDEO:
@@ -69,7 +73,7 @@ class ApiDataProvider():
             return ApiDataProvider.returnError('incorrect mid')
         
         # check if database is bad, meaning more than 1 obj for a mid
-        if len(media_arr != 1):
+        if len(media_arr) != 1:
             return ApiDataProvider.returnError('database corrupted')
         
         # update rank
@@ -81,18 +85,21 @@ class ApiDataProvider():
         else:
             return ApiDataProvider.returnError('unexpected error')
         
+        # saving data
+        media.save()
+        
         #return success message
         return ApiDataProvider.returnSuccess('updated rank')
     
     @staticmethod
     def returnError(msg):
         assert isinstance(msg, str)
-        return {'error': msg} # json.dumps({'error': msg}, sort_keys=True)
+        return {ApiDataProvider.STATUS_ERROR: msg} # json.dumps({'error': msg}, sort_keys=True)
     
     @staticmethod
     def returnSuccess(msg):
         assert isinstance(msg, str)
-        return {'success': msg} # json.dumps({'success': msg}, sort_keys=True)
+        return {ApiDataProvider.STATUS_SUCCESS: msg} # json.dumps({'success': msg}, sort_keys=True)
         
     
     

@@ -6,12 +6,14 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from servercore.CmmData.models import Pictures, Media
+from servercore.CmmData.models import Pictures, Media, Rank
 from servercore.util.moods import Moods
 from servercore.util.contents import Contents
-import json
 from django.http import HttpRequest
-from servercore.CmmBridge.handler import ContentHandler
+from servercore.CmmBridge.handler import ContentHandler, RankHandler
+from servercore.util.ranks import Ranks
+from servercore.util.datanames import DataNames
+from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
 
 
 class SimpleTest(TestCase):
@@ -19,7 +21,8 @@ class SimpleTest(TestCase):
     
     def setUp(self):
         self.websites = ['www.google.com', 'www.bing.com', 'www.yahoo.com']
-        self.uut = ContentHandler()
+        self.content = ContentHandler()
+        self.rank = RankHandler()
         
         m1 = Media(mid = 0, mood = Moods.HUMOROUS, content = Contents.PICTURE)
         m2 = Media(mid = 1, mood = Moods.HUMOROUS, content = Contents.PICTURE)
@@ -29,66 +32,149 @@ class SimpleTest(TestCase):
         p2 = Pictures(mid = 1, url = self.websites[1])
         p3 = Pictures(mid = 2, url = self.websites[2])
         
+        r1 = Rank(mid = 0, thumbs_up = 0, thumbs_down = 0)
+        r2 = Rank(mid = 1, thumbs_up = 1, thumbs_down = 20)
+        r3 = Rank(mid = 2, thumbs_up = 7, thumbs_down = 5)
+        
         m1.save()
         m2.save()
         m3.save()
         p1.save()
         p2.save()
         p3.save()
+        r1.save()
+        r2.save()
+        r3.save()
         
         pass
     
     def tearDown(self):
+        Media.objects.all().delete()
+        Pictures.objects.all().delete()
+        Rank.objects.all().delete()
         pass
     
+    '''
+    Get Content Test
+    '''
     def test_getContent_normalsituation(self):
         mocker = HttpRequest()
-        mocker.GET['content'] = '0'
-        mocker.GET['mood'] = '0'
+        mocker.GET[Contents.name()] = '0'
+        mocker.GET[Moods.name()] = '0'
         
-        json_str = self.uut.read(mocker)
-        self.assertTrue(json_str['url'] in self.websites)
+        json_str = self.content.read(mocker)
+        self.assertTrue(json_str[ApiDataProvider.PARAM_URL] in self.websites)
         
     def test_getContent_normalsituation_with_integer(self):
         mocker = HttpRequest()
-        mocker.GET['content'] = 0
-        mocker.GET['mood'] = 0
+        mocker.GET[Contents.name()] = 0
+        mocker.GET[Moods.name()] = 0
         
-        json_str = self.uut.read(mocker)
-        self.assertTrue(json_str['url'] in self.websites)
+        json_str = self.content.read(mocker)
+        self.assertTrue(json_str[ApiDataProvider.PARAM_URL] in self.websites)
 
     def test_getContent_noparameters(self):
         mocker = HttpRequest()
         
-        json_str = self.uut.read(mocker)
-        self.assertTrue('error' in json_str)
+        json_str = self.content.read(mocker)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
     
     def test_getContent_oneparameter(self):
         mocker1 = HttpRequest()
         mocker2 = HttpRequest()
-        mocker1.GET['content'] = '0'
-        mocker2.GET['mood'] = '0'
+        mocker1.GET[Contents.name()] = '0'
+        mocker2.GET[Moods.name()] = '0'
         
-        json_str1 = self.uut.read(mocker1)
-        self.assertTrue('error' in json_str1)
+        json_str1 = self.content.read(mocker1)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str1)
         
-        json_str2 = self.uut.read(mocker2)
-        self.assertTrue('error' in json_str2)
+        json_str2 = self.content.read(mocker2)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str2)
         
     
     def test_getContent_paramoutofbounds(self):
         mocker = HttpRequest()
-        mocker.GET['content'] = '5'
-        mocker.GET['mood'] = '0'
+        mocker.GET[Contents.name()] = '5'
+        mocker.GET[Moods.name()] = '0'
         
-        json_str = self.uut.read(mocker)
-        self.assertTrue('error' in json_str)
+        json_str = self.content.read(mocker)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
         
     def test_getContent_emptyDatabase(self):
         mocker = HttpRequest()
-        mocker.GET['content'] = '1'
-        mocker.GET['mood'] = '0'
+        mocker.GET[Contents.name()] = '1'
+        mocker.GET[Moods.name()] = '0'
         
-        json_str = self.uut.read(mocker)
-        self.assertTrue('error' in json_str)
+        json_str = self.content.read(mocker)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
         
+    
+    '''
+    Rate Content Test
+    '''
+    def test_rateContent_normalCase_thumbup(self):
+        mocker = HttpRequest()
+        mocker.POST[Ranks.name()] = Ranks.THUMBS_UP
+        mocker.POST[DataNames.MID] = '0'
+        
+        json_str = self.rank.create(mocker)
+        
+        self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str)
+        
+        thumbedup_object = Rank.objects.get(mid=0)
+        self.assertEqual(1, thumbedup_object.thumbs_up)
+        self.assertEqual(0, thumbedup_object.thumbs_down)
+        
+    def test_rateContent_normalCase_thumbdown(self):
+        mocker = HttpRequest()
+        mocker.POST[Ranks.name()] = Ranks.THUMBS_DOWN
+        mocker.POST[DataNames.MID] = '0'
+        
+        json_str = self.rank.create(mocker)
+        
+        self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str)
+        
+        thumbeddown_object = Rank.objects.get(mid=0)
+        self.assertEqual(0, thumbeddown_object.thumbs_up)
+        self.assertEqual(1, thumbeddown_object.thumbs_down)
+        
+    def test_rateContent_emptyParameter(self):
+        mocker = HttpRequest()
+        
+        json_str = self.rank.create(mocker)
+        
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)   
+        
+    def test_rateContent_missingparam(self):
+        mocker1 = HttpRequest()
+        mocker1.POST[DataNames.MID] = '0'
+        
+        json_str1 = self.rank.create(mocker1)
+        
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str1)    
+    
+        mocker2 = HttpRequest()
+        mocker2.POST[Ranks.name()] = Ranks.THUMBS_UP
+        
+        json_str2 = self.rank.create(mocker2)
+        
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str2)    
+    
+        
+    def test_rateContent_paramOutOfBounds(self):
+        mocker = HttpRequest()
+        mocker.POST[Ranks.name()] = '2'
+        mocker.POST[DataNames.MID] = '0'
+        
+        json_str = self.rank.create(mocker)
+        
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
+        
+    def test_rateContent_databaseEmpty(self):
+        mocker = HttpRequest()
+        mocker.POST[Ranks.name()] = Ranks.THUMBS_DOWN
+        mocker.POST[DataNames.MID] = '4'
+        
+        json_str = self.rank.create(mocker)
+        
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)

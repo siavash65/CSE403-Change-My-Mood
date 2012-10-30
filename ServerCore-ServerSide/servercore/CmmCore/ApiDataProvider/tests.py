@@ -6,16 +6,15 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from servercore.CmmData.models import Pictures, Media
+from servercore.CmmData.models import Pictures, Media, Rank
 from servercore.util.moods import Moods
 from servercore.util.contents import Contents
 from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
 import json
+from servercore.util.ranks import Ranks
 
 
 class SimpleTest(TestCase):
-    
-    
     def setUp(self):
         self.websites = ['www.google.com', 'www.bing.com', 'www.yahoo.com']
         m1 = Media(mid = 0, mood = Moods.HUMOROUS, content = Contents.PICTURE)
@@ -26,38 +25,51 @@ class SimpleTest(TestCase):
         p2 = Pictures(mid = 1, url = self.websites[1])
         p3 = Pictures(mid = 2, url = self.websites[2])
         
+        r1 = Rank(mid = 0, thumbs_up = 0, thumbs_down = 0)
+        r2 = Rank(mid = 1, thumbs_up = 1, thumbs_down = 20)
+        r3 = Rank(mid = 2, thumbs_up = 7, thumbs_down = 5)
+        
         m1.save()
         m2.save()
         m3.save()
         p1.save()
         p2.save()
         p3.save()
+        r1.save()
+        r2.save()
+        r3.save()
         
         pass
     
     def tearDown(self):
+        Media.objects.all().delete()
+        Pictures.objects.all().delete()
+        Rank.objects.all().delete()
         pass
     
+    '''
+    Testing Get Content
+    '''
     def test_getContent_normalsituation(self):
         json_str = ApiDataProvider.getContent(Moods.HUMOROUS, Contents.PICTURE)
-        self.assertTrue(json_str['url'] in self.websites)
+        self.assertTrue(json_str[ApiDataProvider.PARAM_URL] in self.websites)
         
     def test_getContent_emptyMood(self):
         json_str = ApiDataProvider.getContent(Moods.ENERVATE, Contents.PICTURE)
-        self.assertTrue('error' in json_str)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
     
     def test_getContent_emptyContent(self):
         json_str = ApiDataProvider.getContent(Moods.HUMOROUS, Contents.VIDEO)
-        self.assertTrue('error' in json_str)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
         
     def test_getContent_emptyBoth(self):
         json_str = ApiDataProvider.getContent(Moods.ENERVATE, Contents.VIDEO)
-        self.assertTrue('error' in json_str)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
         
     def test_getContent_baddatabase_nopictures(self):
         Pictures.objects.all().delete()
         json_str = ApiDataProvider.getContent(Moods.HUMOROUS, Contents.PICTURE)
-        self.assertTrue('error' in json_str)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
         
     def test_getContent_outofboundsinput(self):
         with self.assertRaises(AssertionError) as err:
@@ -65,3 +77,49 @@ class SimpleTest(TestCase):
         with self.assertRaises(AssertionError) as err:  
             ApiDataProvider.getContent(Moods.HUMOROUS, 4)
         
+    '''
+    Testing Rate Content
+    '''
+    def test_rateContent_normalsituation_up(self):
+        json_str = ApiDataProvider.rateContent(0, Ranks.THUMBS_UP)
+        self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str) 
+        content0 = Rank.objects.get(mid=0)
+        self.assertEqual(1, content0.thumbs_up)
+        self.assertEqual(0, content0.thumbs_down)
+        
+    def test_rateContent_normalsituation_up_twice(self):
+        json_str = ApiDataProvider.rateContent(0, Ranks.THUMBS_UP)
+        self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str)
+        json_str = ApiDataProvider.rateContent(0, Ranks.THUMBS_UP)
+        self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str)
+         
+        content0 = Rank.objects.get(mid=0)
+        self.assertEqual(2, content0.thumbs_up)
+        self.assertEqual(0, content0.thumbs_down)
+           
+    def test_rateContent_normalsituation_down(self):
+        json_str = ApiDataProvider.rateContent(0, Ranks.THUMBS_DOWN)
+        self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str)
+        
+        content0 = Rank.objects.get(mid=0)
+        self.assertEqual(0, content0.thumbs_up)
+        self.assertEqual(1, content0.thumbs_down)
+             
+    def test_rateContent_baddatabase_empty(self):
+        json_str = ApiDataProvider.rateContent(5, Ranks.THUMBS_DOWN)
+        self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
+        
+    def test_rateContent_illegalInput_wrongmid(self):
+        with self.assertRaises(AssertionError) as err:
+            ApiDataProvider.rateContent('0', Ranks.THUMBS_DOWN)
+        with self.assertRaises(AssertionError) as err:  
+            ApiDataProvider.rateContent('abc', Ranks.THUMBS_UP)
+    
+    def test_rateContent_illegalInput_wrongthumbing(self):
+        with self.assertRaises(AssertionError) as err:
+            ApiDataProvider.rateContent(0, 2)
+        
+            
+    
+    
+    
