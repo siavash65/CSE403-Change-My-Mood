@@ -47,8 +47,7 @@ class SimpleTest(TestCase):
         mocker.GET['mood'] = '0'
         
         json_str = self.uut.read(mocker)
-        myjson = json.loads(json_str)
-        self.assertTrue(myjson['url'] in self.websites)
+        self.assertTrue(json_str['url'] in self.websites)
         
     def test_getContent_normalsituation_with_integer(self):
         mocker = HttpRequest()
@@ -56,15 +55,13 @@ class SimpleTest(TestCase):
         mocker.GET['mood'] = 0
         
         json_str = self.uut.read(mocker)
-        myjson = json.loads(json_str)
-        self.assertTrue(myjson['url'] in self.websites)
+        self.assertTrue(json_str['url'] in self.websites)
 
     def test_getContent_noparameters(self):
         mocker = HttpRequest()
         
         json_str = self.uut.read(mocker)
-        myjson = json.loads(json_str)
-        self.assertTrue('error' in myjson)
+        self.assertTrue('error' in json_str)
     
     def test_getContent_oneparameter(self):
         mocker1 = HttpRequest()
@@ -73,12 +70,10 @@ class SimpleTest(TestCase):
         mocker2.GET['mood'] = '0'
         
         json_str1 = self.uut.read(mocker1)
-        myjson1 = json.loads(json_str1)
-        self.assertTrue('error' in myjson1)
+        self.assertTrue('error' in json_str1)
         
         json_str2 = self.uut.read(mocker2)
-        myjson2 = json.loads(json_str2)
-        self.assertTrue('error' in myjson2)
+        self.assertTrue('error' in json_str2)
         
     
     def test_getContent_paramoutofbounds(self):
@@ -87,8 +82,7 @@ class SimpleTest(TestCase):
         mocker.GET['mood'] = '0'
         
         json_str = self.uut.read(mocker)
-        myjson = json.loads(json_str)
-        self.assertTrue('error' in myjson)
+        self.assertTrue('error' in json_str)
         
     def test_getContent_emptyDatabase(self):
         mocker = HttpRequest()
@@ -96,6 +90,5 @@ class SimpleTest(TestCase):
         mocker.GET['mood'] = '0'
         
         json_str = self.uut.read(mocker)
-        myjson = json.loads(json_str)
-        self.assertTrue('error' in myjson)
+        self.assertTrue('error' in json_str)
         

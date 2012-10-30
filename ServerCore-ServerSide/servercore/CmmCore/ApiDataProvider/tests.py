@@ -40,29 +40,24 @@ class SimpleTest(TestCase):
     
     def test_getContent_normalsituation(self):
         json_str = ApiDataProvider.getContent(Moods.HUMOROUS, Contents.PICTURE)
-        myjson = json.loads(json_str)
-        self.assertTrue(myjson['url'] in self.websites)
+        self.assertTrue(json_str['url'] in self.websites)
         
     def test_getContent_emptyMood(self):
         json_str = ApiDataProvider.getContent(Moods.ENERVATE, Contents.PICTURE)
-        myjson = json.loads(json_str)
-        self.assertTrue('error' in myjson)
+        self.assertTrue('error' in json_str)
     
     def test_getContent_emptyContent(self):
         json_str = ApiDataProvider.getContent(Moods.HUMOROUS, Contents.VIDEO)
-        myjson = json.loads(json_str)
-        self.assertTrue('error' in myjson)
+        self.assertTrue('error' in json_str)
         
     def test_getContent_emptyBoth(self):
         json_str = ApiDataProvider.getContent(Moods.ENERVATE, Contents.VIDEO)
-        myjson = json.loads(json_str)
-        self.assertTrue('error' in myjson)
+        self.assertTrue('error' in json_str)
         
     def test_getContent_baddatabase_nopictures(self):
         Pictures.objects.all().delete()
         json_str = ApiDataProvider.getContent(Moods.HUMOROUS, Contents.PICTURE)
-        myjson = json.loads(json_str)
-        self.assertTrue('error' in myjson)
+        self.assertTrue('error' in json_str)
         
     def test_getContent_outofboundsinput(self):
         with self.assertRaises(AssertionError) as err:
