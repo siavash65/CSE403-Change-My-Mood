@@ -11,6 +11,9 @@ First of all, mood and contents are decribed by integers from 0 to 3 and the map
     ROMANTIC=2
     INSPIRE=3
 
+		THUMBS_UP=0          <<< weird..
+    THUMBS_DOWN=1
+
 -- GET CONTENT --
 To get a content from the server, do a HTTP Get request to the following:
     http://changemymood.herokuapp.com/api/getcontent/
@@ -41,7 +44,7 @@ To rate a content from the server, do a HTTP Post request to the following:
 
 Parameters
     mid: which is the mid of a content
-    rank: please input 0 for thumbs down and 1 for thumbs up
+    rank: please input 0 for thumbs up and 1 for thumbs down
 
 Return
     if successful:
