@@ -25,9 +25,30 @@ Example
 Return
     if successful:
         a json with a url key and url value
-            e.g. "{\"url\": \"www.google.com\"}"
+            e.g.  {
+                    "url": "www.google.com"
+                  }
 
     if failure:
-        a json with a error key and error message value
-            e.g. "{\"error\": \"empty database\"}"
+        a json with an error key and error message value
+            e.g.  {
+                    "error": "empty database"
+                  }
+
+-- Rate Content --
+To rate a content from the server, do a HTTP Post request to the following:
+    http://changemymood.herokuapp.com/api/ratecontent/
+
+Parameters
+    mid: which is the mid of a content
+    rank: please input 0 for thumbs down and 1 for thumbs up
+
+Return
+    if successful:
+       a json with a success key
+           e.g.  {
+                   "success": "updated rank"
+                 }
+    if failutre:
+       a json with an error key similar to getContent's error json    
 
