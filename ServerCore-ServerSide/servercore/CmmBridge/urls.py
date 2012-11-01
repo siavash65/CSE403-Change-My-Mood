@@ -4,9 +4,10 @@ Created on Oct 26, 2012
 @author: hunlan
 '''
 from django.conf.urls import patterns, url
-from servercore.CmmBridge.handler import HelloHandler, ContentHandler,\
-    RankHandler
+from servercore.CmmBridge.handler import HelloHandler
 from piston.resource import Resource
+from servercore.CmmBridge.contenthandler import ContentHandler
+from servercore.CmmBridge.rankhandler import RankHandler
 
 hello_handler = Resource(HelloHandler)
 content_handler = Resource(ContentHandler)

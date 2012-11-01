@@ -10,10 +10,11 @@ from servercore.CmmData.models import Pictures, Media, Rank
 from servercore.util.moods import Moods
 from servercore.util.contents import Contents
 from django.http import HttpRequest
-from servercore.CmmBridge.handler import ContentHandler, RankHandler
 from servercore.util.ranks import Ranks
 from servercore.util.datanames import DataNames
 from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
+from servercore.CmmBridge.contenthandler import ContentHandler
+from servercore.CmmBridge.rankhandler import RankHandler
 
 
 class SimpleTest(TestCase):
