@@ -12,6 +12,7 @@ from servercore.util.contents import Contents
 from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
 import json
 from servercore.util.ranks import Ranks
+from servercore.util.datanames import DataNames
 
 
 class SimpleTest(TestCase):
@@ -28,7 +29,7 @@ class SimpleTest(TestCase):
         self.mid1 = m1.id
         self.mid2 = m2.id
         self.mid3 = m3.id
-        
+        self.allmid = [m1.id, m2.id, m3.id]
                 
         p1 = Pictures(mid = m1.id, url = self.websites[0], photo_id = 7)
         p2 = Pictures(mid = m2.id, url = self.websites[1], photo_id = 8)
@@ -59,6 +60,8 @@ class SimpleTest(TestCase):
     def test_getContent_normalsituation(self):
         json_str = ApiDataProvider.getContent(Moods.HUMOROUS, Contents.PICTURE)
         self.assertTrue(json_str[ApiDataProvider.PARAM_URL] in self.websites)
+        
+        self.assertTrue(json_str[DataNames.MID] in self.allmid)
         
     def test_getContent_emptyMood(self):
         json_str = ApiDataProvider.getContent(Moods.ENERVATE, Contents.PICTURE)

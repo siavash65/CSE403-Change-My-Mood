@@ -12,6 +12,7 @@ from servercore.util.contents import Contents
 from servercore.CmmData.models import Media, Pictures, Rank
 from piston.utils import rc
 from servercore.util.ranks import Ranks
+from servercore.util.datanames import DataNames
 
 class ApiDataProvider():
     STATUS_SUCCESS = 'success'
@@ -47,7 +48,7 @@ class ApiDataProvider():
                 cur_pic = Pictures.objects.get(mid = cur_content.id)
                 assert isinstance(cur_pic, Pictures)
             
-                return {ApiDataProvider.PARAM_URL: cur_pic.url} #json.dumps({'url': cur_pic.url})
+                return {DataNames.MID: cur_content.id,ApiDataProvider.PARAM_URL: cur_pic.url} #json.dumps({'url': cur_pic.url})
             except Exception:
                 return ApiDataProvider.returnError('database corrupted')
         elif myContent == Contents.VIDEO:
