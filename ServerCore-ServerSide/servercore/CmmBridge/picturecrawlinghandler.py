@@ -18,6 +18,7 @@ class PictureCrawlingHandler(BaseHandler):
     model = PictureCrawlingModel
     
     def create(self, request):
+        print request.POST
         # check if post has secret parameter
         if not(DataNames.SECRET in request.POST) :
             return ApiDataProvider.returnError('no ' + DataNames.SECRET)

@@ -19,6 +19,7 @@ class FilterCronHandler(BaseHandler):
     
     def create(self, request):
         # check if post has secret parameter
+        print request.POST
         if not(DataNames.SECRET in request.POST) :
             return ApiDataProvider.returnError('no ' + DataNames.SECRET)
         
