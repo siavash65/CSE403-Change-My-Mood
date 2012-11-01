@@ -88,13 +88,10 @@ class ContentDataOrganizer():
             m = Media(mood=Moods.HUMOROUS, content=Contents.PICTURE)
             m.save()
         
-            # photo id
-            photo_id = int(first_attrib['id'])
-        
             # put photo data
             p = Pictures(mid = m.id, \
                           url = 'http://static.flickr.com/' + first_attrib['server'] \
-                          + '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg",
+                          + '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg",\
                           photo_id = photo_id)
             p.save()
         
