@@ -25,21 +25,26 @@ class SimpleTest(TestCase):
         self.content = ContentHandler()
         self.rank = RankHandler()
         
-        m1 = Media(mid = 0, mood = Moods.HUMOROUS, content = Contents.PICTURE)
-        m2 = Media(mid = 1, mood = Moods.HUMOROUS, content = Contents.PICTURE)
-        m3 = Media(mid = 2, mood = Moods.HUMOROUS, content = Contents.PICTURE)
-        
-        p1 = Pictures(mid = 0, url = self.websites[0])
-        p2 = Pictures(mid = 1, url = self.websites[1])
-        p3 = Pictures(mid = 2, url = self.websites[2])
-        
-        r1 = Rank(mid = 0, thumbs_up = 0, thumbs_down = 0)
-        r2 = Rank(mid = 1, thumbs_up = 1, thumbs_down = 20)
-        r3 = Rank(mid = 2, thumbs_up = 7, thumbs_down = 5)
+        m1 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m2 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m3 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
         
         m1.save()
         m2.save()
         m3.save()
+        
+        self.mid1 = m1.id
+        self.mid2 = m2.id
+        self.mid3 = m3.id
+        
+        p1 = Pictures(mid = m1.id, url = self.websites[0], photo_id = 7)
+        p2 = Pictures(mid = m2.id, url = self.websites[1], photo_id = 8)
+        p3 = Pictures(mid = m3.id, url = self.websites[2], photo_id = 11)
+        
+        r1 = Rank(mid = m1.id, thumbs_up = 0, thumbs_down = 0)
+        r2 = Rank(mid = m2.id, thumbs_up = 1, thumbs_down = 20)
+        r3 = Rank(mid = m3.id, thumbs_up = 7, thumbs_down = 5)
+        
         p1.save()
         p2.save()
         p3.save()
@@ -116,26 +121,26 @@ class SimpleTest(TestCase):
     def test_rateContent_normalCase_thumbup(self):
         mocker = HttpRequest()
         mocker.POST[Ranks.name()] = Ranks.THUMBS_UP
-        mocker.POST[DataNames.MID] = '0'
+        mocker.POST[DataNames.MID] = self.mid1
         
         json_str = self.rank.create(mocker)
         
         self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str)
         
-        thumbedup_object = Rank.objects.get(mid=0)
+        thumbedup_object = Rank.objects.get(mid=self.mid1)
         self.assertEqual(1, thumbedup_object.thumbs_up)
         self.assertEqual(0, thumbedup_object.thumbs_down)
         
     def test_rateContent_normalCase_thumbdown(self):
         mocker = HttpRequest()
         mocker.POST[Ranks.name()] = Ranks.THUMBS_DOWN
-        mocker.POST[DataNames.MID] = '0'
+        mocker.POST[DataNames.MID] = self.mid1
         
         json_str = self.rank.create(mocker)
         
         self.assertTrue(ApiDataProvider.STATUS_SUCCESS in json_str)
         
-        thumbeddown_object = Rank.objects.get(mid=0)
+        thumbeddown_object = Rank.objects.get(mid=self.mid1)
         self.assertEqual(0, thumbeddown_object.thumbs_up)
         self.assertEqual(1, thumbeddown_object.thumbs_down)
         
@@ -148,7 +153,7 @@ class SimpleTest(TestCase):
         
     def test_rateContent_missingparam(self):
         mocker1 = HttpRequest()
-        mocker1.POST[DataNames.MID] = '0'
+        mocker1.POST[DataNames.MID] = self.mid1
         
         json_str1 = self.rank.create(mocker1)
         
@@ -165,7 +170,7 @@ class SimpleTest(TestCase):
     def test_rateContent_paramOutOfBounds(self):
         mocker = HttpRequest()
         mocker.POST[Ranks.name()] = '2'
-        mocker.POST[DataNames.MID] = '0'
+        mocker.POST[DataNames.MID] = self.mid1
         
         json_str = self.rank.create(mocker)
         
@@ -174,7 +179,7 @@ class SimpleTest(TestCase):
     def test_rateContent_databaseEmpty(self):
         mocker = HttpRequest()
         mocker.POST[Ranks.name()] = Ranks.THUMBS_DOWN
-        mocker.POST[DataNames.MID] = '4'
+        mocker.POST[DataNames.MID] = '-1'
         
         json_str = self.rank.create(mocker)
         

@@ -44,7 +44,7 @@ class ApiDataProvider():
         if myContent == Contents.PICTURE:
             # get picture
             try:
-                cur_pic = Pictures.objects.get(mid = cur_content.mid)
+                cur_pic = Pictures.objects.get(mid = cur_content.id)
                 assert isinstance(cur_pic, Pictures)
             
                 return {ApiDataProvider.PARAM_URL: cur_pic.url} #json.dumps({'url': cur_pic.url})
