@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp" 
+    android:background="#FFFFFF">
    
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
             android:textSize="20sp"
             android:layout_above="@+id/FacebookLogin" 
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom= "20dp" />
+            android:layout_marginBottom= "20dp"
+            android:background="@drawable/hunlan_buttons" />
 
         <Button
             android:id="@+id/FacebookLogin"
@@ -34,7 +36,8 @@
             android:textSize="20sp"
             android:layout_centerHorizontal="true" 
             android:layout_marginBottom= "50dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/hunlan_buttons"/>
 
         <ImageView
             android:id="@+id/FrontImage"

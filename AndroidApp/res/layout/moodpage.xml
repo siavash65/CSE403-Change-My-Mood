@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="#FFFFFF">
     
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -11,7 +12,7 @@
     	<TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Select a mood you want to change to"
+	        android:text="@string/mood_title"
 	        android:layout_centerHorizontal="true" />
     </RelativeLayout>
     
@@ -26,16 +27,20 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Make me laugh" 
-            android:textSize="20sp" />
+            android:text="@string/mood_funny" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp" />
         
         <Button
             android:id="@+id/PumpMeUp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Pump Me Up" 
-            android:textSize="20sp" />
+            android:text="@string/mood_enervate" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp" />
 	</LinearLayout>
 	
 	<LinearLayout 
@@ -49,18 +54,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Inspire Me" 
-            android:textSize="20sp" />
+            android:text="@string/mood_inspire" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp" />
         
         <Button
             android:id="@+id/NeedSomeRomance"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Need Some Romance" 
-            android:textSize="20sp" />  
+            android:text="@string/mood_romantic" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp" />  
         
     </LinearLayout>
-
 
 </LinearLayout>

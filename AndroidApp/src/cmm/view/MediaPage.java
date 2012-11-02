@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MediaPage extends Activity{
 	private final String ABOUTUS = "About Us";
@@ -14,6 +15,11 @@ public class MediaPage extends Activity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mediapage);
+    }
+    
+    public void gotoPicture(View view) {
+    	Intent intent = new Intent(this, PictureActivity.class);
+    	startActivity(intent);
     }
     
     @Override
