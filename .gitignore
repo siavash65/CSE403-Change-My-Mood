@@ -20,3 +20,6 @@ venv
 *.pyc
 .project
 .pydevproject
+
+# Ignore Mac OS file
+.DS_Store
