@@ -5,12 +5,15 @@ import java.net.URL;
 import cmm.util.Utilz;
 
 public class UrlProvider {
-	private static final String BASE_URL = "http://changemymood.herokuapp.com/api/";
+	//"http://10.0.2.2:8000/api/" //for development
+	private static final String BASE_URL = "http://changemymood.herokuapp.com/api/"; // for deploy
 	private static final String GET_CONTENT = "getContent";
-	private static final String RANK_CONTENT = "rankContent";
+	private static final String RANK_CONTENT = "rateContent";
 	private static final String MOOD = "mood";
 	private static final String CONTENT = "content";
-	private static final String MID = "mid";
+	public static final String MID = "mid";
+	public static final String RATE = "rank";
+	public static final String SUCCESS = "success";
 	
 	
 	

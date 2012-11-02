@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="base_url">http://changemymood.herokuapp.com/api/</string>
+    <!-- <string name="base_url">http://10.0.2.2:8000/api/</string>  -->
     <string name="hello">Hello World, CMMActivity!</string>
+    <string name="welcome">Welcome to Change My Mood</string>
+    <string name="no_signin">Continue without signin</string>
     <string name="app_name">CMM</string>
     <string name="media_title">Select a media you want to use</string>
     <string name="media_picture">Picture</string>
@@ -15,4 +19,7 @@
     <string name="mood_romantic">Need Some Romance</string>
     <string name="thumbs_up">Thumbs Up</string>
     <string name="thumbs_down">Thumbs Down</string>
+    <string name="rate_success_msg">Successfully Rated</string>
+    <string name="rate_fail_msg">Sorry!</string>
+    
 </resources>
