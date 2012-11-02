@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
+// For Code Review
 public class CMMActivity extends Activity implements OnClickListener {
 	private Button noSignin;
 	private Button withSignin;

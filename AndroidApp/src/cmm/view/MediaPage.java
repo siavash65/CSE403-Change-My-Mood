@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
+// For Code Review
 public class MediaPage extends Activity{
 	private final String ABOUTUS = "About Us";
 	private final String CONTACTUS = "Contact Us";

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-
+// For Code Review
 public class MoodPage extends Activity implements OnClickListener{
 	private Button makeMeLaugh;
 	private Button pumpMeUp;

@@ -1,5 +1,5 @@
 package cmm.model;
-
+// For Code Review
 public enum Mood {
 	HUMOROUS, ENERVATE, ROMANTIC, INSPIRE;
 	

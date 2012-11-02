@@ -1,5 +1,5 @@
 package cmm.model;
-
+// For Code Review
 public enum Content {
 	PICTURE, VIDEO, TEXT, MUSIC;
 	

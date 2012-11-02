@@ -35,6 +35,7 @@ import cmm.model.Content;
 import cmm.model.Mood;
 import cmm.model.UrlProvider;
 
+// For Code Review
 public class PictureActivity extends Activity {
 	/* debug log string */
 	private static final String TAG = "PictureActivity";

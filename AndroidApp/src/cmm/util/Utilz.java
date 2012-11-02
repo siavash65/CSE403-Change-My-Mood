@@ -1,5 +1,5 @@
 package cmm.util;
-
+// For Code Review
 public class Utilz {
 	public static boolean stringIsEmpty(String s) {
 		return s==null || s.trim().isEmpty();
