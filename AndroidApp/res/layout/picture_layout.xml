@@ -19,7 +19,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:onClick="changePicture" />
     </LinearLayout>
 
