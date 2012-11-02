@@ -88,7 +88,7 @@ class ContentDataOrganizer():
             m = Media(mood=Moods.HUMOROUS, content=Contents.PICTURE)
             m.save()
         
-            # put photo data
+            # put photo data. TODO: Use flickr's object's method to generate url
             p = Pictures(mid = m.id, \
                           url = 'http://static.flickr.com/' + first_attrib['server'] \
                           + '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg",\
