@@ -15,7 +15,7 @@ from servercore import CmmData
 class BasicFilter(FilterInterface):
     # Flickr picture filter metric multiplier
     # [ups, downs, fav, views]
-    _PIC_METRIC = [100, 15, 10, 1]
+    _PIC_METRIC = [100, -15, 10, 1]
     
     '''
     TODO: currently only support humorous picture
