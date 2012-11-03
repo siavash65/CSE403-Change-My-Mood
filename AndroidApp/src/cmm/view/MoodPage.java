@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MoodPage extends Activity implements OnClickListener{
 	private Button makeMeLaugh;
@@ -30,7 +29,6 @@ public class MoodPage extends Activity implements OnClickListener{
         Bundle bundle = getIntent().getExtras();
         signin = bundle.getInt(SIGNIN);
         Log.d("Extra data", signin+"");
-       
         
         makeMeLaugh = (Button)findViewById(R.id.MakeMeLaugh);
         pumpMeUp = (Button)findViewById(R.id.PumpMeUp);
@@ -41,7 +39,6 @@ public class MoodPage extends Activity implements OnClickListener{
         pumpMeUp.setOnClickListener(this);
         inspireMe.setOnClickListener(this);
         needSomeRomance.setOnClickListener(this);
-        
     }
 
 	public void onClick(View v) {

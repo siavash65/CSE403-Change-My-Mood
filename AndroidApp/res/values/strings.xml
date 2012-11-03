@@ -4,22 +4,33 @@
     <string name="base_url">http://changemymood.herokuapp.com/api/</string>
     <!-- <string name="base_url">http://10.0.2.2:8000/api/</string>  -->
     <string name="hello">Hello World, CMMActivity!</string>
+    <string name="app_name">CMM</string>
+    
+    <!-- Main page -->
     <string name="welcome">Welcome to Change My Mood</string>
     <string name="no_signin">Continue without signin</string>
-    <string name="app_name">CMM</string>
+    <string name="with_signin">Signin with Facebook</string>
+    
+    <!-- Media page -->
     <string name="media_title">Select a media you want to use</string>
     <string name="media_picture">Picture</string>
     <string name="media_video">Video</string>
     <string name="media_text">Text</string>
     <string name="media_audio">Audio</string>
+    
+    <!-- Mood page -->
     <string name="mood_title">Select a mood you want to change to</string>
     <string name="mood_funny">Make Me Laugh</string>
     <string name="mood_enervate">Pump Me Up</string>
     <string name="mood_inspire">Inspire Me</string>
     <string name="mood_romantic">Need Some Romance</string>
+    
+    <!-- Content page -->
     <string name="thumbs_up">Thumbs Up</string>
     <string name="thumbs_down">Thumbs Down</string>
     <string name="rate_success_msg">Successfully Rated</string>
     <string name="rate_fail_msg">Sorry!</string>
     
+    <!-- Facebook && Login -->
+    <string name="facebook_appid">343378635757581</string>
 </resources>

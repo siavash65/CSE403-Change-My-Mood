@@ -1,7 +1,5 @@
 package cmm.model;
 
-import java.net.URL;
-
 import cmm.util.Utilz;
 
 public class UrlProvider {
