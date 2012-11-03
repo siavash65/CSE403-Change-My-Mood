@@ -2,12 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="20dp" >
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is About Us page"
+        android:text="@string/aboutus_title"
         android:textSize="20sp" />
-
+    
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/info_siavash"
+	    android:textSize="14sp" />
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/info_lin"
+	    android:textSize="14sp" />
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/info_garrett"
+	    android:textSize="14sp" />
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/info_hyunjoon"
+	    android:textSize="14sp" />
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/info_youngmin"
+	    android:textSize="14sp" />
 </LinearLayout>

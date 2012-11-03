@@ -13,8 +13,6 @@ public class UrlProvider {
 	public static final String RATE = "rank";
 	public static final String SUCCESS = "success";
 	
-	
-	
 	public static String getPictureUrl(Mood mood, Content content) {
 		String url = Utilz.urlAppend(BASE_URL, GET_CONTENT);
 		url = Utilz.urlAppendParam(url, MOOD, "" + mood.ordinal());

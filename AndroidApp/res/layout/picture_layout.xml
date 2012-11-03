@@ -55,5 +55,4 @@
             android:text="@string/thumbs_down"
             android:textSize="18sp" />
     </LinearLayout>
-
 </RelativeLayout>

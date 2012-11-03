@@ -9,6 +9,6 @@ public enum Content {
 				return c;
 			}
 		}
-		throw new IndexOutOfBoundsException(/* TODO: Give this a good msg*/);
+		throw new IndexOutOfBoundsException("Unexpected error occured with selecting Content");
 	}
 }

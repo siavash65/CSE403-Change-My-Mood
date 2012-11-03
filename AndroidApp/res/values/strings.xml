@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="base_url">http://changemymood.herokuapp.com/api/</string>
     <!-- <string name="base_url">http://10.0.2.2:8000/api/</string>  -->
     <string name="hello">Hello World, CMMActivity!</string>
@@ -31,6 +30,25 @@
     <string name="rate_success_msg">Successfully Rated</string>
     <string name="rate_fail_msg">Sorry!</string>
     
+    <!-- AboutUs page -->
+    <string name="aboutus_title">About Us</string>
+    <string name="info_siavash">Siavash Baratchi(barats@cs)</string>
+    <string name="info_lin">Hunlan Lin(hunlan@cs)</string>
+    <string name="info_garrett">Garret Sato(satog@cs)</string>
+    <string name="info_hyunjoon">Hyunjoon Lee(hjlee513@cs)</string>
+    <string name="info_youngmin">Youngmin Lee(lym737@cs)</string>
+    
+    <!-- ContactUs page -->
+    <string name="contactus_title">Contact Us</string>
+    
+    <!-- Menu -->
+    <string name="str_menu_aboutus">About Us</string>
+    <string name="str_menu_contactus">Contact Us</string>
+    <string name="str_menu_signout">Sign Out</string>
+    
     <!-- Facebook && Login -->
     <string name="facebook_appid">343378635757581</string>
+    
+    <!-- Temporary message -->
+    <string name="notready">This is not ready yet. Please wait our updates!</string>
 </resources>

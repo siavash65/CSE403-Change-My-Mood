@@ -23,7 +23,7 @@
         android:orientation="horizontal">
         
         <Button
-            android:id="@+id/MakeMeLaugh"
+            android:id="@+id/show_picture"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -34,14 +34,15 @@
             android:onClick="gotoPicture" />
         
         <Button
-            android:id="@+id/PumpMeUp"
+            android:id="@+id/show_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/media_video" 
             android:textSize="20sp"
             android:background="@drawable/hunlan_buttons"
-            android:layout_margin="7dp"  />
+            android:layout_margin="7dp"
+            android:onClick="gotoVideo"  />
 	</LinearLayout>
 	
 	<LinearLayout 
@@ -51,25 +52,25 @@
         android:orientation="horizontal">
         
         <Button
-            android:id="@+id/InspireMe"
+            android:id="@+id/show_audio"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/media_audio" 
             android:textSize="20sp"
             android:background="@drawable/hunlan_buttons"
-            android:layout_margin="7dp"  />
+            android:layout_margin="7dp"
+            android:onClick="gotoAudio"  />
         
         <Button
-            android:id="@+id/NeedSomeRomance"
+            android:id="@+id/show_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/media_text" 
             android:textSize="20sp"
             android:background="@drawable/hunlan_buttons"
-            android:layout_margin="7dp"  />  
-        
+            android:layout_margin="7dp"
+            android:onClick="gotoText"  />  
     </LinearLayout>
-
 </LinearLayout>

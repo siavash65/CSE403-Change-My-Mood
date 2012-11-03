@@ -53,7 +53,13 @@
                 <action android:name="android.intent.action.ContactUs" />
             </intent-filter>
         </activity>
-        <activity android:name="PictureActivity" >
+        <activity 
+            android:name=".PictureActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.PictureActivity" />
+            </intent-filter>"
         </activity>
     </application>
 
