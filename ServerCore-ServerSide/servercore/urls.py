@@ -1,3 +1,5 @@
+import servercore.django_cron
+django_cron.autodiscover()
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
