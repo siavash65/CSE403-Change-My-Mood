@@ -30,6 +30,9 @@
     <string name="rate_success_msg">Successfully Rated</string>
     <string name="rate_fail_msg">Sorry!</string>
     
+<<<<<<< HEAD
+</resources>
+=======
     <!-- AboutUs page -->
     <string name="aboutus_title">About Us</string>
     <string name="info_siavash">Siavash Baratchi(barats@cs)</string>
@@ -52,3 +55,4 @@
     <!-- Temporary message -->
     <string name="notready">This is not ready yet. Please wait our updates!</string>
 </resources>
+>>>>>>> c99dea3ab299d37268ea4f9e60d23d9609a42fab

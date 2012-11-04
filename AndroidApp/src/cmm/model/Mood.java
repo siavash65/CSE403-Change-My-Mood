@@ -9,6 +9,6 @@ public enum Mood {
 				return m;
 			}
 		}
-		throw new IndexOutOfBoundsException(/* TODO: Give this a good msg*/);
+		throw new IndexOutOfBoundsException("Unexpected error occured with selecting Mood");
 	}
 }

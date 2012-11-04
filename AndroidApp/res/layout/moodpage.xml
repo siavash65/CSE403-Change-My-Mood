@@ -30,7 +30,8 @@
             android:text="@string/mood_funny" 
             android:textSize="20sp"
             android:background="@drawable/hunlan_buttons"
-            android:layout_margin="7dp" />
+            android:layout_margin="7dp"
+            android:onClick="clickLaugh" />
         
         <Button
             android:id="@+id/PumpMeUp"
@@ -40,7 +41,8 @@
             android:text="@string/mood_enervate" 
             android:textSize="20sp"
             android:background="@drawable/hunlan_buttons"
-            android:layout_margin="7dp" />
+            android:layout_margin="7dp"
+            android:onClick="clickPump" />
 	</LinearLayout>
 	
 	<LinearLayout 
@@ -57,7 +59,8 @@
             android:text="@string/mood_inspire" 
             android:textSize="20sp"
             android:background="@drawable/hunlan_buttons"
-            android:layout_margin="7dp" />
+            android:layout_margin="7dp"
+            android:onClick="clickInspire" />
         
         <Button
             android:id="@+id/NeedSomeRomance"
@@ -67,8 +70,7 @@
             android:text="@string/mood_romantic" 
             android:textSize="20sp"
             android:background="@drawable/hunlan_buttons"
-            android:layout_margin="7dp" />  
-        
+            android:layout_margin="7dp"
+            android:onClick="clickRomance" />  
     </LinearLayout>
-
 </LinearLayout>

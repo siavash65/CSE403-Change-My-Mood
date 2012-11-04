@@ -73,4 +73,9 @@
             android:layout_margin="7dp"
             android:onClick="gotoText"  />  
     </LinearLayout>
+<<<<<<< HEAD
+
 </LinearLayout>
+=======
+</LinearLayout>
+>>>>>>> c99dea3ab299d37268ea4f9e60d23d9609a42fab

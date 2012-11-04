@@ -10,34 +10,39 @@
         android:layout_height="wrap_content"
         android:text="@string/aboutus_title"
         android:textSize="20sp" />
+<<<<<<< HEAD
+
+</LinearLayout>
+=======
     
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="@string/info_siavash"
 	    android:textSize="14sp" />
-
+	
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="@string/info_lin"
 	    android:textSize="14sp" />
-
+	
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="@string/info_garrett"
 	    android:textSize="14sp" />
-
+	
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="@string/info_hyunjoon"
 	    android:textSize="14sp" />
-
+	
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="@string/info_youngmin"
 	    android:textSize="14sp" />
 </LinearLayout>
+>>>>>>> c99dea3ab299d37268ea4f9e60d23d9609a42fab

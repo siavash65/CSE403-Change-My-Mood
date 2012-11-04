@@ -1,84 +1,123 @@
 package cmm.view;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.Toast;
-// For Code Review
-public class MoodPage extends Activity implements OnClickListener{
-	private Button makeMeLaugh;
-	private Button pumpMeUp;
-	private Button inspireMe;
-	private Button needSomeRomance;	
+import cmm.model.Mood;
+
+import com.facebook.android.Facebook;
+
+public class MoodPage extends Activity{
 	private static int signin;
-	private final String ABOUTUS = "About Us";
-	private final String CONTACTUS = "Contact Us";
 	private final String SIGNIN ="Sign in";
-	private final String MOOD = "Mood";
+	public static final String MOOD = "Mood";
+	private Intent intent;
+	private MenuInflater inflater;
+	private Menu menu;
+
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moodpage);
        
+        //we can change later
         Bundle bundle = getIntent().getExtras();
         signin = bundle.getInt(SIGNIN);
-        Log.d("Extra data", signin+"");
-       
+        Log.d("Extra data", signin + "");
         
-        makeMeLaugh = (Button)findViewById(R.id.MakeMeLaugh);
-        pumpMeUp = (Button)findViewById(R.id.PumpMeUp);
-        inspireMe = (Button)findViewById(R.id.InspireMe);
-        needSomeRomance = (Button)findViewById(R.id.NeedSomeRomance);
-        
-        makeMeLaugh.setOnClickListener(this);
-        pumpMeUp.setOnClickListener(this);
-        inspireMe.setOnClickListener(this);
-        needSomeRomance.setOnClickListener(this);
-        
+        intent = new Intent();
+        intent.setClass(this, MediaPage.class);
     }
 
-	public void onClick(View v) {
-		Intent intent = new Intent();
-		intent.setClass(this, MediaPage.class);
-		int id = v.getId();
-		if(id==R.id.MakeMeLaugh) {
-			intent.putExtra(MOOD, 0);
-		} else if(id==R.id.PumpMeUp) {
-			intent.putExtra(MOOD, 1);
-		} else if(id==R.id.InspireMe) {
-			intent.putExtra(MOOD, 2);
-		} else if(id==R.id.NeedSomeRomance) {
-			intent.putExtra(MOOD, 3);
-		}
-		startActivity(intent);
-	}
-	
-	@Override
+    public void clickLaugh(View view){
+    	intent.putExtra(MOOD, Mood.HUMOROUS.ordinal());
+    	startActivity(intent);
+    }
+    
+    public void clickPump(View view){
+    	//intent.putExtra(MOOD, Mood.ENERVATE);
+    	//startActivity(intent);
+    	temporary_msg();
+    }
+    
+    public void clickInspire(View view){
+    	//intent.putExtra(MOOD, Mood.INSPIRE);
+    	//startActivity(intent);
+    	temporary_msg();
+    }
+    
+    public void clickRomance(View view){
+    	//intent.putExtra(MOOD, Mood.ROMANTIC);
+    	//startActivity(intent);
+    	temporary_msg();
+    }
+    
+    // show temporary message for the functions that are not ready yet.
+    private void temporary_msg(){
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle("Message");
+    	builder.setMessage(R.string.notready);
+    	builder.setNeutralButton("close", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+			}
+		});
+    	builder.show();
+    }
+
+    // create menu
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	menu.add(ABOUTUS);
-        menu.add(CONTACTUS);
+    	inflater = getMenuInflater();
+    	this.menu = menu;
+    	
+    	if(Facebook.TOKEN != null){
+    		inflater.inflate(R.menu.menu_login, menu);
+    	}else{
+    		inflater.inflate(R.menu.menu_basic, menu);
+    	}
         return true;
     }
     
-	@Override
+    // handle menu activity 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	Intent intent = new Intent();
-    	if(item.getTitle().equals(ABOUTUS)) {
-    		intent.setClass(this, AboutUs.class);
-    		startActivity(intent);
-    		return true;
-    	} else if (item.getTitle().equals(CONTACTUS)) {
-    		intent.setClass(this, ContactUs.class);
-    		startActivity(intent);
-    		return true;
+    	switch(item.getItemId()){
+    		case R.id.aboutus_menu:
+	    		intent.setClass(this, AboutUs.class);
+	    		startActivity(intent);
+	    		return true;
+    		case R.id.contactus_menu:
+	    		intent.setClass(this, ContactUs.class);
+	    		startActivity(intent);
+	    		return true;
+    		case R.id.signout_menu:
+    			try{
+    				CMMActivity.FACEBOOK.logout(this);
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    			menu.clear();
+				inflater.inflate(R.menu.menu_basic, menu);
+				return true;
+	    	default:
+	    		return super.onOptionsItemSelected(item);
     	}
-    	return super.onOptionsItemSelected(item);
     }
 }
