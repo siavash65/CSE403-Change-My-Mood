@@ -24,17 +24,17 @@ class SimpleTest(TestCase):
         self.content = ContentHandler()
         self.rank = RankHandler()
         
-        m1 = Media(mid = 0, mood = Moods.HUMOROUS, content = Contents.PICTURE)
-        m2 = Media(mid = 1, mood = Moods.HUMOROUS, content = Contents.PICTURE)
-        m3 = Media(mid = 2, mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m1 = Media(id = 0, mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m2 = Media(id = 1, mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m3 = Media(id = 2, mood = Moods.HUMOROUS, content = Contents.PICTURE)
         
-        p1 = Pictures(mid = 0, url = self.websites[0])
-        p2 = Pictures(mid = 1, url = self.websites[1])
-        p3 = Pictures(mid = 2, url = self.websites[2])
+        p1 = Pictures(id = 0, mid = 0, url = self.websites[0])
+        p2 = Pictures(id = 1, mid = 1, url = self.websites[1])
+        p3 = Pictures(id = 2, mid = 2, url = self.websites[2])
         
-        r1 = Rank(mid = 0, thumbs_up = 0, thumbs_down = 0)
-        r2 = Rank(mid = 1, thumbs_up = 1, thumbs_down = 20)
-        r3 = Rank(mid = 2, thumbs_up = 7, thumbs_down = 5)
+        r1 = Rank(id = 0, mid = 0, thumbs_up = 0, thumbs_down = 0)
+        r2 = Rank(id = 1, mid = 1, thumbs_up = 1, thumbs_down = 20)
+        r3 = Rank(id = 2, mid = 2, thumbs_up = 7, thumbs_down = 5)
         
         m1.save()
         m2.save()

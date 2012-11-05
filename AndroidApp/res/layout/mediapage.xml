@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="#ffffff" >
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" > 
+     	<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/media_title"
+	        android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+     	
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+        
+        <Button
+            android:id="@+id/MakeMeLaugh"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/media_picture" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp"
+            android:onClick="gotoPicture" />
+        
+        <Button
+            android:id="@+id/PumpMeUp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/media_video" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp"  />
+	</LinearLayout>
+	
+	<LinearLayout 
+	    android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+        
+        <Button
+            android:id="@+id/InspireMe"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/media_audio" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp"  />
+        
+        <Button
+            android:id="@+id/NeedSomeRomance"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/media_text" 
+            android:textSize="20sp"
+            android:background="@drawable/hunlan_buttons"
+            android:layout_margin="7dp"  />  
+        
+    </LinearLayout>
+
+</LinearLayout>

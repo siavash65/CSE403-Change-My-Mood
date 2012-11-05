@@ -17,9 +17,9 @@ from servercore.util.ranks import Ranks
 class SimpleTest(TestCase):
     def setUp(self):
         self.websites = ['www.google.com', 'www.bing.com', 'www.yahoo.com']
-        m1 = Media(mid = 0, mood = Moods.HUMOROUS, content = Contents.PICTURE)
-        m2 = Media(mid = 1, mood = Moods.HUMOROUS, content = Contents.PICTURE)
-        m3 = Media(mid = 2, mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m1 = Media(id = 0, mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m2 = Media(id = 1, mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m3 = Media(id = 2, mood = Moods.HUMOROUS, content = Contents.PICTURE)
         
         p1 = Pictures(mid = 0, url = self.websites[0])
         p2 = Pictures(mid = 1, url = self.websites[1])
