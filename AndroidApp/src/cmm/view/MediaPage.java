@@ -9,14 +9,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-<<<<<<< HEAD
-// For Code Review
-=======
+
 import cmm.model.Content;
 
 import com.facebook.android.Facebook;
 
->>>>>>> 03a99dbdbae3353d90e0bfe2d29542eb151890e9
 public class MediaPage extends Activity{
 	public static String CONTENT = "Content";
 	private Intent intent;
