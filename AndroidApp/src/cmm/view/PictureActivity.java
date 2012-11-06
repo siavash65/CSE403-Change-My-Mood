@@ -1,8 +1,6 @@
 package cmm.view;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +18,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import com.facebook.android.Facebook;
-
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -43,6 +41,8 @@ import cmm.model.Content;
 import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
+
+import com.facebook.android.Facebook;
 
 public class PictureActivity extends Activity {
 	/* debug log string */
@@ -254,15 +254,19 @@ public class PictureActivity extends Activity {
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-    			try{
-    				CMMActivity.FACEBOOK.logout(this);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-    			menu.clear();
-				inflater.inflate(R.menu.menu_basic, menu);
+    			//menu.clear();
+				//inflater.inflate(R.menu.menu_basic, menu);
+    			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	    	builder.setTitle("Message");
+    	    	builder.setMessage(R.string.notready);
+    	    	builder.setNeutralButton("close", new DialogInterface.OnClickListener() {
+    				
+    				@Override
+    				public void onClick(DialogInterface dialog, int which) {
+    					
+    				}
+    			});
+    	    	builder.show();
 				return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);

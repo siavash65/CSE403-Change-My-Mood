@@ -1,8 +1,5 @@
 package cmm.view;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -106,15 +103,9 @@ public class MoodPage extends Activity{
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-    			try{
-    				CMMActivity.FACEBOOK.logout(this);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-    			menu.clear();
-				inflater.inflate(R.menu.menu_basic, menu);
+    			//menu.clear();
+				//inflater.inflate(R.menu.menu_basic, menu);
+    			temporary_msg();
 				return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);
