@@ -6,6 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+<<<<<<< HEAD
+import android.view.View.OnClickListener;
+import android.widget.Button;
+// For Code Review
+public class CMMActivity extends Activity implements OnClickListener {
+	private Button noSignin;
+	private Button withSignin;
+	private final String ABOUTUS = "About Us";
+	private final String CONTACTUS = "Contact Us";
+	private final String SIGNIN ="Sign in";
+    /** Called when the activity is first created. */
+=======
 
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
@@ -19,8 +31,9 @@ public class CMMActivity extends Activity{
     
 	private SharedPreferences mPrefs;
 	public static Facebook FACEBOOK;
-
+	
 	/** Called when the activity is first created. */
+>>>>>>> c99dea3ab299d37268ea4f9e60d23d9609a42fab
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +50,7 @@ public class CMMActivity extends Activity{
 		Log.d("Main", "skip siginin");
 		startActivity(intent);
 	}
-
+	
 	private void login_success(){
 		Intent intent = new Intent(getBaseContext(), MoodPage.class);
 		Bundle fbinfo = new Bundle();
@@ -48,7 +61,7 @@ public class CMMActivity extends Activity{
 		intent.putExtras(fbinfo);
 		startActivity(intent);
 	}
-
+	
 	public void facebookSignin(View view){
 		/*
          * Get existing access_token if any
@@ -73,22 +86,22 @@ public class CMMActivity extends Activity{
 				    editor.putString("access_token", FACEBOOK.getAccessToken());
 				    editor.putLong("access_expires", FACEBOOK.getAccessExpires());
 				    editor.commit();
-
+				    
 				    login_success();
 				}
-
+				
 				@Override
 				public void onFacebookError(FacebookError error) {}
-
+				
 				@Override
 				public void onError(DialogError e) {}
-
+				
 				@Override
 				public void onCancel() {}
             });
         }
 	}
-
+	
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

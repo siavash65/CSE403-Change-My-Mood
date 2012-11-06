@@ -1,55 +1,77 @@
 package cmm.view;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 <<<<<<< HEAD
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
 // For Code Review
+public class MoodPage extends Activity implements OnClickListener{
+	private Button makeMeLaugh;
+	private Button pumpMeUp;
+	private Button inspireMe;
+	private Button needSomeRomance;	
 =======
-import cmm.model.Content;
+import cmm.model.Mood;
 
 import com.facebook.android.Facebook;
 
->>>>>>> 03a99dbdbae3353d90e0bfe2d29542eb151890e9
-public class MediaPage extends Activity{
-	public static String CONTENT = "Content";
+public class MoodPage extends Activity{
+>>>>>>> c99dea3ab299d37268ea4f9e60d23d9609a42fab
+	private static int signin;
+	private final String SIGNIN ="Sign in";
+	public static final String MOOD = "Mood";
 	private Intent intent;
 	private MenuInflater inflater;
 	private Menu menu;
-	private int mood_type;
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mediapage);
-        
+        setContentView(R.layout.moodpage);
+       
+        //we can change later
         Bundle bundle = getIntent().getExtras();
-        mood_type = bundle.getInt(MoodPage.MOOD);
-        intent = new Intent(this, PictureActivity.class);
+        signin = bundle.getInt(SIGNIN);
+        Log.d("Extra data", signin + "");
+        
+        intent = new Intent();
+        intent.setClass(this, MediaPage.class);
     }
-    
-    public void gotoPicture(View view) {
-    	intent.putExtra(MoodPage.MOOD, mood_type);
-    	intent.putExtra(CONTENT, Content.PICTURE.ordinal());
+
+    public void clickLaugh(View view){
+    	intent.putExtra(MOOD, Mood.HUMOROUS.ordinal());
     	startActivity(intent);
     }
     
-    public void gotoVideo(View view) {
+    public void clickPump(View view){
+    	//intent.putExtra(MOOD, Mood.ENERVATE);
+    	//startActivity(intent);
     	temporary_msg();
     }
     
-    public void gotoAudio(View view){
+    public void clickInspire(View view){
+    	//intent.putExtra(MOOD, Mood.INSPIRE);
+    	//startActivity(intent);
     	temporary_msg();
     }
     
-    public void gotoText(View view){
+    public void clickRomance(View view){
+    	//intent.putExtra(MOOD, Mood.ROMANTIC);
+    	//startActivity(intent);
     	temporary_msg();
     }
     
@@ -67,7 +89,7 @@ public class MediaPage extends Activity{
 		});
     	builder.show();
     }
-    
+	
     // create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,10 +118,16 @@ public class MediaPage extends Activity{
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-				//menu.clear();
-    			//inflater.inflate(R.menu.menu_basic, menu);
-    			temporary_msg();
-    			return true;
+    			try{
+    				CMMActivity.FACEBOOK.logout(this);
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    			menu.clear();
+				inflater.inflate(R.menu.menu_basic, menu);
+				return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);
     	}

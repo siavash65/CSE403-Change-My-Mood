@@ -16,14 +16,11 @@ from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
 from servercore.CmmBridge.contenthandler import ContentHandler
 from servercore.CmmBridge.rankhandler import RankHandler
 
-
-class SimpleTest(TestCase):
+class TestContent(TestCase):
     
-    
-    def setUp(self):
+    def setUp(self):        
         self.websites = ['www.google.com', 'www.bing.com', 'www.yahoo.com']
         self.content = ContentHandler()
-        self.rank = RankHandler()
         
         m1 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
         m2 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
@@ -114,6 +111,50 @@ class SimpleTest(TestCase):
         json_str = self.content.read(mocker)
         self.assertTrue(ApiDataProvider.STATUS_ERROR in json_str)
         
+
+
+
+
+class TestRate(TestCase):
+    
+    def setUp(self):
+        self.websites = ['www.google.com', 'www.bing.com', 'www.yahoo.com']
+        self.rank = RankHandler()
+        
+        m1 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m2 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        m3 = Media(mood = Moods.HUMOROUS, content = Contents.PICTURE)
+        
+        m1.save()
+        m2.save()
+        m3.save()
+        
+        self.mid1 = m1.id
+        self.mid2 = m2.id
+        self.mid3 = m3.id
+        
+        p1 = Pictures(mid = m1.id, url = self.websites[0], photo_id = 7)
+        p2 = Pictures(mid = m2.id, url = self.websites[1], photo_id = 8)
+        p3 = Pictures(mid = m3.id, url = self.websites[2], photo_id = 11)
+        
+        r1 = Rank(mid = m1.id, thumbs_up = 0, thumbs_down = 0)
+        r2 = Rank(mid = m2.id, thumbs_up = 1, thumbs_down = 20)
+        r3 = Rank(mid = m3.id, thumbs_up = 7, thumbs_down = 5)
+        
+        p1.save()
+        p2.save()
+        p3.save()
+        r1.save()
+        r2.save()
+        r3.save()
+        
+        pass
+    
+    def tearDown(self):
+        Media.objects.all().delete()
+        Pictures.objects.all().delete()
+        Rank.objects.all().delete()
+        pass
     
     '''
     Rate Content Test

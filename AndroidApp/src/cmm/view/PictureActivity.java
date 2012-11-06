@@ -42,8 +42,12 @@ import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
 
+<<<<<<< HEAD
+// For Code Review
+=======
 import com.facebook.android.Facebook;
 
+>>>>>>> 03a99dbdbae3353d90e0bfe2d29542eb151890e9
 public class PictureActivity extends Activity {
 	/* debug log string */
 	private static final String TAG = "PictureActivity";

@@ -21,7 +21,7 @@ public class MoodPage extends Activity{
 	private Intent intent;
 	private MenuInflater inflater;
 	private Menu menu;
-	
+
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,15 +66,15 @@ public class MoodPage extends Activity{
     	builder.setTitle("Message");
     	builder.setMessage(R.string.notready);
     	builder.setNeutralButton("close", new DialogInterface.OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				
+
 			}
 		});
     	builder.show();
     }
-	
+
     // create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
