@@ -63,7 +63,7 @@ class ContentDataOrganizer():
         # grab from flickr
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
         pics = flickr.photos_search(api_key=ApiKeys.FLICKR_API_KEY,\
-                                    tag=term,\
+                                    tags=term,\
                                     safe_search=1)
         
         length = len(pics[0])
