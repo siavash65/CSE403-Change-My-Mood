@@ -58,7 +58,7 @@ class ContentDataOrganizer():
         
         # our database
         allPics = Pictures.objects.filter()
-        amount_needed = 20 - len(allPics)
+        amount_needed = 50 - len(allPics)
         
         # grab from flickr
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
