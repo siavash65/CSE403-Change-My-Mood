@@ -78,7 +78,15 @@ class ContentDataOrganizer():
                 pic_count = pic_count + 1
                 first_attrib = pics[0][j].attrib
                 photo_id = int(first_attrib['id'])
+                
                 try:
+                    # throw error if bad things happen
+                    flickr.photos_getInfo(photo_id=photo_id)
+                except Exception:
+                    continue
+                
+                try:                    
+                    # throw error 
                     Pictures.objects.get(photo_id=photo_id)
                     # photo id already exist in database
                     if j == 499:
