@@ -46,6 +46,11 @@ class BasicFilter(FilterInterface):
     @staticmethod
     def _filterPictures(mood, delete_num):   
         # private method, no need check param
+        trashes = BasicFilter._cleanDataBase()
+        delete_num = delete_num - trashes
+        if delete_num <= 0:
+            return
+        
         
         # initiate flickr object     
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR)
@@ -95,7 +100,19 @@ class BasicFilter(FilterInterface):
             CmmData.models.destory(mid, Contents.PICTURE)
             
             
-            
+    @staticmethod
+    def _cleanDataBase():
+        pics = Pictures.objects.all()
+        flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
+        count = 0
+        for p in pics:
+            try:
+                # throw error if bad things happen
+                flickr.photos_getInfo(photo_id=p.photo_id)
+            except Exception:
+                CmmData.models.destory(p.mid, Contents.PICTURE)
+                count = count + 1
+        return count
             
             
             
