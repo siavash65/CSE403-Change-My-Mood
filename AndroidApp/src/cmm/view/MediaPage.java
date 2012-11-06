@@ -1,12 +1,5 @@
 package cmm.view;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import cmm.model.Content;
-
-import com.facebook.android.Facebook;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,7 +9,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+<<<<<<< HEAD
 // For Code Review
+=======
+import cmm.model.Content;
+
+import com.facebook.android.Facebook;
+
+>>>>>>> 03a99dbdbae3353d90e0bfe2d29542eb151890e9
 public class MediaPage extends Activity{
 	public static String CONTENT = "Content";
 	private Intent intent;
@@ -96,15 +96,9 @@ public class MediaPage extends Activity{
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-    			try {
-    				CMMActivity.FACEBOOK.logout(this);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				menu.clear();
-    			inflater.inflate(R.menu.menu_basic, menu);
+				//menu.clear();
+    			//inflater.inflate(R.menu.menu_basic, menu);
+    			temporary_msg();
     			return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);
