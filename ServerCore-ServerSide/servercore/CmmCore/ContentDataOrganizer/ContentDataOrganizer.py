@@ -44,7 +44,7 @@ class ContentDataOrganizer():
     TODO: Everything below this point is considered HACK, please clean it up.
     '''
     
-    FUNNY_TERMS = ['funny', 'happy', 'crazy', 'jokes', 'hilarious', 'wtf', 'lol']
+    FUNNY_TERMS = ['funny', 'jokes', 'hilarious']
     
     '''
     TODO: A hack method, Garrett, please purify this, do all error checking
@@ -63,7 +63,8 @@ class ContentDataOrganizer():
         # grab from flickr
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
         pics = flickr.photos_search(api_key=ApiKeys.FLICKR_API_KEY,\
-                                    text=term)
+                                    tag=term,\
+                                    safe_search=1)
         
         length = len(pics[0])
         myLen = length if amount_needed > length else amount_needed
