@@ -43,7 +43,7 @@ class ContentDataOrganizer():
     TODO: Everything below this point is considered HACK, please clean it up.
     '''
     
-    FUNNY_TERMS = ['funny', 'happy', 'crazy', 'jokes', 'hilarious', 'wtf', 'lol']
+    FUNNY_TERMS = ['funny']
     
     '''
     TODO: A hack method, Garrett, please purify this, do all error checking
@@ -57,12 +57,14 @@ class ContentDataOrganizer():
         
         # our database
         allPics = Pictures.objects.filter()
-        amount_needed = 20 - len(allPics)
+        amount_needed = 50 - len(allPics)
         
         # grab from flickr
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
         pics = flickr.photos_search(api_key=ApiKeys.FLICKR_API_KEY,\
-                                    text=term)
+                                    tags=term,\
+                                    safe_search=1,\
+                                    per_page=500)
         
         length = len(pics[0])
         myLen = length if amount_needed > length else amount_needed
@@ -71,14 +73,22 @@ class ContentDataOrganizer():
         for i in range(0, myLen):
             first_attrib = None
             photo_id = 0
-            for j in range(pic_count, 100):
+            for j in range(pic_count, 500):
                 pic_count = pic_count + 1
                 first_attrib = pics[0][j].attrib
                 photo_id = int(first_attrib['id'])
+                
                 try:
+                    # throw error if bad things happen
+                    flickr.photos_getInfo(photo_id=photo_id)
+                except Exception:
+                    continue
+                
+                try:                    
+                    # throw error 
                     Pictures.objects.get(photo_id=photo_id)
                     # photo id already exist in database
-                    if j == 99:
+                    if j == 499:
                         raise Exception('I FAILED!!')
                 except Exception:
                     break

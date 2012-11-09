@@ -51,4 +51,9 @@
             android:src="@drawable/cmm"
             android:layout_marginTop="50dp" />
     </RelativeLayout>
+<<<<<<< HEAD
+
 </LinearLayout>
+=======
+</LinearLayout>
+>>>>>>> c99dea3ab299d37268ea4f9e60d23d9609a42fab

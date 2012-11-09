@@ -18,7 +18,6 @@ class ContentHandler(BaseHandler):
     model = ContentModel
     
     def read(self, request):
-        print request.GET
         if (Contents.name() in request.GET) and (Moods.name() in request.GET):
             myMood = None
             myContent = None

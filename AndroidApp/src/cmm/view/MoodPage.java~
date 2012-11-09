@@ -1,5 +1,8 @@
 package cmm.view;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,18 +13,30 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+<<<<<<< HEAD
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
+// For Code Review
+public class MoodPage extends Activity implements OnClickListener{
+	private Button makeMeLaugh;
+	private Button pumpMeUp;
+	private Button inspireMe;
+	private Button needSomeRomance;	
+=======
 import cmm.model.Mood;
 
 import com.facebook.android.Facebook;
 
 public class MoodPage extends Activity{
+>>>>>>> c99dea3ab299d37268ea4f9e60d23d9609a42fab
 	private static int signin;
 	private final String SIGNIN ="Sign in";
 	public static final String MOOD = "Mood";
 	private Intent intent;
 	private MenuInflater inflater;
 	private Menu menu;
-
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,15 +81,15 @@ public class MoodPage extends Activity{
     	builder.setTitle("Message");
     	builder.setMessage(R.string.notready);
     	builder.setNeutralButton("close", new DialogInterface.OnClickListener() {
-
+			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-
+				
 			}
 		});
     	builder.show();
     }
-
+	
     // create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,9 +118,15 @@ public class MoodPage extends Activity{
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-    			//menu.clear();
-				//inflater.inflate(R.menu.menu_basic, menu);
-    			temporary_msg();
+    			try{
+    				CMMActivity.FACEBOOK.logout(this);
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    			menu.clear();
+				inflater.inflate(R.menu.menu_basic, menu);
 				return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);

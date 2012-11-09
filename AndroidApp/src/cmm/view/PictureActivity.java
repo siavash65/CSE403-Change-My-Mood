@@ -19,12 +19,18 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -33,17 +39,25 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.Mood;
+import cmm.model.Rate;
 import cmm.model.UrlProvider;
+
+import com.facebook.android.Facebook;
 
 public class PictureActivity extends Activity {
 	/* debug log string */
 	private static final String TAG = "PictureActivity";
 
 	private String cur_mid;
+	private int cur_mood_type;
+	private int cur_content_type;
 
 	// g_ = gui components
 	private Button g_up;
 	private Button g_down;
+	
+	private MenuInflater inflater;
+	private Menu menu;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -53,31 +67,31 @@ public class PictureActivity extends Activity {
 		setContentView(R.layout.picture_layout);
 
 		fixUI();
-
-		// TODO IS THIS GOOD??? OR SHOULD I PASS INFO FROM PREVIOUS ACTIVITY?
-		new GetPictureTask(this).execute(Mood.HUMOROUS.ordinal(),
-				Content.PICTURE.ordinal());
+		
+		// gets mood type and content type from last page.
+		Bundle bundle = getIntent().getExtras();
+		cur_mood_type = bundle.getInt(MoodPage.MOOD);
+		cur_content_type = bundle.getInt(MediaPage.CONTENT);
+		
+		new GetPictureTask(this).execute(cur_mood_type, cur_content_type);
 	}
 
 	public void thumbsUp(View view) {
 		g_up.setEnabled(false);
 		g_down.setEnabled(false);
-		new RatePictureTask().execute(this.cur_mid, "0"); // TODO make rank a
-															// enum,
+		new RatePictureTask().execute(this.cur_mid, Rate.THUMBSUP.ordinal() + "");
 	}
 	
 	public void thumbsDown(View view) {
 		g_up.setEnabled(false);
 		g_down.setEnabled(false);
-		new RatePictureTask().execute(this.cur_mid, "1"); // TODO make rank a
-															// enum,
+		new RatePictureTask().execute(this.cur_mid, Rate.THUMBSDOWN.ordinal() + "");
 	}
 
 	public void changePicture(View view) {
 		g_up.setEnabled(false);
 		g_down.setEnabled(false);
-		new GetPictureTask(this).execute(Mood.HUMOROUS.ordinal(),
-				Content.PICTURE.ordinal());
+		new GetPictureTask(this).execute(cur_mood_type, cur_content_type);
 	}
 
 	private void fixUI() {
@@ -210,6 +224,52 @@ public class PictureActivity extends Activity {
 				g_down.setEnabled(true);
 			}
 		}
-
 	}
+	
+	// create menu
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	inflater = getMenuInflater();
+    	this.menu = menu;
+    	
+    	if(Facebook.TOKEN != null){
+    		inflater.inflate(R.menu.menu_login, menu);
+    	}else{
+    		inflater.inflate(R.menu.menu_basic, menu);
+    	}
+        return true;
+    }
+    
+	// handle menu activity 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	Intent intent = new Intent();
+    	switch(item.getItemId()){
+    		case R.id.aboutus_menu:
+	    		intent.setClass(this, AboutUs.class);
+	    		startActivity(intent);
+	    		return true;
+    		case R.id.contactus_menu:
+	    		intent.setClass(this, ContactUs.class);
+	    		startActivity(intent);
+	    		return true;
+    		case R.id.signout_menu:
+    			//menu.clear();
+				//inflater.inflate(R.menu.menu_basic, menu);
+    			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	    	builder.setTitle("Message");
+    	    	builder.setMessage(R.string.notready);
+    	    	builder.setNeutralButton("close", new DialogInterface.OnClickListener() {
+    				
+    				@Override
+    				public void onClick(DialogInterface dialog, int which) {
+    					
+    				}
+    			});
+    	    	builder.show();
+				return true;
+	    	default:
+	    		return super.onOptionsItemSelected(item);
+    	}
+    }
 }

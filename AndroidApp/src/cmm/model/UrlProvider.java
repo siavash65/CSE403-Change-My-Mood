@@ -1,7 +1,7 @@
 package cmm.model;
 
 import cmm.util.Utilz;
-
+// For Code Review
 public class UrlProvider {
 	//"http://10.0.2.2:8000/api/" //for development
 	private static final String BASE_URL = "http://changemymood.herokuapp.com/api/"; // for deploy
@@ -12,8 +12,6 @@ public class UrlProvider {
 	public static final String MID = "mid";
 	public static final String RATE = "rank";
 	public static final String SUCCESS = "success";
-	
-	
 	
 	public static String getPictureUrl(Mood mood, Content content) {
 		String url = Utilz.urlAppend(BASE_URL, GET_CONTENT);
