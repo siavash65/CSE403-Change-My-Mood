@@ -9,7 +9,7 @@ import json
 import random
 from servercore.util.moods import Moods
 from servercore.util.contents import Contents
-from servercore.CmmData.models import Media, Pictures, Rank
+from servercore.CmmData.models import Media, Picture, Rank, Mood, User
 from piston.utils import rc
 from servercore.util.ranks import Ranks
 
@@ -23,13 +23,13 @@ class ApiDataProvider():
         return json.dumps({'hello': 'world'}, sort_keys=True)
     
     @staticmethod
-    def getContent(myMood, myContent):
+    def getContent(my_mood, my_content):
         # check inputs
-        assert myMood in Moods.all
-        assert myContent in Contents.all
+        assert my_mood in Mood.MOOD_TYPES
+        assert my_content in Media.CONTENT_TYPES
         
         # get list of content from database according to mood and content
-        content_subset = Media.objects.filter(mood = myMood, content = myContent)
+        content_subset = Media.objects.filter(moods = my_mood, content_type = my_content)
         
         # check if content is empty or not
         content_subset_len = len(content_subset)
@@ -41,32 +41,32 @@ class ApiDataProvider():
         cur_content = content_subset[random_index]
         
         # switch on content
-        if myContent == Contents.PICTURE:
+        if my_content == Media.PICTURE:
             # get picture
             try:
-                cur_pic = Pictures.objects.get(mid = cur_content.mid)
-                assert isinstance(cur_pic, Pictures)
+                cur_pic = Picture.objects.get(media = cur_content.id)
+                assert isinstance(cur_pic, Picture)
             
                 return {ApiDataProvider.PARAM_URL: cur_pic.url} #json.dumps({'url': cur_pic.url})
             except Exception:
                 return ApiDataProvider.returnError('database corrupted')
-        elif myContent == Contents.VIDEO:
+        elif my_content == Contents.VIDEO:
             return ApiDataProvider.returnError('under construction')
-        elif myContent == Contents.TEXT:
+        elif my_content == Contents.TEXT:
             return ApiDataProvider.returnError('under construction')
-        elif myContent == Contents.MUSIC:
+        elif my_content == Contents.MUSIC:
             return ApiDataProvider.returnError('under construction')
         
-        raise Exception('myContent is not in Contents')
+        raise Exception('my_content is not in Contents')
     
     @staticmethod
-    def rateContent(myMid, isThumbsUp):
+    def rateContent(my_mid, is_thumbs_up):
         # check inputs
-        assert isinstance(myMid, int)
-        assert isThumbsUp in Ranks.all
+        assert isinstance(my_mid, int)
+        assert isinstance(is_thumbs_up, int)
         
         # get from rank table
-        media_arr = Rank.objects.filter(mid=myMid)
+        media_arr = Media.objects.filter(id=my_mid)
         
         # check if invalid mid
         if len(media_arr) == 0:
@@ -78,18 +78,30 @@ class ApiDataProvider():
         
         # update rank
         media = media_arr[0]
-        if isThumbsUp == Ranks.THUMBS_UP:
-            media.thumbs_up = media.thumbs_up + 1
-        elif isThumbsUp == Ranks.THUMBS_DOWN:
-            media.thumbs_down = media.thumbs_down + 1
+        if is_thumbs_up == 1:
+            media.thumbs_up()
+        elif is_thumbs_up == 0:
+            media.thumbs_down()
         else:
             return ApiDataProvider.returnError('unexpected error')
         
-        # saving data
-        media.save()
-        
         #return success message
         return ApiDataProvider.returnSuccess('updated rank')
+    
+    @staticmethod
+    def getFavorites(user_id):
+        user = User.objects.get(id = user_id)
+        favorites = user.favorites.all()
+        urls = []
+        for favorite in favorites: 
+            urls.append(favorite.picture.url)
+        return {'url': urls}
+    
+    @staticmethod
+    def addFavorites(user_id, media_id):
+        user = User.objects.get(media_id)
+        user.add_favorite(media_id)
+        
     
     @staticmethod
     def returnError(msg):

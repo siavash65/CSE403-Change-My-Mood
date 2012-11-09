@@ -6,9 +6,8 @@ Created on Oct 31, 2012
 from servercore.CmmCore.ContentDataOrganizer.Filters.filterinterface import FilterInterface
 from servercore.util.contents import Contents
 from servercore.util.moods import Moods
-from servercore.CmmData.models import Media, Pictures, Rank
+from servercore.CmmData.models import Media, Picture, Rank
 import flickrapi
-from servercore.util.datanames import ApiKeys
 import operator
 from servercore import CmmData
 
