@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import cmm.model.Content;
+import cmm.model.FacebookHandler;
 
 import com.facebook.android.Facebook;
 
@@ -93,9 +94,9 @@ public class MediaPage extends Activity{
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-				//menu.clear();
-    			//inflater.inflate(R.menu.menu_basic, menu);
-    			temporary_msg();
+				menu.clear();
+    			inflater.inflate(R.menu.menu_basic, menu);
+    			FacebookHandler.getInstance().doSignout(this);
     			return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);
