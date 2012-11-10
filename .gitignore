@@ -20,3 +20,6 @@ venv
 *.pyc
 .project
 .pydevproject
+
+# Ignore .DS_STORE
+.DS_Store
