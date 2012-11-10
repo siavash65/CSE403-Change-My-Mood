@@ -7,7 +7,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import cmm.view.MoodPage;
+import cmm.view.R;
 
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
@@ -16,13 +19,14 @@ import com.facebook.android.FacebookError;
 
 public class FacebookHandler extends Activity{
 	private static FacebookHandler instance = null;
-	public Facebook FACEBOOK;
 	private final static String FACEBOOK_APP_ID = "343378635757581";
-	public final static boolean SKIP = true;
-	public final static String SIGNIN = "Signin";
+	
+	private Facebook FACEBOOK;
+	private boolean usefb;
 	
 	private FacebookHandler(){
 		FACEBOOK = new Facebook(FACEBOOK_APP_ID);
+		usefb = true;
 	}
 	
 	public static FacebookHandler getInstance(){
@@ -34,12 +38,6 @@ public class FacebookHandler extends Activity{
 	
 	private void signin_success(Activity activity, Context context){
 		Intent intent = new Intent(context, MoodPage.class);
-		Bundle fbinfo = new Bundle();
-		fbinfo.putString("provider", "facebook");
-		//fbinfo.putString("uid", facebook. user.getId());
-		//fbinfo.putString("name", user.getName());
-		//fbinfo.putBoolean(SIGNIN, !SKIP);
-		intent.putExtras(fbinfo);
 		activity.startActivity(intent);
 	}
 	
@@ -49,6 +47,7 @@ public class FacebookHandler extends Activity{
 				@Override
 				public void onComplete(Bundle values){
 					signin_success(activity, context);
+					usefb = true;
 				}
 
 				@Override
@@ -62,16 +61,28 @@ public class FacebookHandler extends Activity{
             });
         }else{
         	signin_success(activity, context);
+        	usefb = true;
         }
 	}
 	
-	public void doSignout(Context context){
+	public void doSignout(Context context, Menu menu, MenuInflater inflater){
 		try {
 			FACEBOOK.logout(context);
+			usefb = false;
+			menu.clear();
+			inflater.inflate(R.menu.menu_basic, menu);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void skipFB(){
+		usefb = false;
+	}
+	
+	public boolean getStatus(){
+		return usefb;
 	}
 }

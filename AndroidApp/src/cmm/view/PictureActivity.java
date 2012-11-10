@@ -41,8 +41,6 @@ import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
 
-import com.facebook.android.Facebook;
-
 public class PictureActivity extends Activity {
 	/* debug log string */
 	private static final String TAG = "PictureActivity";
@@ -231,7 +229,7 @@ public class PictureActivity extends Activity {
     	inflater = getMenuInflater();
     	this.menu = menu;
     	
-    	if(Facebook.TOKEN != null){
+    	if(FacebookHandler.getInstance().getStatus()){
     		inflater.inflate(R.menu.menu_login, menu);
     	}else{
     		inflater.inflate(R.menu.menu_basic, menu);
@@ -253,9 +251,7 @@ public class PictureActivity extends Activity {
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-    			menu.clear();
-    			inflater.inflate(R.menu.menu_basic, menu);
-    			FacebookHandler.getInstance().doSignout(this);
+    			FacebookHandler.getInstance().doSignout(this, menu, inflater);
 				return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);

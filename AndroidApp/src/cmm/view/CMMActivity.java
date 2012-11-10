@@ -3,7 +3,6 @@ package cmm.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import cmm.model.FacebookHandler;
 
@@ -17,10 +16,7 @@ public class CMMActivity extends Activity{
     
 	public void skip_signin(View view){
 		Intent intent = new Intent(this, MoodPage.class);
-		Bundle fbinfo = new Bundle();
-		fbinfo.putBoolean(FacebookHandler.SIGNIN, FacebookHandler.SKIP);
-		intent.putExtras(fbinfo);
-		Log.d("Main", "skip siginin");
+		FacebookHandler.getInstance().skipFB();
 		startActivity(intent);
 	}
 	

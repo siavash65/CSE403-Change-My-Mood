@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,11 +12,7 @@ import android.view.View;
 import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 
-import com.facebook.android.Facebook;
-
 public class MoodPage extends Activity{
-	private static int signin;
-	private final String SIGNIN ="Sign in";
 	public static final String MOOD = "Mood";
 	private Intent intent;
 	private MenuInflater inflater;
@@ -28,11 +23,6 @@ public class MoodPage extends Activity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moodpage);
-       
-        //we can change later
-        Bundle bundle = getIntent().getExtras();
-        signin = bundle.getInt(SIGNIN);
-        Log.d("Extra data", signin + "");
         
         intent = new Intent();
         intent.setClass(this, MediaPage.class);
@@ -82,7 +72,7 @@ public class MoodPage extends Activity{
     	inflater = getMenuInflater();
     	this.menu = menu;
     	
-    	if(Facebook.TOKEN != null){
+    	if(FacebookHandler.getInstance().getStatus()){
     		inflater.inflate(R.menu.menu_login, menu);
     	}else{
     		inflater.inflate(R.menu.menu_basic, menu);
@@ -104,9 +94,7 @@ public class MoodPage extends Activity{
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-    			menu.clear();
-    			inflater.inflate(R.menu.menu_basic, menu);
-    			FacebookHandler.getInstance().doSignout(this);
+    			FacebookHandler.getInstance().doSignout(this, menu, inflater);
 				return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);
