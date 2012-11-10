@@ -27,17 +27,20 @@ public class MediaPage extends Activity{
         
         Bundle bundle = getIntent().getExtras();
         mood_type = bundle.getInt(MoodPage.MOOD);
-        intent = new Intent(this, PictureActivity.class);
     }
     
     public void gotoPicture(View view) {
-    	intent.putExtra(MoodPage.MOOD, mood_type);
+    	intent = new Intent(this, PictureActivity.class);
+        intent.putExtra(MoodPage.MOOD, mood_type);
     	intent.putExtra(CONTENT, Content.PICTURE.ordinal());
     	startActivity(intent);
     }
     
     public void gotoVideo(View view) {
-    	temporary_msg();
+    	intent = new Intent(this, VideoActivity.class);
+        intent.putExtra(MoodPage.MOOD, mood_type);
+    	intent.putExtra(CONTENT, Content.VIDEO.ordinal());
+    	startActivity(intent);
     }
     
     public void gotoAudio(View view){
