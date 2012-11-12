@@ -2,7 +2,7 @@
 import dj_database_url
 import os.path
 
-DEPLOY = True
+DEPLOY = False
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -24,7 +24,7 @@ if DEPLOY:
       }
     }
 else:
-    DATABASES = {'default': dj_database_url.config(default='postgres://postgres@localhost:5432/test_cmm')}
+    DATABASES = {'default': dj_database_url.config(default='postgres://postgres@localhost:5432/test')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -126,7 +126,8 @@ INSTALLED_APPS = (
 
     'servercore.CmmBridge',
     'servercore.CmmData',
-    'servercore.CmmCore.ApiDataProvider'
+    'servercore.CmmCore.ApiDataProvider',
+    'servercore.django_cron',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

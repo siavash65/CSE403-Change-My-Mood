@@ -9,10 +9,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 import cmm.model.Content;
-
-import com.facebook.android.Facebook;
+import cmm.model.FacebookHandler;
 
 public class MediaPage extends Activity{
 	public static String CONTENT = "Content";
@@ -29,17 +27,20 @@ public class MediaPage extends Activity{
         
         Bundle bundle = getIntent().getExtras();
         mood_type = bundle.getInt(MoodPage.MOOD);
-        intent = new Intent(this, PictureActivity.class);
     }
     
     public void gotoPicture(View view) {
-    	intent.putExtra(MoodPage.MOOD, mood_type);
+    	intent = new Intent(this, PictureActivity.class);
+        intent.putExtra(MoodPage.MOOD, mood_type);
     	intent.putExtra(CONTENT, Content.PICTURE.ordinal());
     	startActivity(intent);
     }
     
     public void gotoVideo(View view) {
-    	temporary_msg();
+    	intent = new Intent(this, VideoActivity.class);
+        intent.putExtra(MoodPage.MOOD, mood_type);
+    	intent.putExtra(CONTENT, Content.VIDEO.ordinal());
+    	startActivity(intent);
     }
     
     public void gotoAudio(View view){
@@ -71,7 +72,7 @@ public class MediaPage extends Activity{
     	inflater = getMenuInflater();
     	this.menu = menu;
     	
-    	if(Facebook.TOKEN != null){
+    	if(FacebookHandler.getInstance().getStatus()){
     		inflater.inflate(R.menu.menu_login, menu);
     	}else{
     		inflater.inflate(R.menu.menu_basic, menu);
@@ -93,9 +94,7 @@ public class MediaPage extends Activity{
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-				//menu.clear();
-    			//inflater.inflate(R.menu.menu_basic, menu);
-    			temporary_msg();
+    			FacebookHandler.getInstance().doSignout(this, menu, inflater);
     			return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);

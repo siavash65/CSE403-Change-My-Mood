@@ -19,9 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -38,11 +36,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import cmm.model.Content;
+import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
-
-import com.facebook.android.Facebook;
 
 public class PictureActivity extends Activity {
 	/* debug log string */
@@ -232,7 +229,7 @@ public class PictureActivity extends Activity {
     	inflater = getMenuInflater();
     	this.menu = menu;
     	
-    	if(Facebook.TOKEN != null){
+    	if(FacebookHandler.getInstance().getStatus()){
     		inflater.inflate(R.menu.menu_login, menu);
     	}else{
     		inflater.inflate(R.menu.menu_basic, menu);
@@ -254,19 +251,7 @@ public class PictureActivity extends Activity {
 	    		startActivity(intent);
 	    		return true;
     		case R.id.signout_menu:
-    			//menu.clear();
-				//inflater.inflate(R.menu.menu_basic, menu);
-    			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	    	builder.setTitle("Message");
-    	    	builder.setMessage(R.string.notready);
-    	    	builder.setNeutralButton("close", new DialogInterface.OnClickListener() {
-    				
-    				@Override
-    				public void onClick(DialogInterface dialog, int which) {
-    					
-    				}
-    			});
-    	    	builder.show();
+    			FacebookHandler.getInstance().doSignout(this, menu, inflater);
 				return true;
 	    	default:
 	    		return super.onOptionsItemSelected(item);

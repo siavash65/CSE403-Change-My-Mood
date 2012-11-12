@@ -6,10 +6,9 @@ Created on Oct 31, 2012
 
 import random
 import flickrapi
-from servercore.CmmData.models import Media, Pictures, Rank
+from servercore.CmmData.models import Picture, Rank, Media, User, Mood
 from servercore.util.moods import Moods
 from servercore.util.contents import Contents
-from servercore.util.datanames import ApiKeys
 from servercore.CmmCore.ContentDataOrganizer.Filters.basicfilter import BasicFilter
 
 class ContentDataOrganizer():
@@ -115,6 +114,35 @@ class ContentDataOrganizer():
     @staticmethod
     def clearPhotoDatabase():
         Media.objects.all().delete()
-        Pictures.objects.all().delete()
+        Picture.objects.all().delete()
         Rank.objects.all().delete()
+        User.objects.all().delete()
+        Mood.objects.all().delete()
+        
         return None
+    
+    @staticmethod
+    def fetch_flickr_photos(apikey, mood_type, num_photos, tags):
+        # grab term
+        
+        # our database
+        current_pics = Picture.objects.all()
+        amount_needed = num_photos - len(current_pics)
+        
+        # grab from flickr
+
+        flickr = flickrapi.FlickrAPI(apikey)
+        photos =  flickr.walk(tag_mode = 'all', tags = 'happy', extras='url_q') 
+        for i in range(amount_needed):
+            photo = photos.next()
+            mood = Mood(mood_type=mood_type)
+            mood.save()
+            media = Media.objects.create(content_type = Media.PICTURE)
+            media.save()
+            media.moods.add(mood)
+            media.save()
+            rank = Rank.objects.create(media=media, thumbs_up=0, thumbs_down=0)
+            rank.save()
+            m = Picture.objects.create(url=photo.get('url_q'), flickr_id=photo.get('id'), media=media)
+            print m.url
+            m.save()
