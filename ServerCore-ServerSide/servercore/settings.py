@@ -127,7 +127,7 @@ INSTALLED_APPS = (
     'servercore.CmmBridge',
     'servercore.CmmData',
     'servercore.CmmCore.ApiDataProvider',
-    'servercore.django_cron',
+    # 'servercore.django_cron',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

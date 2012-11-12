@@ -23,3 +23,6 @@ venv
 
 # Ignore .DS_STORE
 .DS_Store
+
+# ignore project properties
+project.properties
