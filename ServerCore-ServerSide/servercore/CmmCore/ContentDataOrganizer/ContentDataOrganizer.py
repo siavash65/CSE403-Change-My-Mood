@@ -51,8 +51,8 @@ class ContentDataOrganizer():
     @staticmethod
     def putSomeData():
         # grab term
-        whichTerm = int(random.random() * len(ContentDataOrganizer.FUNNY_TERMS))
-        term = ContentDataOrganizer.FUNNY_TERMS[whichTerm]
+        #whichTerm = int(random.random() * len(ContentDataOrganizer.FUNNY_TERMS))
+        #term = ContentDataOrganizer.FUNNY_TERMS[whichTerm]
         
         # our database
         allPics = Picture.objects.filter()

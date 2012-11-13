@@ -32,9 +32,9 @@ class PictureCrawlingHandler(BaseHandler):
             return ApiDataProvider.returnError(PictureCrawlingHandler._TAG + \
                                                'incorrect private key')
         
-        try:
-            ContentDataOrganizer.putSomeData()
-            return ApiDataProvider.returnSuccess('added some photo')
-        except Exception:
-            return ApiDataProvider.returnError(PictureCrawlingHandler._TAG + \
-                                               'unexpected error')
+        #try:
+        ContentDataOrganizer.putSomeData()
+        return ApiDataProvider.returnSuccess('added some photo')
+        #except Exception:
+        #    return ApiDataProvider.returnError(PictureCrawlingHandler._TAG + \
+        #                                       'unexpected error')
