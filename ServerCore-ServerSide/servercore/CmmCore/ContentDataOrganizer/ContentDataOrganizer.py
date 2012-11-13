@@ -43,24 +43,27 @@ class ContentDataOrganizer():
     '''
     
     FUNNY_TERMS = ['funny']
+    ROMANTIC_TERMS = ['love']
+    NUM_PICS = 50
     
     '''
     TODO: A hack method, Garrett, please purify this, do all error checking
     and make it so that it puts N data to database instead of 20.
     '''
     @staticmethod
-    def putSomeData():
+    def putSomeData(mood=Mood.HAPPY):
         # grab term
         #whichTerm = int(random.random() * len(ContentDataOrganizer.FUNNY_TERMS))
         #term = ContentDataOrganizer.FUNNY_TERMS[whichTerm]
         
         # our database
-        allPics = Picture.objects.filter()
-        amount_needed = 50 - len(allPics)
+        moodPics = Media.objects.filter(moods=mood, content_type = Media.PICTURE)
+        num_moodPics = ContentDataOrganizer.NUM_PICS - len(moodPics)
         
-        ContentDataOrganizer.pullPictures(Mood.HAPPY, \
+        ContentDataOrganizer.pullPictures(mood, \
                                           ContentDataOrganizer.FUNNY_TERMS,\
-                                          amount_needed)
+                                          num_moodPics)
+        
 
 
     @staticmethod

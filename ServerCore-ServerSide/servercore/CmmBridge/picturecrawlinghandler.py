@@ -12,6 +12,7 @@ from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
 from servercore.CmmCore.ContentDataOrganizer.ContentDataOrganizer import \
     ContentDataOrganizer
 from servercore.util.datanames import DataNames, ApiKeys
+from servercore.CmmData.models import Mood
 
 class PictureCrawlingHandler(BaseHandler):
     _TAG = 'PictureCrawlingHandler-'
@@ -31,6 +32,12 @@ class PictureCrawlingHandler(BaseHandler):
         if the_secret != ApiKeys.GAE_PRIVATE_KEY:
             return ApiDataProvider.returnError(PictureCrawlingHandler._TAG + \
                                                'incorrect private key')
+        
+        if (Mood.URL_TAG in request.POST):
+            mood = request.POST[Mood.URL_TAG]
+            if mood in Mood.MOOD_TYPES:
+                ContentDataOrganizer.putSomeData(mood)
+                return ApiDataProvider.returnSuccess('added some photo')
         
         #try:
         ContentDataOrganizer.putSomeData()
