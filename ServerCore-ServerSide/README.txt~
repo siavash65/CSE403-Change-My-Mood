@@ -11,7 +11,7 @@ First of all, mood and contents are decribed by integers from 0 to 3 and the map
     ROMANTIC=2
     INSPIRE=3
 
-		THUMBS_UP=0          <<< weird..
+    THUMBS_UP=0          <<< weird..
     THUMBS_DOWN=1
 
 -- GET CONTENT --

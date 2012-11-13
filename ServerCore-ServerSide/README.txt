@@ -1,35 +1,40 @@
 Server to Client API calls
 
 First of all, mood and contents are decribed by integers from 0 to 3 and the mapping of each are shown below:
-    PICTURE=0
-    VIDEO=1
-    TEXT=2
-    MUSIC=3
+    PICTURE="PI"
+    VIDEO="VI"
+    TEXT="TE"
+    AUDIO="AU"
 
-    HUMOROUS=0
-    ENERVATE=1
-    ROMANTIC=2
-    INSPIRE=3
+    FUNNY="FU"
+    INSPIRED="IN"
+    ROMANTIC="RO"
+    EXCITED="EX"
 
     THUMBS_UP=0          <<< weird..
     THUMBS_DOWN=1
+
+-- Servers --
+Our Test Server: http://testcmm.herokuapp.com/
+Our Deploy Server: http://changemymood.herokuapp.com/
 
 -- GET CONTENT --
 To get a content from the server, do a HTTP Get request to the following:
     http://changemymood.herokuapp.com/api/getcontent/
 
 Parameters
-    content: which is an integer between 0 to 3
-    mood: which is also an integer between 0 to 3
+    content: which is a 2 character string {"PI", "VI", "TE", "AU"}
+    mood: which is a 2 character string {"FU", "IN", "RO", "EX"}
 
 Example
-    http://changemymood.herokuapp.com/api/getcontent/?content=0&mood=0
+    http://changemymood.herokuapp.com/api/getcontent/?content=PI&mood=FU
 
 Return
     if successful:
         a json with a url key and url value
             e.g.  {
                     "url": "www.google.com"
+										"mid": 65
                   }
 
     if failure:
