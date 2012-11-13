@@ -85,11 +85,11 @@ class ContentDataOrganizer():
                 first_attrib = pics[0][j].attrib
                 photo_id = int(first_attrib['id'])
                 
-                '''try:
+                try:
                     # throw error if bad things happen
                     flickr.photos_getInfo(photo_id=photo_id)
                 except Exception:
-                    continue'''
+                    continue
                 
                 try:                    
                     # throw error 
