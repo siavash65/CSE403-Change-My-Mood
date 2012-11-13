@@ -7,16 +7,15 @@ This is a class that handles API calls.
 '''
 import json
 import random
-from servercore.util.moods import Moods
-from servercore.util.contents import Contents
-from servercore.CmmData.models import Media, Picture, Rank, Mood, User
-from piston.utils import rc
-from servercore.util.ranks import Ranks
+from servercore.CmmData.models import Media, Picture, Mood, User, Rank
 
 class ApiDataProvider():
+    _TAG = 'ApiDataProvider-'
+    
     STATUS_SUCCESS = 'success'
     STATUS_ERROR = 'error'
     PARAM_URL = 'url'
+    MEDIA_ID = 'mid'
     
     @staticmethod
     def helloworld():
@@ -34,7 +33,7 @@ class ApiDataProvider():
         # check if content is empty or not
         content_subset_len = len(content_subset)
         if content_subset_len == 0:
-            return ApiDataProvider.returnError('empty database')
+            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'empty database')
         
         # create random index and get single element
         random_index = int(random.random() * content_subset_len)
@@ -47,43 +46,45 @@ class ApiDataProvider():
                 cur_pic = Picture.objects.get(media = cur_content.id)
                 assert isinstance(cur_pic, Picture)
             
-                return {ApiDataProvider.PARAM_URL: cur_pic.url} #json.dumps({'url': cur_pic.url})
+                return {ApiDataProvider.MEDIA_ID: cur_content.id,\
+                        ApiDataProvider.PARAM_URL: cur_pic.url} 
             except Exception:
-                return ApiDataProvider.returnError('database corrupted')
-        elif my_content == Contents.VIDEO:
-            return ApiDataProvider.returnError('under construction')
-        elif my_content == Contents.TEXT:
-            return ApiDataProvider.returnError('under construction')
-        elif my_content == Contents.MUSIC:
-            return ApiDataProvider.returnError('under construction')
+                return ApiDataProvider.returnError(ApiDataProvider._TAG + 'database corrupted')
+        elif my_content == Media.VIDEO:
+            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'under construction')
+        elif my_content == Media.TEXT:
+            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'under construction')
+        elif my_content == Media.AUDIO:
+            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'under construction')
         
         raise Exception('my_content is not in Contents')
     
     @staticmethod
-    def rateContent(my_mid, is_thumbs_up):
+    def rateContent(my_mid, thumb_type):
         # check inputs
         assert isinstance(my_mid, int)
-        assert isinstance(is_thumbs_up, int)
+        assert isinstance(thumb_type, int)
+        assert thumb_type in Rank.RANK_TYPES
         
         # get from rank table
         media_arr = Media.objects.filter(id=my_mid)
         
         # check if invalid mid
         if len(media_arr) == 0:
-            return ApiDataProvider.returnError('incorrect mid')
+            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'incorrect mid')
         
         # check if database is bad, meaning more than 1 obj for a mid
         if len(media_arr) != 1:
-            return ApiDataProvider.returnError('database corrupted')
+            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'database corrupted')
         
         # update rank
         media = media_arr[0]
-        if is_thumbs_up == 1:
+        if thumb_type == Rank.THUMBS_UP:
             media.thumbs_up()
-        elif is_thumbs_up == 0:
+        elif thumb_type == Rank.THUMBS_DOWN:
             media.thumbs_down()
         else:
-            return ApiDataProvider.returnError('unexpected error')
+            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'unexpected error')
         
         #return success message
         return ApiDataProvider.returnSuccess('updated rank')

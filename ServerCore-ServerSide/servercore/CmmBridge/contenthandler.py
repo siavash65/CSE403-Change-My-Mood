@@ -5,38 +5,40 @@ Created on Oct 31, 2012
 '''
 from piston.handler import BaseHandler
 from servercore.CmmBridge.models.content_model.models import ContentModel
-from servercore.util.contents import Contents
-from servercore.util.moods import Moods
 from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
+from servercore.CmmData.models import Media, Mood
 
 '''
 This is a class that handles the api call for getting
 content data.
 '''
 class ContentHandler(BaseHandler):
+    _TAG = 'ContentHandler-'
+    
     allowed_methods = ('GET',)
     model = ContentModel
     
     def read(self, request):
-        if (Contents.name() in request.GET) and (Moods.name() in request.GET):
-            myMood = None
-            myContent = None
+        if (Media.URL_TAG in request.GET) and (Mood.URL_TAG in request.GET):            
+            # check if input is string
+            myMood = request.GET[Mood.URL_TAG]
+            myContent = request.GET[Media.URL_TAG]
             
-            # check if input is integer
-            try:
-                myMood = int(request.GET[Moods.name()])
-                myContent = int(request.GET[Contents.name()])
-            except Exception:
-                return ApiDataProvider.returnError('bad input')
+            if not (myMood in Mood.MOOD_TYPES):
+                return ApiDataProvider.returnError(ContentHandler._TAG + 'bad mood input')
+            
+            if not (myContent in Media.CONTENT_TYPES):
+                return ApiDataProvider.returnError(ContentHandler._TAG + 'bad content input')
+            
             
             # check if input is within bounds
-            if not((myMood in Moods.all) and (myContent in Contents.all)):
-                return ApiDataProvider.returnError('input out of bounds')
+            if not((myMood in Mood.MOOD_TYPES) and (myContent in Media.CONTENT_TYPES)):
+                return ApiDataProvider.returnError(ContentHandler._TAG + 'input out of bounds')
             
             # save guard
             try:
                 return ApiDataProvider.getContent(myMood, myContent)
             except Exception:
-                return ApiDataProvider.returnError('unexpected error')
+                return ApiDataProvider.returnError(ContentHandler._TAG + 'unexpected error')
         else :
-            return ApiDataProvider.returnError('bad request')
+            return ApiDataProvider.returnError(ContentHandler._TAG + 'bad request')

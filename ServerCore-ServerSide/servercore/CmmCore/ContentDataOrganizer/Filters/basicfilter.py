@@ -4,12 +4,11 @@ Created on Oct 31, 2012
 @author: hunlan
 '''
 from servercore.CmmCore.ContentDataOrganizer.Filters.filterinterface import FilterInterface
-from servercore.util.contents import Contents
-from servercore.util.moods import Moods
-from servercore.CmmData.models import Media, Picture, Rank
+from servercore.CmmData.models import Media, Picture, Rank, Mood
 import flickrapi
 import operator
 from servercore import CmmData
+from servercore.util.datanames import ApiKeys
 
 class BasicFilter(FilterInterface):
     # Flickr picture filter metric multiplier
@@ -24,54 +23,57 @@ class BasicFilter(FilterInterface):
     
     '''  
     @staticmethod
-    def filter(mood, content, delete_num):
+    def filter(mood, content, delete_ratio):
         # check param
-        assert(content in Contents.all)
-        assert(mood in Moods.all)
+        assert(content in Media.CONTENT_TYPES)
+        assert(mood in Mood.MOOD_TYPES)
         
         # switch case
-        if(content == Contents.PICTURE):
-            BasicFilter._filterPictures(mood, delete_num)
+        if(content == Media.PICTURE):
+            BasicFilter._filterPictures(mood, delete_ratio)
             return True
-        elif(content == Contents.VIDEO):
+        elif(content == Media.VIDEO):
             return False
-        elif(content == Contents.MUSIC):
+        elif(content == Media.AUDIO):
             return False
-        elif(content == Contents.TEXT):
+        elif(content == Media.TEXT):
             return False
         
         raise Exception('this should never happen')
     
     @staticmethod
-    def _filterPictures(mood, delete_num):   
-        # private method, no need check param
+    def _filterPictures(mood, delete_ratio):   
+        # get data from database
+        medias = Media.objects.filter(moods=mood, content_type=Media.PICTURE)
+
+        # math to calculate how many to delete
+        total_num = len(medias)
+        delete_num = int(delete_ratio * total_num)
+        
+        # clear db
         trashes = BasicFilter._cleanDataBase()
         delete_num = delete_num - trashes
         if delete_num <= 0:
             return
         
-        
         # initiate flickr object     
-        flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR)
-        
-        # get data from database
-        medias = Media.objects.filter(mood=mood, content=Contents.PICTURE)
-        
+        flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
+                
         # a map from mid to score
         score_map = {}
         
         # loop through all media
         for media in medias:
             # get picture mid
-            pic = Pictures.objects.get(mid=media.id)
+            pic = media.picture # Picture.objects.get(media=media.id)
             
             # get rank, then thumbs up and down
-            rank = Rank.objects.get(mid=media.id)
+            rank = media.rank # Rank.objects.get(media=media)
             thumbsup = rank.thumbs_up
             thumbsdown = rank.thumbs_down
             
             # use pic's mid to get data from flickr
-            pic_id = pic.photo_id
+            pic_id = pic.flickr_id
             pic_info = flickr.photos_getInfo(photo_id=pic_id)
             pic_attrib = pic_info[0].attrib
             
@@ -96,20 +98,20 @@ class BasicFilter(FilterInterface):
         for i in range(0, delete_num) :
             bad_pics = sorted_score_map.pop(0)
             mid = bad_pics[0]
-            CmmData.models.destory(mid, Contents.PICTURE)
+            CmmData.models.destory(mid, Media.PICTURE)
             
             
     @staticmethod
     def _cleanDataBase():
-        pics = Pictures.objects.all()
+        pics = Picture.objects.all()
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
         count = 0
         for p in pics:
             try:
                 # throw error if bad things happen
-                flickr.photos_getInfo(photo_id=p.photo_id)
+                flickr.photos_getInfo(photo_id=p.flickr_id)
             except Exception:
-                CmmData.models.destory(p.mid, Contents.PICTURE)
+                CmmData.models.destory(p.media.id, Media.PICTURE)
                 count = count + 1
         return count
             

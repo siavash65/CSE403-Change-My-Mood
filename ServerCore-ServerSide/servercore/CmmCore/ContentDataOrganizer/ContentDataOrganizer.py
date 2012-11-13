@@ -7,13 +7,12 @@ Created on Oct 31, 2012
 import random
 import flickrapi
 from servercore.CmmData.models import Picture, Rank, Media, User, Mood
-from servercore.util.moods import Moods
-from servercore.util.contents import Contents
 from servercore.CmmCore.ContentDataOrganizer.Filters.basicfilter import BasicFilter
+from servercore.util.datanames import ApiKeys
 
 class ContentDataOrganizer():
     # Number of data to filter
-    DELETE_NUM = 2
+    DELETE_RATIO = 0.1
     
     @staticmethod
     def collectContentCronJob():
@@ -27,9 +26,9 @@ class ContentDataOrganizer():
     '''
     @staticmethod
     def filterContentCronJob():
-        return BasicFilter.filter(Moods.HUMOROUS, \
-                                  Contents.PICTURE, \
-                                  ContentDataOrganizer.DELETE_NUM)
+        return BasicFilter.filter(Mood.HAPPY, \
+                                  Media.PICTURE, \
+                                  ContentDataOrganizer.DELETE_RATIO)
 
 
 
@@ -56,24 +55,32 @@ class ContentDataOrganizer():
         term = ContentDataOrganizer.FUNNY_TERMS[whichTerm]
         
         # our database
-        allPics = Pictures.objects.filter()
+        allPics = Picture.objects.filter()
         amount_needed = 50 - len(allPics)
         
-        # grab from flickr
+        ContentDataOrganizer.pullPictures(Mood.HAPPY, \
+                                          ContentDataOrganizer.FUNNY_TERMS,\
+                                          amount_needed)
+
+
+    @staticmethod
+    def pullPictures(mood, terms, add_num = 0):
+        pic_per_page = 500
+        
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
-        pics = flickr.photos_search(api_key=ApiKeys.FLICKR_API_KEY,\
-                                    tags=term,\
+        pics = flickr.photos_search(tags=terms,\
                                     safe_search=1,\
-                                    per_page=500)
+                                    per_page=pic_per_page)
         
         length = len(pics[0])
-        myLen = length if amount_needed > length else amount_needed
+        myLen = length if add_num > length else add_num
         
         pic_count = 0
         for i in range(0, myLen):
             first_attrib = None
             photo_id = 0
-            for j in range(pic_count, 500):
+            pic = None
+            for j in range(pic_count, pic_per_page):
                 pic_count = pic_count + 1
                 first_attrib = pics[0][j].attrib
                 photo_id = int(first_attrib['id'])
@@ -86,27 +93,18 @@ class ContentDataOrganizer():
                 
                 try:                    
                     # throw error 
-                    Pictures.objects.get(photo_id=photo_id)
+                    Picture.objects.get(flickr_id=photo_id)
                     # photo id already exist in database
                     if j == 499:
                         raise Exception('I FAILED!!')
                 except Exception:
+                    pic = pics[0][j]
                     break
         
-            # make media
-            m = Media(mood=Moods.HUMOROUS, content=Contents.PICTURE)
-            m.save()
-        
-            # put photo data. TODO: Use flickr's object's method to generate url
-            p = Pictures(mid = m.id, \
-                          url = 'http://static.flickr.com/' + first_attrib['server'] \
-                          + '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg",\
-                          photo_id = photo_id)
-            p.save()
-        
-            # rank
-            r = Rank(mid = m.id, thumbs_up=0, thumbs_down=0)
-            r.save()
+            url ='http://static.flickr.com/' + first_attrib['server'] + \
+                    '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg"
+            
+            assert Picture.add(photo_id, url, mood)
     
     '''
     TODO: Hunlan Hack: PLEASE DO NOT DO THIS IN PRODUCTION!!!!!
@@ -117,7 +115,7 @@ class ContentDataOrganizer():
         Picture.objects.all().delete()
         Rank.objects.all().delete()
         User.objects.all().delete()
-        Mood.objects.all().delete()
+        # Mood.objects.all().delete()
         
         return None
     

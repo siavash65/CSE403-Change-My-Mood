@@ -1,10 +1,11 @@
 from django.db import models
-from servercore.util.contents import Contents
 # A model class for piston api.
     
 class Mood(models.Model):
-    INSPIRED = 'IN'
+    URL_TAG = 'mood'
+    
     HAPPY = 'HA'
+    INSPIRED = 'IN'
     ROMANTIC = 'RO'
     EXCITED = 'EX'
     MOOD_TYPE_CHOICES = (
@@ -13,13 +14,15 @@ class Mood(models.Model):
         (ROMANTIC, 'Romantic'),
         (EXCITED, 'Excited'),
     )
-    MOOD_TYPES = (INSPIRED, HAPPY, ROMANTIC, EXCITED)
-    mood_type = models.CharField(max_length=2, choices=MOOD_TYPE_CHOICES, default=HAPPY, primary_key=True)
+    MOOD_TYPES = (HAPPY, INSPIRED, ROMANTIC, EXCITED)
+    mood_type = models.CharField(max_length=2, choices=MOOD_TYPE_CHOICES, default=HAPPY, primary_key=True)       
     
     def __unicode__(self):
         return str(self.mood_type)
 
 class Media(models.Model):
+    URL_TAG = 'content'
+    
     moods = models.ManyToManyField(Mood)
     PICTURE = "PI"
     VIDEO = "VI"
@@ -47,7 +50,17 @@ class Media(models.Model):
         return str(self.id)
     
 class Rank(models.Model):
-    media = models.OneToOneField(Media, primary_key = True, parent_link=True)
+    URL_TAG = 'rank'
+    
+    THUMBS_UP = 0
+    THUMBS_DOWN = 1
+    RANK_TYPE_CHOICES = (
+        (THUMBS_UP, "ThumbsUp"),
+        (THUMBS_DOWN, "ThumbsDown"),
+    )
+    RANK_TYPES = (THUMBS_UP, THUMBS_DOWN)
+    
+    media = models.OneToOneField(Media, primary_key = True) # , parent_link=True)
     thumbs_up = models.IntegerField()
     thumbs_down = models.IntegerField()
     
@@ -58,8 +71,36 @@ class Rank(models.Model):
 class Picture(models.Model):
     flickr_id = models.BigIntegerField(unique=True) # for filtering
     url = models.URLField(unique=True)
-    media = models.OneToOneField(Media, primary_key=True, parent_link=True)
+    media = models.OneToOneField(Media, primary_key=True)#, parent_link=True)
     #TODO Other meta data??
+
+    @staticmethod
+    def add(flickr_id, url, mood):
+        assert mood in Mood.MOOD_TYPES
+        
+        res = Picture.objects.filter(flickr_id = flickr_id)
+        if len(res) == 0:
+            m = Media(content_type = Media.PICTURE)
+            m.save()
+            m.moods.add(mood)
+            
+            p = Picture(media = m, flickr_id = flickr_id, url = url)
+            p.save()
+            
+            r = Rank(media = m, thumbs_up=0, thumbs_down=0)
+            r.save()
+            return True
+        elif len(res) == 1:
+            pic = res[0]
+            med = pic.media
+            if mood in med.moods.all():
+                return False #already exist
+            else:
+                med.moods.add(mood)
+                med.save()
+                return True #TODO: RANK????!!!!!!
+        else:
+            raise Exception('corrupted database')
     
     #TODO Please Implement
     def __unicode__(self):
@@ -82,25 +123,29 @@ class User(models.Model):
 '''
 TODO: Please polish this
 '''
+
 def destory(mid, content):
-    assert(content in Contents.all)
+    assert(content in Media.CONTENT_TYPES)
     
     # Delete in media table
+    m = None
     try:
         m = Media.objects.get(id=mid)
-        m.delete()
     except Exception:
         # no mid found
         return False
     
     # delete in Rank
-    Rank.objects.get(mid=mid).delete()
+    Rank.objects.get(media=mid).delete()
     
-    if content == Contents.PICTURE:
-        Pictures.objects.get(mid=mid).delete()
-        return True
+    # delete in Content
+    if content == Media.PICTURE:
+        Picture.objects.get(media=mid).delete()
     else:
         return False
+    
+    m.delete()
+    return True
         
     
     

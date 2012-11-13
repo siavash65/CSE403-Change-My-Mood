@@ -14,6 +14,8 @@ from servercore.CmmCore.ContentDataOrganizer.ContentDataOrganizer import \
 from servercore.util.datanames import DataNames, ApiKeys
 
 class PictureCrawlingHandler(BaseHandler):
+    _TAG = 'PictureCrawlingHandler-'
+    
     allowed_method = ('POST',)
     model = PictureCrawlingModel
     
@@ -21,15 +23,18 @@ class PictureCrawlingHandler(BaseHandler):
         print request.POST
         # check if post has secret parameter
         if not(DataNames.SECRET in request.POST) :
-            return ApiDataProvider.returnError('no ' + DataNames.SECRET)
+            return ApiDataProvider.returnError(PictureCrawlingHandler._TAG + \
+                                               'no ' + DataNames.SECRET)
         
         # check if secret parameter is correct
         the_secret = request.POST[DataNames.SECRET]
         if the_secret != ApiKeys.GAE_PRIVATE_KEY:
-            return ApiDataProvider.returnError('incorrect private key')
+            return ApiDataProvider.returnError(PictureCrawlingHandler._TAG + \
+                                               'incorrect private key')
         
         try:
             ContentDataOrganizer.putSomeData()
             return ApiDataProvider.returnSuccess('added some photo')
         except Exception:
-            return ApiDataProvider.returnError('unexpected error')
+            return ApiDataProvider.returnError(PictureCrawlingHandler._TAG + \
+                                               'unexpected error')
