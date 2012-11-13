@@ -99,6 +99,7 @@ class BasicFilter(FilterInterface):
             bad_pics = sorted_score_map.pop(0)
             mid = bad_pics[0]
             CmmData.models.destory(mid, Media.PICTURE)
+            print 'deleted mid: ' + str(mid) 
             
             
     @staticmethod

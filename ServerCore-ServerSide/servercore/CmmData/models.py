@@ -89,6 +89,7 @@ class Picture(models.Model):
             
             r = Rank(media = m, thumbs_up=0, thumbs_down=0)
             r.save()
+            print 'added mood: ' + mood
             return True
         elif len(res) == 1:
             pic = res[0]
