@@ -25,8 +25,8 @@ class ContentDataOrganizer():
     true on success
     '''
     @staticmethod
-    def filterContentCronJob():
-        return BasicFilter.filter(Mood.HAPPY, \
+    def filterContentCronJob(mood = Mood.HAPPY):
+        return BasicFilter.filter(mood, \
                                   Media.PICTURE, \
                                   ContentDataOrganizer.DELETE_RATIO)
 

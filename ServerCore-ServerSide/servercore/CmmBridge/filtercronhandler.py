@@ -8,6 +8,7 @@ from servercore.CmmBridge.models.filtercron_model.models import FilterCronModel
 from servercore.CmmCore.ContentDataOrganizer.ContentDataOrganizer import ContentDataOrganizer
 from servercore.CmmCore.ApiDataProvider.ApiDataProvider import ApiDataProvider
 from servercore.util.datanames import DataNames, ApiKeys
+from servercore.CmmData.models import Mood
 
 '''
 This class handles the cron job call and do the filtering of our database.
@@ -30,8 +31,15 @@ class FilterCronHandler(BaseHandler):
         if the_secret != ApiKeys.GAE_PRIVATE_KEY:
             return ApiDataProvider.returnError(FilterCronHandler._TAG + 'incorrect private key')
         
+        if not (Mood.URL_TAG in request.POST):
+            return ApiDataProvider.returnError(FilterCronHandler._TAG + 'no ' + Mood.URL_TAG)
+        
+        mood = request.POST[Mood.URL_TAG]
+        if not (mood in Mood.MOOD_TYPES) :
+            return ApiDataProvider.returnError('mood input outofbounds')
+        
         # perform cron job
-        if ContentDataOrganizer.filterContentCronJob():
+        if ContentDataOrganizer.filterContentCronJob(mood):
             return ApiDataProvider.returnSuccess('success filtered data')
         else:
             return ApiDataProvider.returnError(FilterCronHandler._TAG + 'error filtering data')
