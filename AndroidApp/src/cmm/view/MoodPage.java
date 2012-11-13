@@ -29,7 +29,7 @@ public class MoodPage extends Activity{
     }
 
     public void clickLaugh(View view){
-    	intent.putExtra(MOOD, Mood.HUMOROUS.ordinal());
+    	intent.putExtra(MOOD, Mood.HAPPY.ordinal());
     	startActivity(intent);
     }
     
