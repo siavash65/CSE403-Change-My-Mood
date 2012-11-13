@@ -3,6 +3,7 @@ import dj_database_url
 import os.path
 
 DEPLOY = True
+IS_TEST_SERVER = True
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -12,7 +13,18 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if DEPLOY:
+if IS_TEST_SERVER:
+    DATABASES = {
+      'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dd7a2ci2e6enbr',
+        'HOST': 'ec2-23-21-209-58.compute-1.amazonaws.com',
+        'PORT': 5432,
+        'USER': 'yzsxaoaypldrnw',
+        'PASSWORD': '_voXZyk-sRZzq5Zi9AjNUmmv2J'
+      }
+    }
+elif DEPLOY:
     DATABASES = {
       'default': {
       'ENGINE': 'django.db.backends.postgresql_psycopg2',
