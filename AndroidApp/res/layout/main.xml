@@ -3,16 +3,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <WebView
+        <!-- <WebView
             android:id="@+id/bg_webview"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent" />-->
         
         <TextView
             android:layout_width="wrap_content"
@@ -31,9 +32,7 @@
             android:background="@drawable/hunlan_buttons"
             android:onClick="skip_signin"
             android:text="@string/no_signin"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/FacebookLogin"
@@ -45,9 +44,7 @@
             android:background="@drawable/hunlan_buttons"
             android:onClick="facebookSignin"
             android:text="@string/with_signin"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/FrontImage"
