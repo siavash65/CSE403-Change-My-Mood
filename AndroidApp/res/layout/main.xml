@@ -2,53 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="10dp" 
-    android:background="#FFFFFF">
-   
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >        
+        android:layout_height="match_parent" >
+
+        <WebView
+            android:id="@+id/bg_webview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
         
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/welcome"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true" />
-        
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/welcome"
+            android:textSize="20sp" />
+
         <Button
             android:id="@+id/WithoutLogin"
             android:layout_width="fill_parent"
             android:layout_height="70sp"
-            android:text="@string/no_signin" 
-            android:textSize="20sp"
-            android:layout_above="@+id/FacebookLogin" 
+            android:layout_above="@+id/FacebookLogin"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom= "20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/hunlan_buttons"
-            android:onClick="skip_signin" />
+            android:onClick="skip_signin"
+            android:text="@string/no_signin"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
 
         <Button
             android:id="@+id/FacebookLogin"
             android:layout_width="fill_parent"
             android:layout_height="70sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/hunlan_buttons"
+            android:onClick="facebookSignin"
             android:text="@string/with_signin"
             android:textSize="20sp"
-            android:layout_centerHorizontal="true" 
-            android:layout_marginBottom= "50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/hunlan_buttons"
-            android:onClick="facebookSignin"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:id="@+id/FrontImage"
             android:layout_width="200px"
             android:layout_height="200px"
-            android:scaleType="fitXY"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/cmm"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="50dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/cmm" />
     </RelativeLayout>
+
 </LinearLayout>
