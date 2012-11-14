@@ -7,7 +7,7 @@ This is a class that handles API calls.
 '''
 import json
 import random
-from servercore.CmmData.models import Media, Picture, Mood, User, Rank
+from servercore.CmmData.models import Media, Picture, Mood, User, Rank, Video
 
 class ApiDataProvider():
     _TAG = 'ApiDataProvider-'
@@ -51,7 +51,14 @@ class ApiDataProvider():
             except Exception:
                 return ApiDataProvider.returnError(ApiDataProvider._TAG + 'database corrupted')
         elif my_content == Media.VIDEO:
-            return ApiDataProvider.returnError(ApiDataProvider._TAG + 'under construction')
+            try:
+                cur_vid = Video.objects.get(media = cur_content.id)
+                assert isinstance(cur_vid, Video)
+                
+                return {ApiDataProvider.MEDIA_ID: cur_content.id,\
+                        ApiDataProvider.PARAM_URL: cur_vid.url}
+            except Exception:
+                return ApiDataProvider.returnError(ApiDataProvider._TAG + 'database corrupted')
         elif my_content == Media.TEXT:
             return ApiDataProvider.returnError(ApiDataProvider._TAG + 'under construction')
         elif my_content == Media.AUDIO:
