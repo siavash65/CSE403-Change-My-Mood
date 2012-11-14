@@ -9,17 +9,56 @@ import flickrapi
 from servercore.CmmData.models import Picture, Rank, Media, User, Mood
 from servercore.CmmCore.ContentDataOrganizer.Filters.basicfilter import BasicFilter
 from servercore.util.datanames import ApiKeys
+from servercore.CmmCore.ContentDataOrganizer.Retrievers import PictureRetriever,\
+    VideoRetriever
 
 class ContentDataOrganizer():
     # Number of data to filter
-    DELETE_RATIO = 0.1
+    DELETE_RATIO = 0.1    
+    
+    # Data parameters
+    HAPPY_TERMS = ['funny']
+    ROMANTIC_TERMS = ['love']
+    EXCITED_TERMS = ['excited']
+    INSPIRED_TERMS = ['inspired']
+    
+    NUM_DATA = 50
     
     @staticmethod
-    def collectContentCronJob():
+    def collectContentCronJob(mood, content):
+        datas = Media.objects.filter(moods=mood, content_type = content)
+        num_data_needed = ContentDataOrganizer.NUM_DATA - len(datas)
+        
+        if num_data_needed <= 0:
+            print 'already have enough data'
+        
+        if content == Media.PICTURE:
+            PictureRetriever.pullPictures(mood, \
+                                          ContentDataOrganizer._getTerms(mood),\
+                                          num_data_needed)
+        elif content == Media.VIDEO:
+            VideoRetriever.pullVideos(mood, \
+                                      ContentDataOrganizer._getTerms(mood), \
+                                      num_data_needed)
+            
         return None
     
+    @staticmethod
+    def _getTerms(mood):
+        if mood == Mood.HAPPY:
+            return ContentDataOrganizer.HAPPY_TERMS
+        elif mood == Mood.ROMANTIC:
+            return ContentDataOrganizer.ROMANTIC_TERMS
+        elif mood == Mood.EXCITED:
+            return ContentDataOrganizer.EXCITED_TERMS
+        elif mood == Mood.INSPIRED:
+            return ContentDataOrganizer.INSPIRED_TERMS
+        
+        raise Exception('invalid mood input in getTerms')
+        
+    
     '''
-    TODO: currently only support humorous picture
+    TODO: currently only support pictures
     
     This method filters the media data in our database and returns
     true on success
@@ -30,84 +69,30 @@ class ContentDataOrganizer():
                                   Media.PICTURE, \
                                   ContentDataOrganizer.DELETE_RATIO)
 
-
-
-
-
-
-
-
-    '''
-    ----------------------------------------------------------------------
-    TODO: Everything below this point is considered HACK, please clean it up.
-    '''
     
-    FUNNY_TERMS = ['funny']
-    ROMANTIC_TERMS = ['love']
-    NUM_PICS = 50
+#-----------------------------------------------------------------------------#
+#                            Depricated                                       #
+#-----------------------------------------------------------------------------#
+
     
     '''
     TODO: A hack method, Garrett, please purify this, do all error checking
     and make it so that it puts N data to database instead of 20.
     '''
     @staticmethod
-    def putSomeData(mood=Mood.HAPPY):
+    def putSomeData(mood=Mood.HAPPY, content=Media.PICTURE):
         # grab term
         #whichTerm = int(random.random() * len(ContentDataOrganizer.FUNNY_TERMS))
         #term = ContentDataOrganizer.FUNNY_TERMS[whichTerm]
         
         # our database
-        moodPics = Media.objects.filter(moods=mood, content_type = Media.PICTURE)
-        num_moodPics = ContentDataOrganizer.NUM_PICS - len(moodPics)
+        moodPics = Media.objects.filter(moods=mood, content_type = content)
+        num_moodPics = ContentDataOrganizer.NUM_DATA - len(moodPics)
         
-        ContentDataOrganizer.pullPictures(mood, \
-                                          ContentDataOrganizer.FUNNY_TERMS,\
-                                          num_moodPics)
-        
-
-
-    @staticmethod
-    def pullPictures(mood, terms, add_num = 0):
-        pic_per_page = 500
-        
-        flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
-        pics = flickr.photos_search(tags=terms,\
-                                    safe_search=1,\
-                                    per_page=pic_per_page)
-        
-        length = len(pics[0])
-        myLen = length if add_num > length else add_num
-        
-        pic_count = 0
-        for i in range(0, myLen):
-            first_attrib = None
-            photo_id = 0
-            pic = None
-            for j in range(pic_count, pic_per_page):
-                pic_count = pic_count + 1
-                first_attrib = pics[0][j].attrib
-                photo_id = int(first_attrib['id'])
-                
-                try:
-                    # throw error if bad things happen
-                    flickr.photos_getInfo(photo_id=photo_id)
-                except Exception:
-                    continue
-                
-                try:                    
-                    # throw error 
-                    Picture.objects.get(flickr_id=photo_id)
-                    # photo id already exist in database
-                    if j == 499:
-                        raise Exception('I FAILED!!')
-                except Exception:
-                    pic = pics[0][j]
-                    break
-        
-            url ='http://static.flickr.com/' + first_attrib['server'] + \
-                    '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg"
-            
-            assert Picture.add(photo_id, url, mood)
+        PictureRetriever.pullPictures(mood, \
+                                      ContentDataOrganizer.HAPPY_TERMS,\
+                                      num_moodPics)
+    
     
     '''
     TODO: Hunlan Hack: PLEASE DO NOT DO THIS IN PRODUCTION!!!!!
