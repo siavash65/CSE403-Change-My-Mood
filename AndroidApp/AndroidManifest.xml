@@ -68,7 +68,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PictureActivity" />
             </intent-filter>
-"
+
         </activity>
         <activity
             android:name=".VideoActivity"
@@ -77,7 +77,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PictureActivity" />
             </intent-filter>
-"
+
         </activity>
     </application>
 

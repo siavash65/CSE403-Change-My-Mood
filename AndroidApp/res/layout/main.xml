@@ -4,7 +4,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:id="@+id/background"
-    android:background="#FFFFFF">	  	
+    android:background="#FFFFFF">
+	  	
     <ImageView 
    	  		android:id="@+id/background_image" 
    	  		android:layout_width="match_parent"
@@ -15,6 +16,7 @@
     android:layout_height="wrap_content"
     android:text="@string/welcome"
     android:textSize="20sp"
+    android:textColor="#000"
     android:layout_centerHorizontal="true" />
     
     <Button
@@ -26,7 +28,7 @@
         android:layout_above="@+id/FacebookLogin" 
         android:layout_centerHorizontal="true"
         android:layout_marginBottom= "20dp"
-        android:background="@drawable/hunlan_buttons"
+        android:background="@drawable/no_signin_button"
         android:onClick="skip_signin" />
 
     <Button
@@ -36,9 +38,9 @@
         android:text="@string/with_signin"
         android:textSize="20sp"
         android:layout_centerHorizontal="true" 
-        android:layout_marginBottom= "50dp"
+        android:layout_marginBottom= "30dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/hunlan_buttons"
+        android:background="@drawable/facebook_button"
         android:onClick="facebookSignin"/>
 
     <ImageView

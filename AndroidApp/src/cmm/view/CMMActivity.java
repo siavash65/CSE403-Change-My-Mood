@@ -1,5 +1,7 @@
 package cmm.view;
 
+import java.util.Stack;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,15 +26,33 @@ public class CMMActivity extends Activity{
 	RefreshHandler refreshHandler = new RefreshHandler();
 	
 	class RefreshHandler extends Handler {
+		boolean is_paused = false;
+		Stack<Message> s = new Stack<Message>();
+		
+		public synchronized void pause() {
+			is_paused = true;
+		}
+		
+		public synchronized void resume() {
+			is_paused = false;
+			while(!s.empty())
+					sendMessageAtFrontOfQueue(s.pop());
+		}
+		
 		@Override
 		public void handleMessage(Message msg) {
+			if(is_paused) {
+				s.push(Message.obtain(msg));
+				return;
+			}
+				
 			CMMActivity.this.changeBackground();
 		}
 		
 		public void sleep(long delayMillis){
 			this.removeMessages(0);
 			sendMessageDelayed(obtainMessage(0), delayMillis);
-		}		
+		}	
 	};
 	
 	public void changeBackground(){
@@ -54,6 +74,22 @@ public class CMMActivity extends Activity{
         Display dis = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         height = dis.getHeight();
         changeBackground();        
+    }
+    
+
+    public void onPause() {
+    	super.onPause();
+    	refreshHandler.pause();
+    }
+    
+    public void onResume() {
+    	super.onResume();
+    	refreshHandler.resume();    	
+    }
+    
+    public void onDestory() {
+    	super.onDestroy();
+    	refreshHandler.removeMessages(0);
     }
     
 	public void skip_signin(View view){
