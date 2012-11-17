@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -65,18 +67,43 @@ public class FacebookHandler extends Activity{
         }
 	}
 	
-	public void doSignout(Context context, Menu menu, MenuInflater inflater){
-		try {
-			FACEBOOK.logout(context);
-			usefb = false;
-			menu.clear();
-			inflater.inflate(R.menu.menu_basic, menu);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void doSignout(final Context context, final Menu menu, 
+										final MenuInflater inflater){
+		new Thread(){
+			@Override public void run(){
+				try {
+					FACEBOOK.logout(context);
+				}catch (MalformedURLException e) {
+					e.printStackTrace();
+					temporary_msg();
+				} catch (IOException e) {
+					e.printStackTrace();
+					temporary_msg();
+				} catch (Exception e){
+					e.printStackTrace();
+					temporary_msg();
+				}
+				usefb = false;
+				menu.clear();
+				inflater.inflate(R.menu.menu_basic, menu);
+			}
+		}.start();
 	}
+	
+	// show temporary message for the functions that are not ready yet.
+    private void temporary_msg(){
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle("Message");
+    	builder.setMessage("Sign out got unexpected error! Please try again.");
+    	builder.setNeutralButton("close", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		});
+    	builder.show();
+    }
 	
 	public void skipFB(){
 		usefb = false;

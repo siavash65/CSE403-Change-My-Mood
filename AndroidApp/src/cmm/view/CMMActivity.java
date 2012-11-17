@@ -3,21 +3,17 @@ package cmm.view;
 import java.util.Stack;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import cmm.model.FacebookHandler;
 
 public class CMMActivity extends Activity{
 	private ImageView imageView;
 	int i=0;
-	int height;
 	int imgid[] = {R.drawable.background1, R.drawable.background2, R.drawable.background3, R.drawable.background4, R.drawable.background5,
 			R.drawable.background6, R.drawable.background7, R.drawable.background8, R.drawable.background9, 
 			R.drawable.background10, R.drawable.background11, R.drawable.background12, R.drawable.background13,
@@ -70,9 +66,6 @@ public class CMMActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         this.imageView = (ImageView)this.findViewById(R.id.background_image);
-        imageView.setAlpha(127);
-        Display dis = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        height = dis.getHeight();
         changeBackground();        
     }
     

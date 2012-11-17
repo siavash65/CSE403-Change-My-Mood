@@ -58,4 +58,6 @@
     
     <!-- Temporary message -->
     <string name="notready">This is not ready yet. Please wait our updates!</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

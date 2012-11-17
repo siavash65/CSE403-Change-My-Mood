@@ -140,6 +140,12 @@ public class VideoActivity extends Activity {
 		new RateVideoTask().execute(vid, Rate.THUMBSDOWN.ordinal() + "");
 	}
 	
+	public void nextVideo(View view){
+		_thumbup.setEnabled(false);
+		_thumbdown.setEnabled(false);
+		new GetVideoTask(this).execute(vid_mood_type, vid_content_type);
+	}
+	
 	private class GetVideoTask extends AsyncTask<Integer, Integer, String>{
 		private VideoActivity va;
 		
