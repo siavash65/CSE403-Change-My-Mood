@@ -5,6 +5,7 @@ Created on Nov 14, 2012
 '''
 import gdata.youtube.service
 from servercore.CmmData.models import Video
+from servercore.CmmCore.ContentDataOrganizer.Retrievers import ContentRetriever
 import math
 import random
 
@@ -14,6 +15,8 @@ _SEARCH_NUM = 250
 # Number of search result per page, Max = 50 (youtube spec)
 _MAX_RESULTS = 50
 
+_HAPPY_SEC_TERMS = ['hilarious', 'comical', 'humorous', 'entertaining']
+_INSPIRING_SEC_TERMS = ['moving', 'motivating']
 '''
 Method to pull videos to database
 
@@ -35,6 +38,8 @@ def pullVideos(mood, terms, add_num = 0):
     # keep track of which video we are looking at
     video_map = range(0, length)
     random.shuffle(video_map)
+    
+    print "entered pulll videos"
 
     for i in range(0, myLen):
         vid_id = None
@@ -42,6 +47,11 @@ def pullVideos(mood, terms, add_num = 0):
             idx = video_map.pop()
             entry = entries[idx]
             entryid = _parseId(entry)
+            comment_feed = yt.GetYouTubeVideoCommentFeed(video_id=entryid)
+            num_comments = len(comment_feed.entry)
+            num_views = entry.statistics.view_count
+            num_favs = entry.statistics.favorite_count
+            initial_score = ContentRetriever.computeInitialScore(views=num_views, comments=num_comments, favs=num_favs)
             try:
                 Video.objects.get(youtube_id=entryid)
                 if len(video_map) == 0:
@@ -54,7 +64,7 @@ def pullVideos(mood, terms, add_num = 0):
         
             
         url = _getURL(vid_id)
-        assert Video.add(vid_id, url, mood)
+        assert Video.add(vid_id, url, mood, initialScore=initial_score)
 
 # returns num_entries rounded to nearest 50
 def _getEntries(yt, terms, num_entries, offset = 0):
