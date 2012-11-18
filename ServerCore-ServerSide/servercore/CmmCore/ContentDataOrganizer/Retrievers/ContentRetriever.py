@@ -29,6 +29,7 @@ FAV_SCORE_ONE = 10
 FAV_SCORE_TWO = 10
 FAV_SCORE_THREE = 5
 
+FEED_BACK_WEIGHT = 200
 
 def computeInitialScore(isPrimeMatch=False, numSecond=0, \
                         views=0, comments=0, favs=0):
@@ -66,3 +67,14 @@ def computeInitialScore(isPrimeMatch=False, numSecond=0, \
     assert score <= 100
     return score
         
+        
+def computeFinalScore(initialScore, thumbs_up, total):
+    assert total >= thumbs_up
+    feedback_score = 1.0 * FEED_BACK_WEIGHT * thumbs_up / total
+    final_score = 1.0 * (total + feedback_score) / 3
+
+    return int(final_score)
+    
+    
+    
+    

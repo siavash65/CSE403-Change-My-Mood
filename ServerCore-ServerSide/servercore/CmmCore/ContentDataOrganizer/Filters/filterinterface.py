@@ -9,6 +9,6 @@ class FilterInterface( object ):
     filter our database
     '''
     @staticmethod
-    def filter(mood, content, delete_num):
+    def filter(mood, content, delete_ratio):
         raise NotImplementedError( "Should have implemented this" )
         

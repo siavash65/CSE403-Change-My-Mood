@@ -1,4 +1,5 @@
 from django.db import models
+from servercore.CmmCore.ContentDataOrganizer.Retrievers import ContentRetriever
 # A model class for piston api.
     
 class Mood(models.Model):
@@ -37,7 +38,6 @@ class Media(models.Model):
     CONTENT_TYPES = (PICTURE, VIDEO, TEXT, AUDIO)
     content_type = models.CharField(max_length=2, choices=CONTENT_TYPE_CHOICES, default=PICTURE)
     
-    #TODO Please Implement
     def thumbs_up(self):
         self.rank.thumbs_up = self.rank.thumbs_up + 1
         self.rank.save()
@@ -46,10 +46,21 @@ class Media(models.Model):
         self.rank.thumbs_down = self.rank.thumbs_down + 1
         self.rank.save()
     
+    def doFinalScoreIfOver(self):
+        t_up = self.rank.thumbs_up
+        total_rank = self.rank.thumbs_down + t_up
+        
+        if total_rank >= Score.COMPUTE_FINAL_NUM:
+            self.score.final_score = \
+                ContentRetriever.computeFinalScore(self.score.initial_score, t_up, total_rank)
+            self.score.save()
+    
     def __unicode__(self):
         return str(self.id)
 
 class Score(models.Model):
+    COMPUTE_FINAL_NUM = 10
+    
     media = models.OneToOneField(Media, primary_key = True)
     initial_score = models.IntegerField()
     final_score = models.IntegerField()
@@ -108,7 +119,7 @@ class Video(models.Model):
             r = Rank(media = m, thumbs_up=0, thumbs_down=0)
             r.save()
                     
-            s = Score(media = m, initial_score = initialScore, final_score = initialScore)
+            s = Score(media = m, initial_score = initialScore, final_score = -1)
             s.save()
             
             f = FilterCheck(media = m, checked = checked)
@@ -151,7 +162,7 @@ class Picture(models.Model):
             r = Rank(media = m, thumbs_up=0, thumbs_down=0)
             r.save()
             
-            s = Score(media = m, initial_score = initialScore, final_score = initialScore)
+            s = Score(media = m, initial_score = initialScore, final_score = -1)
             s.save()
             
             f = FilterCheck(media = m, checked = checked)
@@ -208,9 +219,17 @@ def destory(mid, content):
     # delete in Rank
     Rank.objects.get(media=mid).delete()
     
+    # delete in Score
+    Score.objects.get(media=mid).delete()
+    
+    # delete FilterCheck
+    FilterCheck.objects.get(media=mid).delete()
+    
     # delete in Content
     if content == Media.PICTURE:
         Picture.objects.get(media=mid).delete()
+    elif content == Media.VIDEO:
+        Video.objects.get(media=mid).delete()
     else:
         return False
     

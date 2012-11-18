@@ -11,6 +11,7 @@ from servercore.CmmCore.ContentDataOrganizer.Filters.basicfilter import BasicFil
 from servercore.util.datanames import ApiKeys
 from servercore.CmmCore.ContentDataOrganizer.Retrievers import PictureRetriever,\
     VideoRetriever
+from servercore.CmmCore.ContentDataOrganizer.Filters.scorefilter import ScoreFilter
 
 class ContentDataOrganizer():
     # Number of data to filter
@@ -68,6 +69,10 @@ class ContentDataOrganizer():
         return BasicFilter.filter(mood, \
                                   Media.PICTURE, \
                                   ContentDataOrganizer.DELETE_RATIO)
+        
+    @staticmethod
+    def scoreThresholdFilterCronJob(mood = Mood.HAPPY, content = Media.PICTURE):
+        return ScoreFilter.filter(mood, content)
 
     
 #-----------------------------------------------------------------------------#
