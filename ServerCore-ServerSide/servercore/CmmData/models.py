@@ -48,7 +48,23 @@ class Media(models.Model):
     
     def __unicode__(self):
         return str(self.id)
+
+class Score(models.Model):
+    media = models.OneToOneField(Media, primary_key = True)
+    initial_score = models.IntegerField()
+    final_score = models.IntegerField()
     
+    def __unicode__(self):
+        return self.media.__str__() + ' | initial: ' + \
+            str(self.initial_score) + ', final: ' + str(self.final_score) 
+
+class FilterCheck(models.Model):
+    media = models.OneToOneField(Media, primary_key = True)
+    checked = models.BooleanField()
+    
+    def __unicode__(self):
+        return self.media.__str__() + " | " + str(self.isFiltered)
+
 class Rank(models.Model):
     URL_TAG = 'rank'
     
@@ -77,7 +93,7 @@ class Video(models.Model):
         return str(self.url)   
     
     @staticmethod
-    def add(youtube_id, url, mood):
+    def add(youtube_id, url, mood, initialScore = 0, checked = False):
         assert mood in Mood.MOOD_TYPES
         
         res = Video.objects.filter(youtube_id = youtube_id)
@@ -91,9 +107,17 @@ class Video(models.Model):
             
             r = Rank(media = m, thumbs_up=0, thumbs_down=0)
             r.save()
+                    
+            s = Score(media = m, initial_score = initialScore, final_score = initialScore)
+            s.save()
+            
+            f = FilterCheck(media = m, checked = checked)
+            f.save()
+            
             return True
         elif len(res) == 1:
-            #Depreciated
+            return False
+            '''#Depreciated
             vid = res[0]
             med = vid.media
             if mood in med.moods.all():
@@ -101,7 +125,7 @@ class Video(models.Model):
             else:
                 med.moods.add(mood)
                 med.save()
-                return True #TODO: RANK????!!!!!!
+                return True #TODO: RANK????!!!!!!'''
         else:
             raise Exception('corrupted database')
 
@@ -112,7 +136,7 @@ class Picture(models.Model):
     #TODO Other meta data??
 
     @staticmethod
-    def add(flickr_id, url, mood):
+    def add(flickr_id, url, mood, initialScore = 0, checked = False):
         assert mood in Mood.MOOD_TYPES
         
         res = Picture.objects.filter(flickr_id = flickr_id)
@@ -126,17 +150,25 @@ class Picture(models.Model):
             
             r = Rank(media = m, thumbs_up=0, thumbs_down=0)
             r.save()
+            
+            s = Score(media = m, initial_score = initialScore, final_score = initialScore)
+            s.save()
+            
+            f = FilterCheck(media = m, checked = checked)
+            f.save()
+            
             return True
         elif len(res) == 1:
+            return False
             #Depreciated
-            pic = res[0]
+            '''pic = res[0]
             med = pic.media
             if mood in med.moods.all():
                 return False #already exist
             else:
                 med.moods.add(mood)
                 med.save()
-                return True #TODO: RANK????!!!!!!
+                return True #TODO: RANK????!!!!!!'''
         else:
             raise Exception('corrupted database')
     

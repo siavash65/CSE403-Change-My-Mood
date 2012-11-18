@@ -9,6 +9,7 @@ import flickrapi
 import random
 
 _SEARCH_NUM = 500
+_NUM_AT_A_TIME = 30
  
 def pullPictures(mood, terms, add_num = 0):    
     # flickr object
