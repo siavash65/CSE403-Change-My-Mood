@@ -74,7 +74,7 @@ class FilterCheck(models.Model):
     checked = models.BooleanField()
     
     def __unicode__(self):
-        return self.media.__str__() + " | " + str(self.isFiltered)
+        return self.media.__str__() + " | " + str(self.checked)
 
 class Rank(models.Model):
     URL_TAG = 'rank'

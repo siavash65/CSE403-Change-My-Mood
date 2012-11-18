@@ -72,6 +72,7 @@ class FilterCronHandler(BaseHandler):
                 return ApiDataProvider.returnSuccess('success filtered data')
             else:
                 return ApiDataProvider.returnError(FilterCronHandler._TAG + 'error filtering data')
+            
         elif type == FilterCronHandler.SCORE_FILTER:
             res = ContentDataOrganizer.scoreThresholdFilterCronJob(mood, content)
             if res > 0:
@@ -81,6 +82,14 @@ class FilterCronHandler(BaseHandler):
                 return ApiDataProvider.returnSuccess('no data need to be filtered')
             elif res == ScoreFilter.EMPTY_DB:
                 return ApiDataProvider.returnError('nothing in database')
+            
+        elif type == FilterCronHandler.URL_FILTER:
+            if ContentDataOrganizer.brokenURLFilterCronJob(mood, content) :
+                return ApiDataProvider.returnSuccess('success filtered data')
+            else:
+                return ApiDataProvider.returnError(FilterCronHandler._TAG + 'error filtering data')
+            
+            
             
         
         
