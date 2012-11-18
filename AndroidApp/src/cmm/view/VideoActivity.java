@@ -146,8 +146,13 @@ public class VideoActivity extends Activity {
 		new GetVideoTask(this).execute(vid_mood_type, vid_content_type);
 	}
 	
+	public void loadVideo(String yid) {
+		ui_webplayer.loadUrl("javascript:changesrc('" + yid + "')");
+	}
+	
 	private class GetVideoTask extends AsyncTask<Integer, Integer, String>{
 		private VideoActivity va;
+		private String yid;
 		
 		public GetVideoTask(VideoActivity vact){
 			super();
@@ -183,13 +188,21 @@ public class VideoActivity extends Activity {
 			String link = str.split("=", 2)[1];
 			
 			// Some Html
-			String playVideo = 
-				"<html><body>"
-				+ "<iframe class=\"youtube-player\" type=\"text/html\" "
-				+ "width=\"" + video_width + "\" height=\"" + video_height + "\" "
-				+ "src=\"http://www.youtube.com/embed/" + link + "\" "
-				+ "frameborder=\"0\"></body></html>";
-			ui_webplayer.loadData(playVideo, "text/html", "utf-8");
+//			String playVideo = 
+//				"<html><body>"
+//				+ "<iframe class=\"youtube-player\" type=\"text/html\" "
+//				+ "width=\"" + video_width + "\" height=\"" + video_height + "\" "
+//				+ "src=\"http://www.youtube.com/embed/" + link + "\" "
+//				+ "frameborder=\"0\"></body></html>";
+//			ui_webplayer.loadData(playVideo, "text/html", "utf-8");
+			ui_webplayer.loadUrl("file:///android_asset/html/index.html");
+			this.yid = link;
+			ui_webplayer.setWebViewClient(new WebViewClient() {
+			    public void onPageFinished(WebView view, String url) {
+			        // do something here
+			    	va.loadVideo(yid);
+			    }
+			});
 			
 			if(!_thumbup.isEnabled()){
 				_thumbup.setEnabled(true);
