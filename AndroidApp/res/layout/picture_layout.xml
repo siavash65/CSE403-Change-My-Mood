@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical" >
     
     <LinearLayout
@@ -22,13 +21,42 @@
             android:layout_margin="2dp"
             android:onClick="changePicture" />
     </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/ChangePicture"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ImageLayout"
+        android:layout_marginBottom="10dp" >
+
+        <Button
+            android:id="@+id/Previous"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/hunlan_buttons"
+            android:padding="10dp"
+            android:text="@string/previous"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/Next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/hunlan_buttons"
+            android:onClick="changePicture"
+            android:padding="10dp"
+            android:text="@string/next"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/ImageLayout"
+        android:layout_below="@+id/ChangePicture"
         android:layout_marginBottom="20dp" >
 
         <Button

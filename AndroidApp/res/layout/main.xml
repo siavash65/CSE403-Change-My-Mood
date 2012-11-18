@@ -3,46 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:id="@+id/background"
-    android:background="#FFFFFF">
-	  	
-    <ImageView 
-   	  		android:id="@+id/background_image" 
-   	  		android:layout_width="match_parent"
-   	  		android:layout_height="match_parent"></ImageView> 
-        
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/welcome"
-    android:textSize="20sp"
-    android:textColor="#000"
-    android:layout_centerHorizontal="true" />
-    
-    <Button
-        android:id="@+id/WithoutLogin"
-        android:layout_width="fill_parent"
-        android:layout_height="70sp"
-        android:text="@string/no_signin" 
-        android:textSize="20sp"
-        android:layout_above="@+id/FacebookLogin" 
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom= "20dp"
-        android:background="@drawable/no_signin_button"
-        android:onClick="skip_signin" />
-
-    <Button
-        android:id="@+id/FacebookLogin"
-        android:layout_width="fill_parent"
-        android:layout_height="70sp"
-        android:text="@string/with_signin"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true" 
-        android:layout_marginBottom= "30dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/facebook_button"
-        android:onClick="facebookSignin"/>
-
+    android:id="@+id/background">
+	 
     <ImageView
         android:id="@+id/FrontImage"
         android:layout_width="200px"
@@ -51,6 +13,44 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/cmm"
-        android:layout_marginTop="50dp"></ImageView>
+        android:layout_marginTop="30dp"></ImageView>
+    	
+        <ImageView 
+  		android:id="@+id/background_image" 
+  		android:layout_width="match_parent"
+  		android:layout_height="match_parent"
+  		android:layout_below="@+id/FrontImage"
+   		android:layout_above="@+id/WithoutLogin"
+   		android:layout_marginTop="10dp"
+    	android:layout_marginBottom="10dp"></ImageView>        
+        
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/welcome"
+    android:textSize="20sp"
+    android:textColor="#FFFFFF"
+    android:layout_centerHorizontal="true" />
+    
+    <Button
+        android:id="@+id/WithoutLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="50sp"
+        android:text="@string/no_signin" 
+        android:textSize="20sp"
+        android:layout_above="@+id/FacebookLogin" 
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom= "10dp"
+        android:onClick="skip_signin" />
+
+    <Button
+        android:id="@+id/FacebookLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="50sp"
+        android:layout_centerHorizontal="true" 
+        android:layout_marginBottom= "20dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/facebook_button"
+        android:onClick="facebookSignin"/>
 
 </RelativeLayout>

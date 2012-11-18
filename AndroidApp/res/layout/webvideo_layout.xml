@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -10,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="250dp"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:background="@drawable/hunlan_buttons"
         android:orientation="horizontal" >
 
@@ -23,12 +22,41 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ChangeVideo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VideoLayout"
+        android:layout_marginBottom="10dp" >
+
+        <Button
+            android:id="@+id/Previous"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/hunlan_buttons"
+            android:padding="10dp"
+            android:text="@string/previous"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/Next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/hunlan_buttons"
+            android:padding="10dp"
+            android:text="@string/next"
+            android:textSize="18sp" />
+    </LinearLayout>
+    
+    
+    <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/VideoLayout"
+        android:layout_below="@+id/ChangeVideo"
         android:layout_marginBottom="20dp" >
 
         <Button
@@ -70,12 +98,9 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="7dp"
         android:background="@drawable/hunlan_buttons"
         android:onClick="pluginRedirect"
         android:text="@string/download_plugin" />
@@ -84,9 +109,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/linearLayout1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_above="@+id/button1"
         android:layout_margin="7dp"
         android:text="@string/trouble" />
 
