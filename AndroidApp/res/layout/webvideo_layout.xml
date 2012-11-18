@@ -32,7 +32,7 @@
         android:layout_marginBottom="20dp" >
 
         <Button
-            android:id="@+id/ThumbsUp"
+            android:id="@+id/VThumbsUp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
@@ -44,7 +44,7 @@
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/ThumbsDown"
+            android:id="@+id/VThumbsDown"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"

@@ -21,6 +21,13 @@ public class UrlProvider {
 		return url;
 	}
 	
+	public static String getVideoUrl(Mood mood, Content content){
+		String url = Utilz.urlAppend(BASE_URL, GET_CONTENT);
+		url = Utilz.urlAppendParam(url, MOOD, mood.value);
+		url = Utilz.urlAppendParam(url, CONTENT, content.value);
+		return url;
+	}
+	
 	public static String getRankUrl() {
 		return Utilz.urlAppend(BASE_URL, RANK_CONTENT);
 	}
