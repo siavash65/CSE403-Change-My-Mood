@@ -37,10 +37,14 @@ public class MediaPage extends Activity{
     }
     
     public void gotoVideo(View view) {
-    	intent = new Intent(this, VideoActivity.class);
-        intent.putExtra(MoodPage.MOOD, mood_type);
-    	intent.putExtra(CONTENT, Content.VIDEO.ordinal());
-    	startActivity(intent);
+    	if(mood_type == 0){ // for test
+	    	intent = new Intent(this, VideoActivity.class);
+	        intent.putExtra(MoodPage.MOOD, mood_type);
+	    	intent.putExtra(CONTENT, Content.VIDEO.ordinal());
+	    	startActivity(intent);
+    	}else{
+    		temporary_msg();
+    	}
     }
     
     public void gotoAudio(View view){

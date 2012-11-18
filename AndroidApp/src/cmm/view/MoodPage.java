@@ -46,9 +46,8 @@ public class MoodPage extends Activity{
     }
     
     public void clickRomance(View view){
-    	//intent.putExtra(MOOD, Mood.ROMANTIC);
-    	//startActivity(intent);
-    	temporary_msg();
+    	intent.putExtra(MOOD, Mood.ROMANTIC.ordinal());
+    	startActivity(intent);
     }
     
     // show temporary message for the functions that are not ready yet.

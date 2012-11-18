@@ -54,6 +54,7 @@
     <string name="loading">Loading...</string>
     <string name="download_plugin">Download Plugin</string>
     <string name="trouble">Trouble Playing Video?</string>
+    <string name="fullscreen">Fullscreen</string>
     
     <!-- Temporary message -->
     <string name="notready">This is not ready yet. Please wait our updates!</string>

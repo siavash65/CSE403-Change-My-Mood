@@ -1,27 +1,21 @@
 package cmm.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.MediaController;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 import cmm.model.FacebookHandler;
 
 public class VideoActivity extends Activity {
@@ -31,12 +25,12 @@ public class VideoActivity extends Activity {
 	private WebView ui_webplayer;
 	
 	/** Called when the activity is first created. */
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		String yt_id = "KGk-GL8uNrY";
-		
 		
 		// setContentView(R.layout.video_layout);
 		setContentView(R.layout.webvideo_layout);
@@ -52,8 +46,8 @@ public class VideoActivity extends Activity {
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 		int width = displaymetrics.widthPixels;
-		int video_width = (int) (0.6 * width);
-		int video_height = (int) (9 * video_width / 16);
+		int video_width = (int) (0.45 * width);
+		int video_height = (int) (video_width * 10 / 16);
 
 		Log.d("ABC", "w = " + video_width + ", h = " + video_height);
 		
@@ -91,9 +85,8 @@ public class VideoActivity extends Activity {
 				"<html><body>"
 				+ "<iframe class=\"youtube-player\" type=\"text/html\" "
 				+ "width=\"" + video_width + "\" height=\"" + video_height + "\" "
-				+ "src=\"http://www.youtube.com/embed/" + yt_id + "\" "
+				+ "src=\"http://www.youtube.com/embed/" + yt_id + "?autoplay=1&fs=0\" "
 				+ "frameborder=\"0\"></body></html>";
-
 		ui_webplayer.loadData(playVideo, "text/html", "utf-8");
 		
 		/*
@@ -113,6 +106,11 @@ public class VideoActivity extends Activity {
 	    startActivity( browse );
 	}
 
+	public void goFullscreen(View view){
+		Intent i = new Intent();
+		i.setClass(this, VideoFullPage.class);
+		startActivity(i);
+	}
 	
 	// create menu
 	@Override

@@ -20,8 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_margin="2dp" />
-        
-        
     </LinearLayout>
 
     <LinearLayout
@@ -55,6 +53,18 @@
             android:onClick="thumbsDown"
             android:padding="10dp"
             android:text="@string/thumbs_down"
+            android:textSize="18sp" />
+        
+        <Button
+            android:id="@+id/Full_Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/hunlan_buttons"
+            android:onClick="goFullscreen"
+            android:padding="10dp"
+            android:text="@string/fullscreen"
             android:textSize="18sp" />
     </LinearLayout>
 
