@@ -12,6 +12,7 @@ from servercore.util.datanames import ApiKeys
 from servercore.CmmCore.ContentDataOrganizer.Retrievers import PictureRetriever,\
     VideoRetriever
 from servercore.CmmCore.ContentDataOrganizer.Filters.scorefilter import ScoreFilter
+from servercore.CmmCore.ContentDataOrganizer.Filters.brokenfilter import BrokenFilter
 
 class ContentDataOrganizer():
     # Number of data to filter
@@ -73,6 +74,10 @@ class ContentDataOrganizer():
     @staticmethod
     def scoreThresholdFilterCronJob(mood = Mood.HAPPY, content = Media.PICTURE):
         return ScoreFilter.filter(mood, content)
+    
+    @staticmethod
+    def brokenURLFilterCronJob(mood = Mood.HAPPY, content = Media.PICTURE):
+        return BrokenFilter.filter(mood, content)
 
     
 #-----------------------------------------------------------------------------#
