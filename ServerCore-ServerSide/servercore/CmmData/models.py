@@ -103,6 +103,8 @@ class Video(models.Model):
     def __unicode__(self):
         return str(self.url)   
     
+    
+    
     @staticmethod
     def add(youtube_id, url, mood, initialScore = 0, checked = False):
         assert mood in Mood.MOOD_TYPES
