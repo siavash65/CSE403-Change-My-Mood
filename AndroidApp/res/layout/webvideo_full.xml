@@ -11,6 +11,9 @@
 	<VideoView
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:layout_gravity="center_vertical|center_horizontal"
+	    android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
 	    android:id="@+id/webfullvideo" ></VideoView>
 </RelativeLayout>
