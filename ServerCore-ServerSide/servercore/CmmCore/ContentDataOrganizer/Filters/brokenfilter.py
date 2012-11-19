@@ -64,6 +64,7 @@ class BrokenFilter(FilterInterface):
         if count > 0:
             m = Media.objects.filter(moods=mood, content_type=Media.VIDEO)
             BrokenFilter._falsifyAllMedia(m)
+            print 'reseted'
             return True
         
         return False
@@ -97,6 +98,7 @@ class BrokenFilter(FilterInterface):
         if count > 0:
             m = Media.objects.filter(moods=mood, content_type=Media.PICTURE)
             BrokenFilter._falsifyAllMedia(m)
+            print 'reseted'
             return True
         
         return False
