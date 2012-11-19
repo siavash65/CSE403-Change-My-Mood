@@ -12,12 +12,8 @@ if __name__ == "__main__":
 
     from servercore.CmmData.models import Mood, Media  
     from servercore.CmmCore.ContentDataOrganizer.ContentDataOrganizer import ContentDataOrganizer  
-    happy = Mood(mood_type=Mood.HAPPY)
-    inspired = Mood(mood_type=Mood.INSPIRED)
-    romantic = Mood(mood_type=Mood.ROMANTIC)
-    excited = Mood(mood_type=Mood.EXCITED)
+    ContentDataOrganizer.brokenURLFilterCronJob(Mood.HAPPY, Media.PICTURE)
+    ContentDataOrganizer.brokenURLFilterCronJob(Mood.HAPPY, Media.VIDEO)
+    ContentDataOrganizer.brokenURLFilterCronJob(Mood.ROMANTIC, Media.PICTURE)
+    ContentDataOrganizer.brokenURLFilterCronJob(Mood.ROMANTIC, Media.VIDEO)
     
-    happy.save()
-    inspired.save()
-    romantic.save()
-    excited.save()

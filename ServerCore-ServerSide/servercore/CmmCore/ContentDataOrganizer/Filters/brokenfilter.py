@@ -77,6 +77,7 @@ class BrokenFilter(FilterInterface):
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
         
         count = BrokenFilter.FILTER_AT_A_TIME
+        deleted = 0
         for m in medias:
             count -= 1
             
