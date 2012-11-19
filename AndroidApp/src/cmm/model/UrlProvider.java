@@ -4,8 +4,8 @@ import cmm.util.Utilz;
 // For Code Review
 public class UrlProvider {
 	//"http://10.0.2.2:8000/api/" //for development
-	//private static final String BASE_URL = "http://changemymood.herokuapp.com/api/"; // for deploy
-	private static final String BASE_URL = "http://testcmm.herokuapp.com/api/";
+	private static final String BASE_URL = "http://changemymood.herokuapp.com/api/"; // for deploy
+	//private static final String BASE_URL = "http://testcmm.herokuapp.com/api/";
 	private static final String GET_CONTENT = "getContent";
 	private static final String RANK_CONTENT = "rateContent";
 	private static final String MOOD = "mood";
