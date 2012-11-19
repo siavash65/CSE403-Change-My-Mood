@@ -40,16 +40,32 @@ def computeVideoScore(entry, mood):
     sec_terms = getSecTerm(mood)
                                             
     entryid = _parseId(entry)
-    comment_feed = yt.GetYouTubeVideoCommentFeed(video_id=entryid)
-    num_comments = len(comment_feed.entry)
-    num_views = entry.statistics.view_count
-    num_favs = entry.statistics.favorite_count
+    comment_feed = None
+    num_comments = 0
+    try:
+        comment_feed = yt.GetYouTubeVideoCommentFeed(video_id=entryid)
+        num_comments = len(comment_feed.entry)
+    except Exception:
+        print 'no comments'
+    
+    num_views = 0
+    try:
+        num_views = entry.statistics.view_count
+    except Exception:
+        print 'no views'
+    
+    num_favs = 0
+    try:
+        num_favs = entry.statistics.favorite_count
+    except Exception:
+        print 'no fav'
     
     title = entry.title.text
+    des = entry.media.description.text
     isPrimeMatch = prime_term in title
     num_sec = 0
     for term in sec_terms:
-        if term in title:
+        if term in title or term in des:
             num_sec += 1
             
     initial_score = \
