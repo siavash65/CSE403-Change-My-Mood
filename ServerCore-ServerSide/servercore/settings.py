@@ -27,12 +27,12 @@ if IS_TEST_SERVER:
 elif DEPLOY:
     DATABASES = {
       'default': {
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'd842t5r76dd2k4',
-      'HOST': 'ec2-54-243-229-87.compute-1.amazonaws.com',
-      'PORT': 5432,
-      'USER': 'sgfrtvzsvrxwtf',
-      'PASSWORD': '7C-bMke0lvqwWxCwDIpBuKPg0S'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd842t5r76dd2k4',
+        'HOST': 'ec2-54-243-229-87.compute-1.amazonaws.com',
+        'PORT': 5432,
+        'USER': 'sgfrtvzsvrxwtf',
+        'PASSWORD': '7C-bMke0lvqwWxCwDIpBuKPg0S'
       }
     }
 else:
