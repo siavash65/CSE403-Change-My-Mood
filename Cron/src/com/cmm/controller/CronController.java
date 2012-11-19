@@ -16,11 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/cron")
 public class CronController {
+	private static final boolean DEPLOY = false;
+
 	private static final String SECRET = "cse403secret";
 	private static final String FILTER_URL = "http://changemymood.herokuapp.com/api/filter/";
 	private static final String COLLECT_URL = "http://changemymood.herokuapp.com/api/importsomepic/";
 	static int total = 0;
-	
+
+	private static final String FILTER_URL_NOT_DEPLOY = "http://testcmm.herokuapp.com/api/filter/";
+	private static final String COLLECT_URL_NOT_DEPLOY = "http://testcmm.herokuapp.com/api/importsomepic/";
+
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public String getCount(ModelMap model) {
 		model.addAttribute("total", total);
@@ -28,6 +33,59 @@ public class CronController {
 		return "list";
 	}
 
+	@RequestMapping(value = "/pull", method = RequestMethod.GET)
+	public String pullAndFilter(ModelMap model) {
+		if (DEPLOY)  {
+			
+		} else {
+			for(int i = 0; i < 5; i++) {
+				doUrl(COLLECT_URL_NOT_DEPLOY, "HA", "PI");
+				doUrl(COLLECT_URL_NOT_DEPLOY, "RO", "PI");
+				doUrl(COLLECT_URL_NOT_DEPLOY, "HA", "VI");
+				doUrl(COLLECT_URL_NOT_DEPLOY, "RO", "VI");
+				try {
+					Thread.sleep(60000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}			
+		}
+		return "list";
+	}
+	
+	@RequestMapping(value = "/broken", method = RequestMethod.GET)
+	public String brokenFilter(ModelMap model) {
+		if (DEPLOY) {
+			
+		} else {
+			for(int i = 0; i < 5; i++) {
+				doUrl(FILTER_URL_NOT_DEPLOY, "HA", "PI", "broken");
+				doUrl(FILTER_URL_NOT_DEPLOY, "RO", "PI", "broken");
+				doUrl(FILTER_URL_NOT_DEPLOY, "HA", "VI", "broken");
+				doUrl(FILTER_URL_NOT_DEPLOY, "RO", "VI", "broken");
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return "list";
+	}
+	
+	@RequestMapping(value = "/score", method = RequestMethod.GET)
+	public String scoreFilter(ModelMap model) {
+		if (DEPLOY) {
+			
+		} else {
+			doUrl(FILTER_URL_NOT_DEPLOY, "HA", "PI", "score");
+			doUrl(FILTER_URL_NOT_DEPLOY, "RO", "PI", "score");
+			doUrl(FILTER_URL_NOT_DEPLOY, "HA", "VI", "score");
+			doUrl(FILTER_URL_NOT_DEPLOY, "RO", "VI", "score");
+		}
+		return "list";
+	}
+	
 	// cron job running this
 	@RequestMapping(value = "/upday/{num}", method = RequestMethod.GET)
 	public String addCount(@PathVariable int num, ModelMap model) {
@@ -35,20 +93,41 @@ public class CronController {
 		total += num;
 		model.addAttribute("total", total);
 
-		doUrl(FILTER_URL);
-		doUrl(COLLECT_URL);
-		
+		if (DEPLOY) {
+			doUrl(FILTER_URL);
+			doUrl(COLLECT_URL, "HA");
+			doUrl(COLLECT_URL, "RO");
+		} else {
+			doUrl(FILTER_URL_NOT_DEPLOY, "HA");
+			doUrl(FILTER_URL_NOT_DEPLOY, "RO");
+			doUrl(COLLECT_URL_NOT_DEPLOY, "HA", "PI");
+			doUrl(COLLECT_URL_NOT_DEPLOY, "RO", "PI");
+			doUrl(COLLECT_URL_NOT_DEPLOY, "HA", "VI");
+			doUrl(COLLECT_URL_NOT_DEPLOY, "RO", "VI");
+		}
+
 		return "list";
 	}
-
+	
 	private void doUrl(String url) {
+		doUrl(url, null, null, null);
+	}
+	
+	private void doUrl(String url, String mood) {
+		doUrl(url, mood, null, null);
+	}
+	
+	private void doUrl(String url, String mood, String content) {
+		doUrl(url, mood, content, null);
+	}
+	
+	private void doUrl(String url, String mood, String content, String filter) {
 		HttpURLConnection connection = null;
 		PrintWriter outWriter = null;
 		BufferedReader serverResponse = null;
 		StringBuffer buff = new StringBuffer();
 		try {
-			connection = (HttpURLConnection) new URL(url)
-					.openConnection();
+			connection = (HttpURLConnection) new URL(url).openConnection();
 
 			connection.setRequestMethod("POST");
 			connection.setDoOutput(true);
@@ -58,6 +137,21 @@ public class CronController {
 			buff.append("secret=");
 			buff.append(URLEncoder.encode(SECRET, "UTF-8"));
 
+			if (mood != null) {
+				buff.append("&mood=");
+				buff.append(URLEncoder.encode(mood, "UTF-8"));
+			}
+			
+			if (content != null) {
+				buff.append("&content=");
+				buff.append(URLEncoder.encode(content, "UTF-8"));
+			}
+			
+			if (filter != null) {
+				buff.append("&filter=");
+				buff.append(URLEncoder.encode(filter, "UTF-8"));
+			}
+			
 			outWriter.print(buff.toString());
 			outWriter.flush();
 			outWriter.close();
