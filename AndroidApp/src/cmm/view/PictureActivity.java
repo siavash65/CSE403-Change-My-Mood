@@ -70,6 +70,9 @@ public class PictureActivity extends Activity {
 		cur_mood_type = bundle.getInt(MoodPage.MOOD);
 		cur_content_type = bundle.getInt(MediaPage.CONTENT);
 		
+		Button previous = (Button) findViewById(R.id.Previous);
+		previous.setEnabled(false);
+		
 		new GetPictureTask(this).execute(cur_mood_type, cur_content_type);
 	}
 
