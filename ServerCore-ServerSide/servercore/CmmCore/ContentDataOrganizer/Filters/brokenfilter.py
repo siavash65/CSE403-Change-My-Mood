@@ -88,6 +88,7 @@ class BrokenFilter(FilterInterface):
                 m.filtercheck.checked = True
                 m.filtercheck.save()
             except Exception:
+                deleted += 1
                 CmmData.models.destory(m.id, Media.PICTURE)
             
             if count <= 0:
