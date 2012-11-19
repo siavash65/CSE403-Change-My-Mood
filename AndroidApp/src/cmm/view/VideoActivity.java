@@ -54,6 +54,7 @@ public class VideoActivity extends Activity {
 	private String vid_url;
 	private Button _thumbup;
 	private Button _thumbdown;
+	private String save_resume;
 	
 	/** Called when the activity is first created. */
 	@SuppressLint("SetJavaScriptEnabled")
@@ -112,6 +113,7 @@ public class VideoActivity extends Activity {
 		
 		_thumbup = (Button) findViewById(R.id.VThumbsUp);
 		_thumbdown = (Button) findViewById(R.id.VThumbsDown);
+		save_resume = "";
 		
 		new GetVideoTask(this).execute(vid_mood_type, vid_content_type);
 	}
@@ -122,6 +124,12 @@ public class VideoActivity extends Activity {
 	}
 
 	public void goFullscreen(View view){
+		ui_webplayer.setWebViewClient(new WebViewClient() {
+		    public void onPageFinished(WebView view, String url) {
+		        // do something here
+		    	loadVideo(save_resume);
+		    }
+		});
 		Intent i = new Intent();
 		i.setClass(this, VideoFullPage.class);
 		i.putExtra("URL", vid_url);
@@ -203,6 +211,7 @@ public class VideoActivity extends Activity {
 //			ui_webplayer.loadData(playVideo, "text/html", "utf-8");
 			ui_webplayer.loadUrl("file:///android_asset/html/index.html");
 			this.yid = link;
+			save_resume = link;
 			ui_webplayer.setWebViewClient(new WebViewClient() {
 			    public void onPageFinished(WebView view, String url) {
 			        // do something here
