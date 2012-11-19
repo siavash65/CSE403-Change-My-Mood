@@ -24,7 +24,7 @@ class ContentDataOrganizer():
     EXCITED_TERMS = ['excited']
     INSPIRED_TERMS = ['inspired']
     
-    NUM_DATA = 50
+    NUM_DATA = 100
     PARTITION_NUM = 20
     
     @staticmethod
