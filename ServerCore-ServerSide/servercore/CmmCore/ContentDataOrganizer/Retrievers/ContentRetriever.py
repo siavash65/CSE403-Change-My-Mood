@@ -6,6 +6,12 @@ Created on Nov 17, 2012
 
 PRIME_SCORE = 20
 SECOND_SCORE = 5
+MAX_SECOND = 4
+
+
+PIC_FIRST_VIEW_HURDLE = 50
+PIC_SECOND_VIEW_HURDLE = 100
+PIC_THIRD_VIEW_HURDLE = 1000
 
 FIRST_VIEW_HURDLE = 5000
 SECOND_VIEW_HURDLE = 10000
@@ -31,37 +37,47 @@ FAV_SCORE_THREE = 5
 
 FEED_BACK_WEIGHT = 200
 
-def computeInitialScore(isPrimeMatch=False, numSecond=0, \
+def computeInitialScore(isPicture = True, isPrimeMatch=False, numSecond=0, \
                         views=0, comments=0, favs=0):
+    numSecond = int(numSecond)
+    views = int(views)
+    comments = int(comments)
+    favs = int(favs)
+    
+    firstVH = PIC_FIRST_VIEW_HURDLE if isPicture else FIRST_VIEW_HURDLE
+    secondVH = PIC_SECOND_VIEW_HURDLE if isPicture else SECOND_VIEW_HURDLE
+    thirdVH = PIC_THIRD_VIEW_HURDLE if isPicture else THIRD_VIEW_HURDLE
+    
+    
     score = 0
     if isPrimeMatch :
         score += PRIME_SCORE
         
-    multi = numSecond if numSecond < 4 else 4
+    multi = numSecond if numSecond < MAX_SECOND else MAX_SECOND
     score += multi * SECOND_SCORE
     
-    if views > FIRST_VIEW_HURDLE:
+    if views > firstVH:
         score += VIEW_SCORE_ONE
         
-        if views > SECOND_VIEW_HURDLE:
+        if views > secondVH:
             score += VIEW_SCORE_TWO
             
-            if views > THIRD_VIEW_HURDLE:
+            if views > thirdVH:
                 score += VIEW_SCORE_THREE
-     
+    
     if comments > FIRST_COMMENT_HURDLE:
         score += COMMENT_SCORE_ONE
         
         if comments > SECOND_COMMENT_HURDLE:
             score += COMMENT_SCORE_TWO
-     
-    if views > FIRST_FAV_HURDLE:
+    
+    if favs > FIRST_FAV_HURDLE:
         score += FAV_SCORE_ONE
         
-        if views > SECOND_FAV_HURDLE:
+        if favs > SECOND_FAV_HURDLE:
             score += FAV_SCORE_TWO
             
-            if views > THIRD_FAV_HURDLE:
+            if favs > THIRD_FAV_HURDLE:
                 score += FAV_SCORE_THREE           
 
     assert score <= 100

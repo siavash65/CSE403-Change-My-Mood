@@ -6,9 +6,9 @@ Created on Oct 31, 2012
 
 import random
 import flickrapi
-from servercore.CmmData.models import Picture, Rank, Media, User, Mood
+from servercore.CmmData.models import Picture, Rank, Media, User, Mood, Score,\
+    FilterCheck, Video
 from servercore.CmmCore.ContentDataOrganizer.Filters.basicfilter import BasicFilter
-from servercore.util.datanames import ApiKeys
 from servercore.CmmCore.ContentDataOrganizer.Retrievers import PictureRetriever,\
     VideoRetriever
 from servercore.CmmCore.ContentDataOrganizer.Filters.scorefilter import ScoreFilter
@@ -19,8 +19,8 @@ class ContentDataOrganizer():
     DELETE_RATIO = 0.1    
     
     # Data parameters
-    HAPPY_TERMS = ['funny']
-    ROMANTIC_TERMS = ['love']
+    HAPPY_TERMS = ['funny', 'hilarious', 'comical', 'humorous', 'entertaining']
+    ROMANTIC_TERMS = ['love', 'loving', 'romantic', 'affection', 'passionate']
     EXCITED_TERMS = ['excited']
     INSPIRED_TERMS = ['inspired']
     
@@ -36,25 +36,40 @@ class ContentDataOrganizer():
         
         if content == Media.PICTURE:
             PictureRetriever.pullPictures(mood, \
-                                          ContentDataOrganizer._getTerms(mood),\
+                                          ContentDataOrganizer._getRandomTerms(mood), \
                                           num_data_needed)
         elif content == Media.VIDEO:
             VideoRetriever.pullVideos(mood, \
-                                      ContentDataOrganizer._getTerms(mood), \
+                                      ContentDataOrganizer._getRandomTerms(mood), \
                                       num_data_needed)
             
         return None
     
     @staticmethod
+    def _getRandomTerms(mood):
+        ret = []
+        term = ContentDataOrganizer._getTerms(mood)
+        
+        # random num of terms
+        num_terms = random.randint(1, len(term))
+        
+        # random terms
+        random.shuffle(term)
+        for i in range(0, num_terms) :
+            ret.append(term.pop())
+            
+        return ret
+    
+    @staticmethod
     def _getTerms(mood):
         if mood == Mood.HAPPY:
-            return ContentDataOrganizer.HAPPY_TERMS
+            return ContentDataOrganizer.HAPPY_TERMS[:]
         elif mood == Mood.ROMANTIC:
-            return ContentDataOrganizer.ROMANTIC_TERMS
+            return ContentDataOrganizer.ROMANTIC_TERMS[:]
         elif mood == Mood.EXCITED:
-            return ContentDataOrganizer.EXCITED_TERMS
+            return ContentDataOrganizer.EXCITED_TERMS[:]
         elif mood == Mood.INSPIRED:
-            return ContentDataOrganizer.INSPIRED_TERMS
+            return ContentDataOrganizer.INSPIRED_TERMS[:]
         
         raise Exception('invalid mood input in getTerms')
         
@@ -111,8 +126,11 @@ class ContentDataOrganizer():
     def clearPhotoDatabase():
         Media.objects.all().delete()
         Picture.objects.all().delete()
+        Video.objects.all().delete()
         Rank.objects.all().delete()
         User.objects.all().delete()
+        Score.objects.all().delete()
+        FilterCheck.objects.all().delete()
         # Mood.objects.all().delete()
         
         return None

@@ -3,7 +3,7 @@ import dj_database_url
 import os.path
 
 DEPLOY = False
-IS_TEST_SERVER = False
+IS_TEST_SERVER = True
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'servercore.CmmData',
     'servercore.CmmCore.ApiDataProvider',
     'servercore.CmmCore.ContentDataOrganizer.Filters',
+    'servercore.CmmCore.ContentDataOrganizer.Retrievers',
     # 'servercore.django_cron',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
