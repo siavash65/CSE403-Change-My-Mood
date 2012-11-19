@@ -84,6 +84,7 @@ class FilterCronHandler(BaseHandler):
                 return ApiDataProvider.returnError('nothing in database')
             
         elif type == FilterCronHandler.URL_FILTER:
+            print 'Broken Filter'
             if ContentDataOrganizer.brokenURLFilterCronJob(mood, content) :
                 return ApiDataProvider.returnSuccess('success filtered data')
             else:

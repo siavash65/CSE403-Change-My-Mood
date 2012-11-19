@@ -100,6 +100,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
         first_attrib = None
         photo_id = 0
         
+        print 'picture progress: ' + str(i) + '/' + str(myLen)
         while len(picture_map) != 0:
             idx = (picture_map.pop() + startIndex) % length
             first_attrib = pics[0][idx].attrib
@@ -138,7 +139,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     
     mediaData = Media.objects.filter(moods=mood, score__final_score__gt=-1).order_by('score__final_score')
     if len(mediaData) == 0:
-        return
+        return preadd
     
     lowestMediaIndex = 0
     while len(sorted_picture_list) != 0:
@@ -153,6 +154,8 @@ def pullAndFilter(mood, terms, add_num, partition_num):
                 break
         else:
             break
+        
+    return preadd + lowestMediaIndex
         
 
 def pullPictures(mood, terms, add_num = 0):        
@@ -200,5 +203,12 @@ def pullPictures(mood, terms, add_num = 0):
         
 
 def _getURL(first_attrib):
-    return 'http://static.flickr.com/' + first_attrib['server'] + \
-                '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg"
+    return 'http://farm' + first_attrib['farm'] + '.staticflickr.com/' + \
+            first_attrib['server'] + '/' + first_attrib['id'] + '_' + first_attrib['secret'] + '.jpg'
+
+
+
+
+
+    '''return 'http://static.flickr.com/' + first_attrib['server'] + \
+                '/' + first_attrib['id'] + "_" + first_attrib['secret'] + ".jpg"'''

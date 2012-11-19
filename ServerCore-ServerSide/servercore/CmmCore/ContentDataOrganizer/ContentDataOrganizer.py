@@ -25,20 +25,29 @@ class ContentDataOrganizer():
     INSPIRED_TERMS = ['inspired']
     
     NUM_DATA = 50
+    PARTITION_NUM = 20
     
     @staticmethod
     def collectContentCronJob(mood, content):
         datas = Media.objects.filter(moods=mood, content_type = content)
         num_data_needed = ContentDataOrganizer.NUM_DATA - len(datas)
         
-        if num_data_needed <= 0:
-            print 'already have enough data'
+#        if num_data_needed <= 0:
+#            print 'already have enough data'
         
         if content == Media.PICTURE:
-            PictureRetriever.pullPictures(mood, \
-                                          ContentDataOrganizer._getRandomTerms(mood), \
-                                          num_data_needed)
+            print 'Picture filter: ' + mood + ', needed ' + str(num_data_needed) + ' pictures'
+            numAdded = PictureRetriever.pullAndFilter(mood, \
+                                                      ContentDataOrganizer._getRandomTerms(mood), \
+                                                      num_data_needed, \
+                                                      ContentDataOrganizer.PARTITION_NUM)
+            print '-- added: ' + str(numAdded) + ' new pictures'
+#            PictureRetriever.pullPictures(mood, \
+#                                          ContentDataOrganizer._getRandomTerms(mood), \
+#                                          num_data_needed)
         elif content == Media.VIDEO:
+            if num_data_needed <= 0:
+                print 'already have enough data'
             VideoRetriever.pullVideos(mood, \
                                       ContentDataOrganizer._getRandomTerms(mood), \
                                       num_data_needed)
