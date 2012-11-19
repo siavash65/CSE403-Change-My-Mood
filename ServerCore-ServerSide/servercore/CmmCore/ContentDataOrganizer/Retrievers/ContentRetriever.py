@@ -37,6 +37,13 @@ FAV_SCORE_THREE = 5
 
 FEED_BACK_WEIGHT = 200
 
+
+HAPPY_PRIME_TERM = 'funny'
+ROMANTIC_PRIME_TERM = 'love'
+
+HAPPY_SEC_TERMS = ['hilarious', 'comical', 'humorous', 'entertaining']
+ROMANTIC_SEC_TERMS = ['loving', 'romantic', 'affection', 'passionate']
+
 def computeInitialScore(isPicture = True, isPrimeMatch=False, numSecond=0, \
                         views=0, comments=0, favs=0):
     numSecond = int(numSecond)
@@ -90,7 +97,5 @@ def computeFinalScore(initialScore, thumbs_up, total):
     final_score = 1.0 * (total + feedback_score) / 3
 
     return int(final_score)
-    
-    
     
     

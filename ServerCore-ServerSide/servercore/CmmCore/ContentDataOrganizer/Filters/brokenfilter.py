@@ -28,9 +28,9 @@ class BrokenFilter(FilterInterface):
             BrokenFilter._falsifyAllMedia(m)
         
         if content == Media.PICTURE:
-            BrokenFilter._checkPicture(medias, mood)
+            return BrokenFilter._checkPicture(medias, mood)
         elif content == Media.VIDEO:
-            BrokenFilter._checkVideo(medias, mood)
+            return BrokenFilter._checkVideo(medias, mood)
             
         return True
         
@@ -38,7 +38,7 @@ class BrokenFilter(FilterInterface):
     @staticmethod
     def _checkVideo(medias, mood):
         if len(medias) == 0:
-            return
+            return True
         
         yt = gdata.youtube.service.YouTubeService() 
         
@@ -60,11 +60,14 @@ class BrokenFilter(FilterInterface):
         if count > 0:
             m = Media.objects.filter(moods=mood, content_type=Media.VIDEO)
             BrokenFilter._falsifyAllMedia(m)
+            return True
+        
+        return False
         
     @staticmethod
     def _checkPicture(medias, mood):
         if len(medias) == 0:
-            return
+            return True
         
         # flickr object
         flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
@@ -87,6 +90,9 @@ class BrokenFilter(FilterInterface):
         if count > 0:
             m = Media.objects.filter(moods=mood, content_type=Media.PICTURE)
             BrokenFilter._falsifyAllMedia(m)
+            return True
+        
+        return False
             
     
     @staticmethod

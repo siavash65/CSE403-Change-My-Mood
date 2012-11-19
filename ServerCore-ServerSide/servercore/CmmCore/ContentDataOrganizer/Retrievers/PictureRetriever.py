@@ -13,33 +13,27 @@ from servercore.CmmCore.ContentDataOrganizer.Filters.scorefilter import ScoreFil
 _SEARCH_NUM = 500
 _NUM_AT_A_TIME = 30
 
-_HAPPY_SEC_TERMS = ['hilarious', 'comical', 'humorous', 'entertaining']
-_ROMANTIC_SEC_TERMS = ['loving', 'romantic', 'affection', 'passionate']
-
-_HAPPY_PRIME_TERM = 'funny'
-_ROMANTIC_PRIME_TERM = 'love'
-
 flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
 
-def _getPrimeTerm(mood):
+def getPrimeTerm(mood):
     if mood == Mood.HAPPY:
-        return _HAPPY_PRIME_TERM
+        return ContentRetriever.HAPPY_PRIME_TERM
     elif mood == Mood.ROMANTIC:
-        return _ROMANTIC_PRIME_TERM
+        return ContentRetriever.ROMANTIC_PRIME_TERM
     
     raise Exception('mood is not happy or romantic...')
 
-def _getSecTerm(mood):
+def getSecTerm(mood):
     if mood == Mood.HAPPY:
-        return _HAPPY_SEC_TERMS
+        return ContentRetriever.HAPPY_SEC_TERMS
     elif mood == Mood.ROMANTIC:
-        return _ROMANTIC_SEC_TERMS
+        return ContentRetriever.ROMANTIC_SEC_TERMS
     
     raise Exception('mood is not happy or romantic...')
- 
+
 def computePictureScore(pid, mood):
-    prime_term = _getPrimeTerm(mood)
-    sec_terms = _getSecTerm(mood)
+    prime_term = getPrimeTerm(mood)
+    sec_terms = getSecTerm(mood)
     
     photo = flickr.photos_getInfo(photo_id=pid)
     attrib = photo[0].attrib
@@ -125,7 +119,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
         url = _getURL(first_attrib)
         added_picture_list.append((photo_id, url, mood, initial_score))
         
-    sorted_picture_list = sorted(added_picture_list, key=lambda added_picture_list: added_picture_list[3], reverse=True)
+    sorted_picture_list = sorted(added_picture_list, key=lambda tuple: tuple[3], reverse=True)
     
     # add till database is full
     preadd = min(add_num, len(sorted_picture_list))

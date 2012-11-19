@@ -46,11 +46,17 @@ class ContentDataOrganizer():
 #                                          ContentDataOrganizer._getRandomTerms(mood), \
 #                                          num_data_needed)
         elif content == Media.VIDEO:
-            if num_data_needed <= 0:
-                print 'already have enough data'
-            VideoRetriever.pullVideos(mood, \
-                                      ContentDataOrganizer._getRandomTerms(mood), \
-                                      num_data_needed)
+            print 'Video filter: ' + mood + ', needed ' + str(num_data_needed) + ' videos'
+            numAdded = VideoRetriever.pullAndFilter(mood, \
+                                                    ContentDataOrganizer._getRandomTerms(mood), \
+                                                    num_data_needed, \
+                                                    ContentDataOrganizer.PARTITION_NUM)
+            print '-- added: ' + str(numAdded) + ' new videos'
+#            if num_data_needed <= 0:
+#                print 'already have enough data'
+#            VideoRetriever.pullVideos(mood, \
+#                                      ContentDataOrganizer._getRandomTerms(mood), \
+#                                      num_data_needed)
             
         return None
     
