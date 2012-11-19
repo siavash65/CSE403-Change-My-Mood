@@ -4,7 +4,7 @@ Created on Nov 14, 2012
 @author: hunlan
 '''
 import gdata.youtube.service
-from servercore.CmmData.models import Video, Media, destory, Mood
+from servercore.CmmData.models import Video, Media, destory, Mood, Deleted
 from servercore.CmmCore.ContentDataOrganizer.Retrievers import ContentRetriever
 import math
 import random
@@ -68,6 +68,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     #calculate how many video to do
     length = len(entries)
     myLen = length if partition_num > length else partition_num
+    myLen = max(myLen, 0)
     
     #generate a random index
     startIndex = random.randint(0, max(length - myLen, 0))
@@ -87,6 +88,11 @@ def pullAndFilter(mood, terms, add_num, partition_num):
             entryid = _parseId(entry)
             
             initial_score = computeVideoScore(entry, mood)
+            
+            del_list = Deleted.objects.filter(content_type=Media.VIDEO, content_id=entryid)
+            if len(del_list) != 0:
+                continue
+            
             try:
                 Video.objects.get(youtube_id=entryid)
                 if len(video_map) == 0:

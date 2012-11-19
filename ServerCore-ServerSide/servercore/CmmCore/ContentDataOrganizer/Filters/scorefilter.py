@@ -4,7 +4,7 @@ Created on Nov 17, 2012
 @author: hunlan
 '''
 from servercore.CmmCore.ContentDataOrganizer.Filters.filterinterface import FilterInterface
-from servercore.CmmData.models import Media, Mood, Score
+from servercore.CmmData.models import Media, Mood, Score, Deleted
 from servercore import CmmData
 from servercore.settings import IS_TEST_SERVER, DEPLOY
 
@@ -53,6 +53,7 @@ class ScoreFilter(FilterInterface):
                 m = min_score[0]
                 
                 # delete
+                Media.objects.get(id=m).move_to_trash()
                 del score_map[m]
                 CmmData.models.destory(m, content) #check if m.id?
                 
@@ -66,7 +67,7 @@ class ScoreFilter(FilterInterface):
                     break
             else:
                 break
-                
+        
         return num_deleted
         
     @staticmethod

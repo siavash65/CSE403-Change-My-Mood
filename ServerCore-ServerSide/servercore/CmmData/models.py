@@ -55,6 +55,22 @@ class Media(models.Model):
                 ContentRetriever.computeFinalScore(self.score.initial_score, t_up, total_rank)
             self.score.save()
     
+    def move_to_trash(self):
+        cid = 0
+        if self.content_type == Media.PICTURE:
+            cid = self.picture.flickr_id
+        elif self.content_type == Media.VIDEO:
+            cid = self.video.youtube_id
+        
+        d = Deleted(content_type = self.content_type, content_id = cid, score=self.score.final_score)
+        d.save()
+        all_deleted = Deleted.objects.all()
+        if len(all_deleted) > Deleted.MAX_DELETED:
+            dlist = Deleted.objects.order_by('score')
+            chosen_ones = (dlist[:10])[0]
+            for c in chosen_ones:
+                c.delete()
+    
     def __unicode__(self):
         return str(self.id)
 
@@ -94,6 +110,16 @@ class Rank(models.Model):
     #TODO Please Implement
     def __unicode__(self):
         return str(self.thumbs_up) + ':' + str(self.thumbs_down)
+
+class Deleted(models.Model):
+    content_type = models.CharField(max_length=2, choices=Media.CONTENT_TYPE_CHOICES, default=Media.PICTURE)
+    content_id = models.CharField(unique=True, max_length=20)
+    score = models.IntegerField()
+    
+    MAX_DELETED = 2048 # 2048 * (2 + 20 + 4) = 52KB
+    
+    def __unicode__(self):
+        return self.content_type + "| score: " + str(self.score) + ", id: " + str(self.id) 
 
 class Video(models.Model):
     youtube_id = models.CharField(unique=True, max_length=20)
@@ -143,7 +169,7 @@ class Video(models.Model):
             raise Exception('corrupted database')
 
 class Picture(models.Model):
-    flickr_id = models.BigIntegerField(unique=True) # for filtering
+    flickr_id = models.CharField(unique=True, max_length=20) # for filtering
     url = models.URLField(unique=True)
     media = models.OneToOneField(Media, primary_key=True)#, parent_link=True)
     #TODO Other meta data??

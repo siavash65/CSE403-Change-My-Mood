@@ -7,7 +7,7 @@ Created on Oct 31, 2012
 import random
 import flickrapi
 from servercore.CmmData.models import Picture, Rank, Media, User, Mood, Score,\
-    FilterCheck, Video
+    FilterCheck, Video, Deleted
 from servercore.CmmCore.ContentDataOrganizer.Filters.basicfilter import BasicFilter
 from servercore.CmmCore.ContentDataOrganizer.Retrievers import PictureRetriever,\
     VideoRetriever
@@ -146,6 +146,7 @@ class ContentDataOrganizer():
         User.objects.all().delete()
         Score.objects.all().delete()
         FilterCheck.objects.all().delete()
+        Deleted.objects.all().delete()
         # Mood.objects.all().delete()
         
         return None

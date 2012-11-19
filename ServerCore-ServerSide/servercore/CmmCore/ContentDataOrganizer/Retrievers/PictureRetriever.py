@@ -3,7 +3,7 @@ Created on Nov 14, 2012
 
 @author: hunlan
 '''
-from servercore.CmmData.models import Picture, Mood, Media, destory
+from servercore.CmmData.models import Picture, Mood, Media, destory, Deleted
 from servercore.util.datanames import ApiKeys
 from servercore.CmmCore.ContentDataOrganizer.Retrievers import ContentRetriever
 import flickrapi
@@ -79,6 +79,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     
     # myLen = min(partition_num, length)
     myLen = length if partition_num > length else partition_num
+    myLen = max(myLen, 0)
     
     #generate a random index
     startIndex = random.randint(0, max(length - myLen, 0))
@@ -100,6 +101,10 @@ def pullAndFilter(mood, terms, add_num, partition_num):
             first_attrib = pics[0][idx].attrib
             photo_id = int(first_attrib['id'])
             initial_score = computePictureScore(photo_id, mood)
+            
+            del_list = Deleted.objects.filter(content_type=Media.PICTURE, content_id=photo_id)
+            if len(del_list) != 0:
+                continue
             
             try:
                 # throw error if bad things happen
