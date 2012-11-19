@@ -150,6 +150,12 @@ public class VideoActivity extends Activity {
 		ui_webplayer.loadUrl("javascript:changesrc('" + yid + "')");
 	}
 	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		ui_webplayer.loadData("", "text/html", "utf-8");
+	}
+	
 	private class GetVideoTask extends AsyncTask<Integer, Integer, String>{
 		private VideoActivity va;
 		private String yid;
