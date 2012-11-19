@@ -300,10 +300,4 @@ public class VideoActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		ui_webplayer.loadUrl("javascript:close()");
-	}
 }
