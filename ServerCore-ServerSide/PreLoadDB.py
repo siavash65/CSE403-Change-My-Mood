@@ -19,5 +19,5 @@ if __name__ == "__main__":
     num_data_needed = 50
     
     for mood in moods:
-        PictureRetriever.pullPictures(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed)
+        PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed, 500)
         VideoRetriever.pullVideos(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed)
