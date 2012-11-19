@@ -1,5 +1,5 @@
 function changesrc(yt_id) {
-    $('#yt-frame').attr('src', "http://www.youtube.com/embed/" + yt_id);
+    $('#yt-frame').attr('src', "http://www.youtube.com/embed/" + yt_id + "?fs=0");
     setSize(0.9 * $(document).width(), $(document).height());
     
     window.scrollBy(30, 0);
