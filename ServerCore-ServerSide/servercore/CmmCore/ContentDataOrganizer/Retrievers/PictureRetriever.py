@@ -86,6 +86,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     
     #generate map for keeping track
     picture_map = range(0, myLen)
+    random.shuffle(picture_map)
     
     added_picture_list = []
     
@@ -202,7 +203,17 @@ def pullPictures(mood, terms, add_num = 0):
         url = _getURL(first_attrib)
         assert Picture.add(photo_id, url, mood, initialScore=initial_score)
         
-        
+def fetch_flickr_photos(mood_type, terms, num_photos):        
+        # grab from flickr
+        photos =  flickr.walk(tag_mode = 'all', tags = terms, extras='url_z') 
+        for i in range(0, num_photos):
+            photo = photos.next()
+            url = photo.get('url_z')
+            pid = photo.get('id')
+            score = computePictureScore(pid, mood_type)
+            assert Picture.add(pid, url, mood_type, initialScore = score)
+            
+
 
 def _getURL(first_attrib):
     return 'http://farm' + first_attrib['farm'] + '.staticflickr.com/' + \
