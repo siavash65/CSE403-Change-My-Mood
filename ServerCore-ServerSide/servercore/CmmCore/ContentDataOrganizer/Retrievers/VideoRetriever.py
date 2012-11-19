@@ -131,7 +131,8 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     preadd = min(add_num, len(sorted_video_list))
     for i in range(0, preadd):
         tuple = sorted_video_list.pop(0)
-        assert Video.add(tuple[0], tuple[1], tuple[2], initialScore=tuple[3])
+        if tuple[0] != None:
+            assert Video.add(tuple[0], tuple[1], tuple[2], initialScore=tuple[3])
         
     medias = Media.objects.filter(moods=mood, content_type=Media.VIDEO)
     ScoreFilter._calculateFinalScore(medias)

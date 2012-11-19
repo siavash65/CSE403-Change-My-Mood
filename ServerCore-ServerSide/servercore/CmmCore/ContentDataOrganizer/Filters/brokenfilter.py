@@ -43,6 +43,7 @@ class BrokenFilter(FilterInterface):
         yt = gdata.youtube.service.YouTubeService() 
         
         count = BrokenFilter.FILTER_AT_A_TIME
+        deleted = 0
         for m in medias:
             count -= 1
             
@@ -53,9 +54,12 @@ class BrokenFilter(FilterInterface):
                 m.filtercheck.save()
             except Exception:
                 CmmData.models.destory(m.id, Media.VIDEO)
+                deleted += 1
                 
             if count <= 0:
                 break
+        
+        print 'deleted ' + str(deleted) + ' contents'
         
         if count > 0:
             m = Media.objects.filter(moods=mood, content_type=Media.VIDEO)
@@ -86,6 +90,8 @@ class BrokenFilter(FilterInterface):
             
             if count <= 0:
                 break
+        
+        print 'deleted ' + str(deleted) + ' contents'
         
         if count > 0:
             m = Media.objects.filter(moods=mood, content_type=Media.PICTURE)
