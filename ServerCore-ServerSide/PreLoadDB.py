@@ -20,4 +20,4 @@ if __name__ == "__main__":
     
     for mood in moods:
         PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed, 200)
-        VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed, 150)
+        VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed, 100)
