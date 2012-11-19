@@ -146,7 +146,7 @@ class ContentDataOrganizer():
         User.objects.all().delete()
         Score.objects.all().delete()
         FilterCheck.objects.all().delete()
-        Deleted.objects.all().delete()
+        # Deleted.objects.all().delete()
         # Mood.objects.all().delete()
         
         return None
