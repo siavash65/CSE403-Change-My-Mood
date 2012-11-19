@@ -116,8 +116,11 @@ def pullAndFilter(mood, terms, add_num, partition_num):
             except Exception:
                 break
     
-        url = _getURL(first_attrib)
-        added_picture_list.append((photo_id, url, mood, initial_score))
+        try:
+            url = _getURL(first_attrib)
+            added_picture_list.append((photo_id, url, mood, initial_score))
+        except Exception:
+            print 'The None type url error again, die gracefully'
         
     sorted_picture_list = sorted(added_picture_list, key=lambda tuple: tuple[3], reverse=True)
     

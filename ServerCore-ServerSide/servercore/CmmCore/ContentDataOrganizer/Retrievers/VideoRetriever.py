@@ -71,6 +71,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     
     #generate a random index
     startIndex = random.randint(0, max(length - myLen, 0))
+    startIndex = 149
     
     video_map = range(0, myLen)
     
@@ -96,9 +97,11 @@ def pullAndFilter(mood, terms, add_num, partition_num):
                 vid_id = entryid 
                 break
         
-            
-        url = _getURL(vid_id)
-        added_video_list.append((vid_id, url, mood, initial_score))
+        try:    
+            url = _getURL(vid_id)
+            added_video_list.append((vid_id, url, mood, initial_score))
+        except Exception:
+            print 'The None type url error again, die gracefully'
     
     sorted_video_list = sorted(added_video_list, key=lambda tuple: tuple[3], reverse=True)
     
