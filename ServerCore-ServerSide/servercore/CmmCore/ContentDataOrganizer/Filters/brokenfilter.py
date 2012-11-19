@@ -61,7 +61,8 @@ class BrokenFilter(FilterInterface):
         
         print 'deleted ' + str(deleted) + ' contents'
         
-        if count > 0:
+        yetToFilter = Media.objects.filter(moods=mood, content_type=Media.VIDEO, filtercheck__checked=False)
+        if len(yetToFilter) == 0:
             m = Media.objects.filter(moods=mood, content_type=Media.VIDEO)
             BrokenFilter._falsifyAllMedia(m)
             print 'reseted'
@@ -96,7 +97,8 @@ class BrokenFilter(FilterInterface):
         
         print 'deleted ' + str(deleted) + ' contents'
         
-        if count > 0:
+        yetToFilter = Media.objects.filter(moods=mood, content_type=Media.PICTURE, filtercheck__checked=False)
+        if len(yetToFilter) == 0:
             m = Media.objects.filter(moods=mood, content_type=Media.PICTURE)
             BrokenFilter._falsifyAllMedia(m)
             print 'reseted'
