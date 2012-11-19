@@ -62,6 +62,7 @@ def computeVideoScore(entry, mood):
     
     title = entry.title.text
     des = entry.media.description.text
+    des = des if des != None else ''
     isPrimeMatch = prime_term in title
     num_sec = 0
     for term in sec_terms:
