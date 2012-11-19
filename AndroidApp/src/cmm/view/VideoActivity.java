@@ -113,6 +113,8 @@ public class VideoActivity extends Activity {
 		
 		_thumbup = (Button) findViewById(R.id.VThumbsUp);
 		_thumbdown = (Button) findViewById(R.id.VThumbsDown);
+		Button previous = (Button) findViewById(R.id.Previous);
+		previous.setEnabled(false);
 		save_resume = "";
 		
 		new GetVideoTask(this).execute(vid_mood_type, vid_content_type);
