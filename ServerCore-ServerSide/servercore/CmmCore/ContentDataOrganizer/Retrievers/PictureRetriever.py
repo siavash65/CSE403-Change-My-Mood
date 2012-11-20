@@ -1,6 +1,8 @@
 '''
 Created on Nov 14, 2012
 
+This class fetches Picture data
+
 @author: hunlan
 '''
 from servercore.CmmData.models import Picture, Mood, Media, destory, Deleted
@@ -15,6 +17,7 @@ _NUM_AT_A_TIME = 30
 
 flickr = flickrapi.FlickrAPI(ApiKeys.FLICKR_API_KEY)
 
+# get primary terms
 def getPrimeTerm(mood):
     if mood == Mood.HAPPY:
         return ContentRetriever.HAPPY_PRIME_TERM
@@ -23,6 +26,7 @@ def getPrimeTerm(mood):
     
     raise Exception('mood is not happy or romantic...')
 
+# get secondary terms
 def getSecTerm(mood):
     if mood == Mood.HAPPY:
         return ContentRetriever.HAPPY_SEC_TERMS
@@ -31,6 +35,7 @@ def getSecTerm(mood):
     
     raise Exception('mood is not happy or romantic...')
 
+#Compute Picture Scores
 def computePictureScore(pid, mood):
     prime_term = getPrimeTerm(mood)
     sec_terms = getSecTerm(mood)
@@ -68,6 +73,9 @@ def computePictureScore(pid, mood):
             
     return initial_score
 
+# Pull and filter at same time
+#@param: add_num = number of content to add
+#@param: partition_num = how many data to pull at a time
 def pullAndFilter(mood, terms, add_num, partition_num):
     # get pics
     pics = flickr.photos_search(tags=terms,\
@@ -144,6 +152,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     if len(mediaData) == 0:
         return preadd
     
+    #Add to database if score is higher than existing scores
     lowestMediaIndex = 0
     while len(sorted_picture_list) != 0:
         tuple = sorted_picture_list.pop(0)

@@ -1,6 +1,8 @@
 '''
 Created on Nov 14, 2012
 
+This class fetches video data
+
 @author: hunlan
 '''
 import gdata.youtube.service
@@ -19,6 +21,7 @@ _MAX_RESULTS = 50
 # youtube object
 yt = gdata.youtube.service.YouTubeService()
 
+# Get primary term
 def getPrimeTerm(mood):
     if mood == Mood.HAPPY:
         return ContentRetriever.HAPPY_PRIME_TERM
@@ -27,6 +30,7 @@ def getPrimeTerm(mood):
     
     raise Exception('mood is not happy or romantic...')
 
+#Get secondary term
 def getSecTerm(mood):
     if mood == Mood.HAPPY:
         return ContentRetriever.HAPPY_SEC_TERMS
@@ -35,6 +39,7 @@ def getSecTerm(mood):
     
     raise Exception('mood is not happy or romantic...')
 
+# compute video score
 def computeVideoScore(entry, mood):
     prime_term = getPrimeTerm(mood)
     sec_terms = getSecTerm(mood)
@@ -78,6 +83,9 @@ def computeVideoScore(entry, mood):
                                              favs=num_favs)
     return initial_score
 
+# Pull and filter at same time
+#@param: add_num = number of content to add
+#@param: partition_num = how many data to pull at a time
 def pullAndFilter(mood, terms, add_num, partition_num):
     # get _SEARCH_NUM of video from Youtube
     entries = _getEntries(yt, terms, _SEARCH_NUM)
@@ -91,8 +99,10 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     startIndex = random.randint(0, max(length - myLen, 0))
     startIndex = 149
     
+    # map to decide index
     video_map = range(0, myLen)
     
+    # the video added list
     added_video_list = []
     
     for i in range(0, myLen):
@@ -100,16 +110,20 @@ def pullAndFilter(mood, terms, add_num, partition_num):
         
         print 'video progress: ' + str(i) + '/' + str(myLen)
         while len(video_map) != 0:
+            # grab picture
             idx = (video_map.pop() + startIndex) % length
             entry = entries[idx]
             entryid = _parseId(entry)
             
+            #compute score
             initial_score = computeVideoScore(entry, mood)
             
+            #check if data is deleted before
             del_list = Deleted.objects.filter(content_type=Media.VIDEO, content_id=entryid)
             if len(del_list) != 0:
                 continue
             
+            #check if valid data
             try:
                 Video.objects.get(youtube_id=entryid)
                 if len(video_map) == 0:
@@ -120,14 +134,17 @@ def pullAndFilter(mood, terms, add_num, partition_num):
                 vid_id = entryid 
                 break
         
+        # add to list
         try:    
             url = _getURL(vid_id)
             added_video_list.append((vid_id, url, mood, initial_score))
         except Exception:
             print 'The None type url error again, die gracefully'
     
+    # sort by score
     sorted_video_list = sorted(added_video_list, key=lambda tuple: tuple[3], reverse=True)
     
+    # Add to our database the number of data needed
     preadd = min(add_num, len(sorted_video_list))
     for i in range(0, preadd):
         tuple = sorted_video_list.pop(0)
@@ -141,6 +158,7 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     if len(mediaData) == 0:
         return preadd
     
+    # Add to database if score is higher than existing scores
     lowestMediaIndex = 0
     while len(sorted_video_list) != 0:
         tuple = sorted_video_list.pop(0)

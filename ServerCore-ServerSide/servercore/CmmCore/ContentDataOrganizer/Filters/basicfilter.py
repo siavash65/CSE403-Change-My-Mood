@@ -1,6 +1,8 @@
 '''
 Created on Oct 31, 2012
 
+THIS CLASS IS DEPRICATED
+
 @author: hunlan
 '''
 from servercore.CmmCore.ContentDataOrganizer.Filters.filterinterface import FilterInterface
