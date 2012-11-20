@@ -33,11 +33,15 @@
     
     <!-- AboutUs page -->
     <string name="aboutus_title">About Us</string>
-    <string name="info_siavash">Siavash Baratchi(barats@cs)</string>
-    <string name="info_lin">Hunlan Lin(hunlan@cs)</string>
-    <string name="info_garrett">Garret Sato(satog@cs)</string>
-    <string name="info_hyunjoon">Hyunjoon Lee(hjlee513@cs)</string>
-    <string name="info_youngmin">Youngmin Lee(lym737@cs)</string>
+    <string name="info_siavash">Siavash Baratchi PM(barats@cs)</string>
+    <string name="info_lin">Hunlan Lin DEV(hunlan@cs)</string>
+    <string name="info_garrett">Garret Sato DEV(satog@cs)</string>
+    <string name="info_hyunjoon">Hyunjoon Lee DEV(hjlee513@cs)</string>
+    <string name="info_youngmin">Youngmin Lee DEV(lym737@cs)</string>
+    <string name= "AboutUsInfo">Change My Mood is a school project for the University of Washington Software Engineering Class (CSE403). We are a group of five senior CSE students at the University of Washington that decided to work on this project. The work is done under the advisory of professor Wayne Yamamoto. Our motivation was to create a powerful entertaining software that both can display our technical skills and our passion for developing software.  
+Change My Mood is an application developed for smartphones running Android Platforms. The vision of this project is to build an application that attempts to induce the user’s feeling or mood by presenting a set of media contents associated with a user-chosen mood. Once user selects a target mood that he or she wants to be in and the type of the media contents - pictures, videos, quotes, etc, the app searches for that content on the web and shows a suggested set of media contents. Within two clicks, a user is able to see a picture or watch a video that helps alleviate the user’s negative mood.
+For more information about our project visit the project website.\nOur Team:</string>
+    
     
     <!-- ContactUs page -->
     <string name="contactus_title">Contact Us</string>
@@ -60,4 +64,5 @@
     <string name="notready">This is not ready yet. Please wait our updates!</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+   
 </resources>
