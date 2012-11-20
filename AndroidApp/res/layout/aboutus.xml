@@ -23,7 +23,14 @@
 	    android:text="@string/AboutUsInfo"
 	    android:textSize="14sp" />
 	
-    
+    <TextView 
+        android:autoLink="web"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/websiteLink"
+	    android:textSize="14sp"
+        />
+	
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
