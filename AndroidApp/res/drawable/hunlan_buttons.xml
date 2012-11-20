@@ -3,22 +3,22 @@
 
     <!-- pressed -->
     <item android:state_pressed="true"><shape>
-            <stroke android:width="1px" android:color="#444" />
+            <stroke android:width="1px" android:color="#5D478B" />
 
             <corners android:radius="15dp" />
 
-            <gradient android:angle="270" android:endColor="#EEEEEE" android:startColor="#AAAAAA" />
+            <gradient android:angle="270" android:endColor="#5D478B" android:startColor="#5D478B" />
 
             <corners android:radius="15dp" />
         </shape></item>
 
     <!-- focused -->
     <item android:state_focused="true"><shape>
-            <stroke android:width="1px" android:color="#444" />
+            <stroke android:width="1px" android:color="#5D478B" />
 
             <corners android:radius="15dp" />
 
-            <gradient android:angle="270" android:endColor="#EEEEEE" android:startColor="#AAAAAA" />
+            <gradient android:angle="270" android:endColor="#5D478B" android:startColor="#5D478B" />
 
             <corners android:radius="15dp" />
         </shape></item>
@@ -26,7 +26,7 @@
     <!-- default -->
 
     <item><shape>
-            <solid android:color="#fff" />
+            <solid android:color="#EEC900" />
 
             <stroke android:width="1px" android:color="#444" />
 

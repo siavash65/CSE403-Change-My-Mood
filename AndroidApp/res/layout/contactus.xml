@@ -10,4 +10,44 @@
         android:layout_height="wrap_content"
         android:text="@string/contactus_title"
         android:textSize="20sp" />
+	
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contactus_info"
+        android:textSize="14sp" />
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_siavash"
+        android:textSize="14sp" />
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_hyunjoon"
+        android:textSize="14sp" />
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_lin"
+        android:textSize="14sp" />
+	
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_youngmin"
+        android:textSize="14sp" />
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_garret"
+        android:textSize="14sp" />
+	
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/projectemail"
+        android:textSize="14sp" />
+	
+	
 </LinearLayout>

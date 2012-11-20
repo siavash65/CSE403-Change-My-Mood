@@ -1,43 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp" >
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
     
-    <TextView
+<LinearLayout  
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    
+   <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/aboutus_title"
         android:textSize="20sp" />
-    
+   
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/info_siavash"
+	    android:text="@string/AboutUsInfo"
+	    android:textSize="14sp" />
+	
+    <TextView 
+        android:autoLink="web"
+        android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/websiteLink"
+	    android:textSize="14sp"
+        />
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/siavash"
 	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/info_lin"
+	    android:text="@string/lin"
 	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/info_garrett"
+	    android:text="@string/garrett"
 	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/info_hyunjoon"
+	    android:text="@string/hyunjoon"
 	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/info_youngmin"
+	    android:text="@string/youngmin"
 	    android:textSize="14sp" />
-</LinearLayout>
+	</LinearLayout>
+
+</ScrollView>
