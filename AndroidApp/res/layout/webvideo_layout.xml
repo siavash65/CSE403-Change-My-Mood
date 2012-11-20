@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#000000">
 
     <LinearLayout
         android:id="@+id/VideoLayout"
@@ -10,7 +11,7 @@
         android:layout_height="250dp"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
-        android:background="@drawable/hunlan_buttons"
+        android:background="#000000"
         android:orientation="horizontal" >
 
         <WebView
@@ -18,7 +19,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="2dp" />
+            android:background="#000000" 
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -26,7 +28,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/VideoLayout"
-        android:layout_marginBottom="10dp" >
+        android:layout_marginBottom="10dp"
+        android:background="#000000" >
 
         <Button
             android:id="@+id/Previous"
@@ -52,13 +55,13 @@
             android:textSize="18sp" />
     </LinearLayout>
     
-    
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ChangeVideo"
-        android:layout_marginBottom="20dp" >
+        android:layout_marginBottom="20dp"
+        android:background="#000000" >
 
         <Button
             android:id="@+id/VThumbsUp"
