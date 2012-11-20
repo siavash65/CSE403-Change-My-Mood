@@ -31,13 +31,29 @@
     <string name="rate_success_msg">Successfully Rated</string>
     <string name="rate_fail_msg">Sorry!</string>
     
+    <!-- ContactUS -->
+    <string name="contactus_title">Contact Us</string>
+    <string name="info_siavash">Siavash Baratchi PM(barats@cs.washington)</string>
+    <string name="info_lin">Hunlan Lin DEV(hunlan@cs.washington)</string>
+    <string name="info_garret">Garret Sato DEV(satog@cs.washington)</string>
+    <string name="info_hyunjoon">Hyunjoon Lee DEV(hjlee513@cs.washington)</string>
+    <string name="info_youngmin">Youngmin Lee DEV(lym737@cs.washington)</string>
+    <string name="projectemail">changemymood@uwcse403.com</string>
+    <string name="contactus_info">We would love to hear from you. Please dont hesitate
+        to contact us if you have any thoughts or concerns or you want to follow up our
+        project and get the news about our future plans and versions. You can email us using 
+        our project email address or contact any of our members individually
+        or even contact the Computer Science and Engineering Department of University of
+        Washington to get more information about the CSE403 class and the projects that students worked 
+        on during this curse.\nOur Email Addresses</string>
+    
     <!-- AboutUs page -->
     <string name="aboutus_title">About Us</string>
-    <string name="info_siavash">Siavash Baratchi PM(barats@cs)</string>
-    <string name="info_lin">Hunlan Lin DEV(hunlan@cs)</string>
-    <string name="info_garrett">Garret Sato DEV(satog@cs)</string>
-    <string name="info_hyunjoon">Hyunjoon Lee DEV(hjlee513@cs)</string>
-    <string name="info_youngmin">Youngmin Lee DEV(lym737@cs)</string>
+    <string name="siavash">Siavash Baratchi PM</string>
+    <string name="lin">Hunlan Lin DEV</string>
+    <string name="garrett">Garret Sato DEV</string>
+    <string name="hyunjoon">Hyunjoon Lee DEV</string>
+    <string name="youngmin">Youngmin Lee DEV</string>
     <string name= "AboutUsInfo">Change My Mood is a school project for the University
          of Washington Software Engineering Class (CSE403). We are a group of five senior CSE students at the University of Washington that decided to work on this project. The work is done under the advisory of professor Wayne Yamamoto. Our motivation was to create a powerful entertaining software that both can display our technical skills and our passion for developing software.  
 		 Change My Mood is an application developed for smartphones running Android Platforms.
