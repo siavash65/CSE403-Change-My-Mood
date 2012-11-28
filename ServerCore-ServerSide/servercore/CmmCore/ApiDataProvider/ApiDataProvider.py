@@ -16,6 +16,9 @@ class ApiDataProvider():
     STATUS_ERROR = 'error'
     PARAM_URL = 'url'
     MEDIA_ID = 'mid'
+    PARAM_THUMBS_UP = 'ups'
+    PARAM_THUMBS_DOWN = 'downs'
+    
     
     @staticmethod
     def helloworld():
@@ -38,6 +41,11 @@ class ApiDataProvider():
         # create random index and get single element
         random_index = int(random.random() * content_subset_len)
         cur_content = content_subset[random_index]
+
+        # Rank        
+        rank = Rank.objects.get(media = cur_content.id)
+        tup = rank.thumbs_up
+        tdown = rank.thumbs_down
         
         # switch on content
         if my_content == Media.PICTURE:
@@ -45,9 +53,11 @@ class ApiDataProvider():
             try:
                 cur_pic = Picture.objects.get(media = cur_content.id)
                 assert isinstance(cur_pic, Picture)
-            
+                
                 return {ApiDataProvider.MEDIA_ID: cur_content.id,\
-                        ApiDataProvider.PARAM_URL: cur_pic.url} 
+                        ApiDataProvider.PARAM_URL: cur_pic.url,\
+                        ApiDataProvider.PARAM_THUMBS_UP: tup,\
+                        ApiDataProvider.PARAM_THUMBS_DOWN: tdown} 
             except Exception:
                 return ApiDataProvider.returnError(ApiDataProvider._TAG + 'database corrupted')
         elif my_content == Media.VIDEO:
@@ -56,7 +66,9 @@ class ApiDataProvider():
                 assert isinstance(cur_vid, Video)
                 
                 return {ApiDataProvider.MEDIA_ID: cur_content.id,\
-                        ApiDataProvider.PARAM_URL: cur_vid.url}
+                        ApiDataProvider.PARAM_URL: cur_vid.url,\
+                        ApiDataProvider.PARAM_THUMBS_UP: tup,\
+                        ApiDataProvider.PARAM_THUMBS_DOWN: tdown}
             except Exception:
                 return ApiDataProvider.returnError(ApiDataProvider._TAG + 'database corrupted')
         elif my_content == Media.TEXT:
