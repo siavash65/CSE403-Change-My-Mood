@@ -86,7 +86,7 @@
                 <action android:name="android.intent.action.VideoFullPage" />
             </intent-filter>
         </activity>
-        <activity android:name="cmm.newview.CmmActivity">
+        <activity android:name=".newview.CmmActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

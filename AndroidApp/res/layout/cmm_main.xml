@@ -25,12 +25,13 @@
         android:layout_height="wrap_content"
         android:background="#333333"
         android:orientation="vertical" >
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="Progress Bar" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Progress Bar" />
     </LinearLayout>
 
     <LinearLayout
@@ -78,12 +79,23 @@
         android:layout_alignParentLeft="true"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textView4"
+        <FrameLayout
+            android:id="@+id/navigation_fragment"
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Navigation" />
+            android:layout_height="fill_parent"
+            android:background="#999999"
+            android:orientation="vertical" >
+        </FrameLayout>
+        <!--
+             <fragment
+            android:id="@+id/navigation_fragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            class="cmm.view.newview.navigation.NavigationFragment"
+            android:background="#999999"
+            android:orientation="vertical" />
+        -->
+
     </LinearLayout>
 
 </RelativeLayout>
