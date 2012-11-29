@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/sign_bg_select"
+    android:id="@+id/content_fragment_main"
+    android:visibility="invisible" >
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/picturebutton_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center" >
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/picture_sign"
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/sign_deselect"
+            android:enabled="false" />
 
         <Button
             android:id="@+id/picture_button"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Picture"
+            android:layout_height="50dp"
+            android:layout_below="@+id/picture_sign"
+            android:layout_margin="5dp"
+            android:background="@drawable/picture_content_button"
             android:textColor="#FFFFFF" />
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/videobutton_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center" >
 
         <Button
+            android:id="@+id/video_sign"
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/sign_deselect"
+            android:enabled="false" />
+
+        <Button
             android:id="@+id/video_button"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Video"
+            android:layout_height="50dp"
+            android:layout_below="@+id/video_sign"
+            android:layout_margin="5dp"
+            android:background="@drawable/video_content_button"
             android:textColor="#FFFFFF" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

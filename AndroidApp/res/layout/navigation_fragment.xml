@@ -26,12 +26,11 @@
                 android:id="@+id/funny_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_margin="2dp"
-                android:background="@drawable/my_button"
+                android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
                 android:text="Funny"
-                android:textColor="#FFFFFF" />
+                android:textColor="#555555" />
         </LinearLayout>
 
         <LinearLayout
@@ -45,12 +44,11 @@
                 android:id="@+id/romantic_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_margin="2dp"
-                android:background="@drawable/my_button"
+                android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
                 android:text="Romantic"
-                android:textColor="#FFFFFF" />
+                android:textColor="#555555" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,12 +62,11 @@
                 android:id="@+id/enervating_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_margin="2dp"
-                android:background="@drawable/my_button"
+                android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
                 android:text="Enervate"
-                android:textColor="#FFFFFF" />
+                android:textColor="#555555" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,12 +80,11 @@
                 android:id="@+id/inspiring_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_margin="2dp"
-                android:background="@drawable/my_button"
+                android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
                 android:text="Inspiring"
-                android:textColor="#FFFFFF" />
+                android:textColor="#555555" />
         </LinearLayout>
     </LinearLayout>
 
