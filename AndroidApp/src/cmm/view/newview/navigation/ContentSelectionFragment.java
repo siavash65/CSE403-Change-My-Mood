@@ -11,16 +11,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 import cmm.view.R;
 
-public class NavigationFragment extends Fragment {
-	private Collection<Button> ui_moodButtons;
+public class ContentSelectionFragment extends Fragment {
+	private Collection<Button> ui_contentButtons;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.navigation_fragment, container,
+		View view = inflater.inflate(R.layout.content_fragment, container,
 				false);
 
 		setupComponents(view);
@@ -30,14 +29,13 @@ public class NavigationFragment extends Fragment {
 		return view;
 	}
 
-	public void moodClick(View view) {
+	public void contentClick(View view) {
 		// get an instance of FragmentTransaction from your Fragment
 		FragmentTransaction fragmentTransaction = this.getFragmentManager()
 				.beginTransaction();
 
-		// add a fragment
-		ContentSelectionFragment csFragment = new ContentSelectionFragment();
-		fragmentTransaction.add(R.id.content_fragment, csFragment);
+		// remove this fragment
+		fragmentTransaction.remove(this);
 		fragmentTransaction.commit();
 	}
 
@@ -45,25 +43,23 @@ public class NavigationFragment extends Fragment {
 	 * Setup the ui components
 	 */
 	private void setupComponents(View view) {
-		// setup mood buttons
-		ui_moodButtons = new HashSet<Button>();
-		ui_moodButtons.add((Button) view.findViewById(R.id.funny_button));
-		ui_moodButtons.add((Button) view.findViewById(R.id.romantic_button));
-		ui_moodButtons.add((Button) view.findViewById(R.id.enervating_button));
-		ui_moodButtons.add((Button) view.findViewById(R.id.inspiring_button));
-
+		// setup content buttons
+		ui_contentButtons = new HashSet<Button>();
+		ui_contentButtons.add((Button) view.findViewById(R.id.picture_button));
+		ui_contentButtons.add((Button) view.findViewById(R.id.video_button));
 	}
 
 	/*
 	 * Add listeners if necessary
 	 */
 	private void handleEvents(View view) {
-		// Add listener to mood buttons
-		for (Button b : ui_moodButtons) {
+		// TODO
+		for (Button b : ui_contentButtons) {
 			b.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
-					moodClick(v);
+					contentClick(v);
 				}
 			});
 		}
@@ -73,25 +69,6 @@ public class NavigationFragment extends Fragment {
 	 * Resize layout if necessary
 	 */
 	private void doLayout(View view) {
-		
+
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// end

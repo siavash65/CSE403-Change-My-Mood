@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#DDDDDD"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/testing"
+    <FrameLayout
+        android:id="@+id/content_fragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/mood_select_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Testing" />
+        android:layout_height="50dp" >
+
+        <LinearLayout
+            android:id="@+id/button1_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/funny_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/my_button"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp"
+                android:text="Funny"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button2_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/romantic_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/my_button"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp"
+                android:text="Romantic"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button3_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/enervating_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/my_button"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp"
+                android:text="Enervate"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button4_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/inspiring_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/my_button"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp"
+                android:text="Inspiring"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
