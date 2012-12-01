@@ -52,6 +52,16 @@ public class ContentDisplayFragment extends Fragment {
 		return view;
 	}
 
+	public void cleanup() {
+		if (picture_fragment != null) {
+			picture_fragment.disable();
+		}
+		
+		if (video_fragment != null) {
+			video_fragment.disable();
+		}
+	}
+	
 	public void displayImage(Drawable image) {
 		if (cur_content != Content.PICTURE) {
 			disableAllFragment(Content.PICTURE);

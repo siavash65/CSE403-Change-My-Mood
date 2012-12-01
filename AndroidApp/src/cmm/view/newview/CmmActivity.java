@@ -59,6 +59,18 @@ public class CmmActivity extends FragmentActivity {
 		doLayout();
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		contentFragment.cleanup();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		contentFragment.cleanup();  // TODO: is this needed?
+	}
+	
 	/*
 	 * Setup the ui components
 	 */
