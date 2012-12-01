@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import cmm.model.Content;
 import cmm.model.Mood;
 import cmm.view.R;
 import cmm.view.newview.CmmActivity;
@@ -24,7 +25,7 @@ public class ContentSelectionFragment extends Fragment {
 	private static ContentSelectionFragment instance;
 
 	private CmmActivity activity;
-	
+
 	// views
 	private View ui_view;
 	private ViewGroup ui_toplevel;
@@ -42,6 +43,7 @@ public class ContentSelectionFragment extends Fragment {
 
 	// model
 	private Mood mood;
+	private Content content;
 	private boolean displayingContent;
 
 	/**
@@ -50,7 +52,8 @@ public class ContentSelectionFragment extends Fragment {
 	 * @param mood
 	 * @return
 	 */
-	public static ContentSelectionFragment getInstance(CmmActivity activity, Mood mood) {
+	public static ContentSelectionFragment getInstance(CmmActivity activity,
+			Mood mood) {
 		if (instance == null || instance.mood != mood) {
 			instance = new ContentSelectionFragment(activity, mood);
 		}
@@ -66,6 +69,10 @@ public class ContentSelectionFragment extends Fragment {
 		this.mood = mood;
 		this.activity = activity;
 		this.displayingContent = false;
+	}
+
+	public Content getContent() {
+		return this.content;
 	}
 
 	@Override
@@ -114,11 +121,13 @@ public class ContentSelectionFragment extends Fragment {
 						.findViewById(R.id.picture_sign);
 				pic_button.setBackgroundResource(R.drawable.sign_select);
 				this.cur_content = pic_button;
+				this.content = Content.PICTURE;
 			} else if (view.getId() == R.id.video_button) {
 				Button vid_button = (Button) ui_view
 						.findViewById(R.id.video_sign);
 				vid_button.setBackgroundResource(R.drawable.sign_select);
 				this.cur_content = vid_button;
+				this.content = Content.VIDEO;
 			}
 		}
 

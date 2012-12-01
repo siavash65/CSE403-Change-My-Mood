@@ -21,15 +21,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import cmm.model.Content;
 import cmm.model.Mood;
 import cmm.model.UrlProvider;
 import cmm.view.R;
-import cmm.view.VideoActivity;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 import cmm.view.newview.navigation.NavigationFragment;
 
@@ -46,6 +44,7 @@ public class CmmActivity extends FragmentActivity {
 	/* UI objects */
 	private Point ui_dimension;
 	private LinearLayout ui_contentLayout;
+	private NavigationFragment navigationFragment;
 	private ContentDisplayFragment contentFragment;
 
 	/** Called when the activity is first created. */
@@ -120,7 +119,7 @@ public class CmmActivity extends FragmentActivity {
 				.beginTransaction();
 
 		// add navigation fragment
-		NavigationFragment navigationFragment = new NavigationFragment(this);
+		this.navigationFragment = new NavigationFragment(this);
 		fragmentTransaction.add(R.id.navigation_fragment, navigationFragment);
 
 		// add content fragment
@@ -131,11 +130,25 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void displayImage(Mood mood) {
+		contentFragment.showButton();
 		new GetPictureTask(this).execute(mood.ordinal(), Content.PICTURE.ordinal());
 	}
 
 	public void displayVideo(Mood mood) {
+		contentFragment.showButton();
 		new GetVideoTask(this).execute(mood.ordinal(), Content.VIDEO.ordinal());
+	}
+	
+	public void nextContent(View view) {
+		Content curCon = navigationFragment.getContent();
+		Mood curMood = navigationFragment.getMood();
+		if (curCon != null && curMood != null) {
+			if (curCon == Content.PICTURE) {
+				displayImage(curMood);
+			} else if (curCon == Content.VIDEO) {
+				displayVideo(curMood);
+			}
+		}
 	}
 
 	private class GetVideoTask extends AsyncTask<Integer, Integer, String> {

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import cmm.model.Content;
 import cmm.model.Mood;
 import cmm.view.R;
 import cmm.view.newview.CmmActivity;
@@ -23,6 +24,8 @@ public class NavigationFragment extends Fragment {
 	private Collection<Button> ui_moodButtons;
 	private Button ui_currentButton;
 	private ContentSelectionFragment csf;
+	
+	private Mood mood;
 
 	public NavigationFragment(CmmActivity activity) {
 		this.activity = activity;
@@ -43,21 +46,32 @@ public class NavigationFragment extends Fragment {
 		return view;
 	}
 
+	public Mood getMood() {
+		return mood;
+	}
+	
+	public Content getContent() {
+		if (csf == null) {
+			return null;
+		}
+		return csf.getContent();
+	}
+	
 	public void moodClick(View view) {
 		Button clickedButton = (Button) view;
 
 		// Determine who clicked
 		int button_id = clickedButton.getId();
-		Mood mood = Mood.HAPPY;
+		this.mood = Mood.HAPPY;
 		switch (button_id) {
 		case R.id.romantic_button:
-			mood = Mood.ROMANTIC;
+			this.mood = Mood.ROMANTIC;
 			break;
 		case R.id.inspiring_button:
-			mood = Mood.INSPIRED;
+			this.mood = Mood.INSPIRED;
 			break;
 		case R.id.enervating_button:
-			mood = Mood.EXCITED;
+			this.mood = Mood.EXCITED;
 			break;
 		}
 

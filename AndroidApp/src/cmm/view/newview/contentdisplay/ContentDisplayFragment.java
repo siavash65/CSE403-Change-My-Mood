@@ -1,7 +1,7 @@
 package cmm.view.newview.contentdisplay;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,29 +11,40 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import cmm.model.Content;
 import cmm.view.R;
+import cmm.view.newview.CmmActivity;
 
 public class ContentDisplayFragment extends Fragment {
 	private static final String TAG = "ContentDisplayFragment";
 
 	private static ContentDisplayFragment instance;
 
-	private Activity activity;
-
+	private CmmActivity activity;
+	
 	private View ui_view;
 	private Content cur_content;
 	private PictureDisplayFragment picture_fragment;
 	private VideoDisplayFragment video_fragment;
+	
+	private Button ui_nextButton;
+	private Button ui_prevButton;
+	
+	private Animation anim_fadeoutButton;
 
-	public static ContentDisplayFragment getInstance(Activity activity) {
+	public static ContentDisplayFragment getInstance(CmmActivity activity) {
 		if (instance == null) {
 			instance = new ContentDisplayFragment(activity);
 		}
 		return instance;
 	}
 
-	private ContentDisplayFragment(Activity activity) {
+	private ContentDisplayFragment(CmmActivity activity) {
 		this.activity = activity;
 	}
 
@@ -56,13 +67,14 @@ public class ContentDisplayFragment extends Fragment {
 		if (picture_fragment != null) {
 			picture_fragment.disable();
 		}
-		
+
 		if (video_fragment != null) {
 			video_fragment.disable();
 		}
 	}
-	
+
 	public void displayImage(Drawable image) {
+		handleButtonState();
 		if (cur_content != Content.PICTURE) {
 			disableAllFragment(Content.PICTURE);
 			picture_fragment.enable();
@@ -94,6 +106,7 @@ public class ContentDisplayFragment extends Fragment {
 	}
 
 	public void displayVideo(String link) {
+		handleButtonState();
 		if (cur_content != Content.VIDEO) {
 			disableAllFragment(Content.VIDEO);
 			video_fragment.enable();
@@ -104,7 +117,24 @@ public class ContentDisplayFragment extends Fragment {
 		video_fragment.displayVideo(link);
 
 	}
-
+	
+	private void handleButtonState() {
+		if (this.ui_nextButton.getVisibility() == View.VISIBLE) {
+			ui_nextButton.startAnimation(anim_fadeoutButton);
+			ui_prevButton.startAnimation(anim_fadeoutButton);
+		}
+	}
+	
+	public void showButton() {
+		this.ui_nextButton.setBackgroundColor(Color.WHITE);
+		this.ui_prevButton.setBackgroundColor(Color.WHITE);
+	}
+	
+	private void hideButtons() {
+		this.ui_nextButton.setBackgroundColor(Color.TRANSPARENT);
+		this.ui_prevButton.setBackgroundColor(Color.TRANSPARENT);
+	}
+	
 	private void setupComponents() {
 		FragmentTransaction fragmentTransaction = this.getFragmentManager()
 				.beginTransaction();
@@ -117,14 +147,34 @@ public class ContentDisplayFragment extends Fragment {
 		fragmentTransaction.add(R.id.video_fragment, (Fragment) video_fragment);
 
 		fragmentTransaction.commit();
+		
+		// UI Setup
+		this.ui_nextButton = (Button) ui_view.findViewById(R.id.next_button);
+		this.ui_prevButton = (Button) ui_view.findViewById(R.id.prev_button);
+		
+		// Animation setup
+		anim_fadeoutButton = AnimationUtils.loadAnimation(ui_view.getContext(), R.anim.button_hide);
 	}
 
 	private void handleEvents() {
+		anim_fadeoutButton.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
 
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				hideButtons();
+			}
+		});
 	}
 
 	private void doLayout() {
-
+		hideButtons();
 	}
 
 	private void disableAllFragment(Content exception) {
