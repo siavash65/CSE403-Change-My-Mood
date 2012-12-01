@@ -14,13 +14,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import cmm.model.Mood;
 import cmm.view.R;
+import cmm.view.newview.CmmActivity;
 
 public class NavigationFragment extends Fragment {
+	private CmmActivity activity;
+	
 	private View ui_view;
 	private Collection<Button> ui_moodButtons;
 	private Button ui_currentButton;
 	private ContentSelectionFragment csf;
 
+	public NavigationFragment(CmmActivity activity) {
+		this.activity = activity;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -76,8 +83,8 @@ public class NavigationFragment extends Fragment {
 
 			// add a fragment
 			ContentSelectionFragment csFragment = ContentSelectionFragment
-					.getInstance(mood);
-			fragmentTransaction.add(R.id.content_fragment, csFragment);
+					.getInstance(activity, mood);
+			fragmentTransaction.add(R.id.content_select_fragment, csFragment);
 			fragmentTransaction.commit();
 			this.csf = csFragment;
 		} else if (differentButton) {
@@ -90,8 +97,8 @@ public class NavigationFragment extends Fragment {
 
 			// add a fragment
 			ContentSelectionFragment csFragment = ContentSelectionFragment
-					.getInstance(mood);
-			fragmentTransaction.add(R.id.content_fragment, csFragment);
+					.getInstance(activity, mood);
+			fragmentTransaction.add(R.id.content_select_fragment, csFragment);
 			fragmentTransaction.commit();
 			this.csf = csFragment;
 

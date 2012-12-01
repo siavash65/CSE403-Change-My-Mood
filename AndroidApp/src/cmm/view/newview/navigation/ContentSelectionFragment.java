@@ -18,10 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import cmm.model.Mood;
 import cmm.view.R;
+import cmm.view.newview.CmmActivity;
 
 public class ContentSelectionFragment extends Fragment {
 	private static ContentSelectionFragment instance;
 
+	private CmmActivity activity;
+	
 	// views
 	private View ui_view;
 	private ViewGroup ui_toplevel;
@@ -47,9 +50,9 @@ public class ContentSelectionFragment extends Fragment {
 	 * @param mood
 	 * @return
 	 */
-	public static ContentSelectionFragment getInstance(Mood mood) {
+	public static ContentSelectionFragment getInstance(CmmActivity activity, Mood mood) {
 		if (instance == null || instance.mood != mood) {
-			instance = new ContentSelectionFragment(mood);
+			instance = new ContentSelectionFragment(activity, mood);
 		}
 		return instance;
 	}
@@ -59,8 +62,9 @@ public class ContentSelectionFragment extends Fragment {
 	 * 
 	 * @param mood
 	 */
-	private ContentSelectionFragment(Mood mood) {
+	private ContentSelectionFragment(CmmActivity activity, Mood mood) {
 		this.mood = mood;
+		this.activity = activity;
 		this.displayingContent = false;
 	}
 
@@ -120,6 +124,12 @@ public class ContentSelectionFragment extends Fragment {
 
 		Toast.makeText(view.getContext(), "mood = " + mood.value,
 				Toast.LENGTH_SHORT).show();
+		// Display Content
+		if (view.getId() == R.id.picture_button) {
+			activity.displayImage(mood);
+		} else if (view.getId() == R.id.video_button) {
+			activity.displayVideo(mood);
+		}
 	}
 
 	private void afterFadeOutEnd() {
