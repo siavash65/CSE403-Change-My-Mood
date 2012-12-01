@@ -283,11 +283,11 @@ public class VideoActivity extends Activity {
 		inflater = getMenuInflater();
 		this.menu = menu;
 
-		if (FacebookHandler.getInstance().getStatus()) {
+		/*if (FacebookHandler.getInstance().getStatus()) {
 			inflater.inflate(R.menu.menu_login, menu);
 		} else {
 			inflater.inflate(R.menu.menu_basic, menu);
-		}
+		}*/
 		return true;
 	}
 
@@ -305,7 +305,7 @@ public class VideoActivity extends Activity {
 			startActivity(intent);
 			return true;
 		case R.id.signout_menu:
-			FacebookHandler.getInstance().doSignout(this, menu, inflater);
+			//FacebookHandler.getInstance().doSignout(this, menu, inflater);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

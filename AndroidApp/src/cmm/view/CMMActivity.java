@@ -86,12 +86,12 @@ public class CMMActivity extends Activity{
     }
     
 	public void skip_signin(View view){
-		Intent intent = new Intent(this, MoodPage.class);
-		FacebookHandler.getInstance().skipFB();
-		startActivity(intent);
+		//Intent intent = new Intent(this, MoodPage.class);
+		//FacebookHandler.getInstance().skipFB();
+		//startActivity(intent);
 	}
 	
 	public void facebookSignin(View view){
-		FacebookHandler.getInstance().doSignin(this, getBaseContext());
+		//FacebookHandler.getInstance().doSignin(this, getBaseContext());
 	}
 }

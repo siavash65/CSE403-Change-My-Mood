@@ -1,26 +1,9 @@
 package cmm.model;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import cmm.view.MoodPage;
-import cmm.view.R;
-
-import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.Facebook.DialogListener;
-import com.facebook.android.FacebookError;
 
 public class FacebookHandler extends Activity{
-	private static FacebookHandler instance = null;
+/*	private static FacebookHandler instance = null;
 	private final static String FACEBOOK_APP_ID = "343378635757581";
 	
 	private Facebook FACEBOOK;
@@ -111,5 +94,5 @@ public class FacebookHandler extends Activity{
 	
 	public boolean getStatus(){
 		return usefb;
-	}
+	}*/
 }
