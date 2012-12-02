@@ -1,6 +1,7 @@
 package cmm.view.newview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -16,9 +17,12 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
@@ -26,6 +30,7 @@ import cmm.model.ContentStorage;
 import cmm.model.Mood;
 import cmm.model.Rater;
 import cmm.view.R;
+import cmm.view.VideoFullPage;
 import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 import cmm.view.newview.navigation.NavigationFragment;
@@ -59,6 +64,7 @@ public class CmmActivity extends FragmentActivity {
 	private ContentDisplayFragment contentFragment;
 	private ButtonsControlFragment buttonsControlFragment;
 	private ViewGroup ui_content_bg;
+	private SeekBar ui_progress;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -70,8 +76,9 @@ public class CmmActivity extends FragmentActivity {
 		handleEvents();
 		doLayout();
 
-		rater = new Rater(buttonsControlFragment);
+		rater = new Rater(buttonsControlFragment, this.ui_progress);
 		contentStorage = new ContentStorage(contentFragment, buttonsControlFragment, ui_textviews);
+		
 	}
 
 	@Override
@@ -102,6 +109,12 @@ public class CmmActivity extends FragmentActivity {
 		super.onStop();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+		contentStorage.resumeFromFullScreen();
+	}
+	
 	public Point getDimension() {
 		return ui_dimension;
 	}
@@ -142,6 +155,9 @@ public class CmmActivity extends FragmentActivity {
 		ui_textviews = new TextView[]{
 				(TextView)findViewById(R.id.ups_number),
 				(TextView)findViewById(R.id.downs_number)};
+		
+		// progress bar
+		ui_progress = (SeekBar) findViewById(R.id.progress_bar);
 	}
 
 	/*
@@ -186,6 +202,9 @@ public class CmmActivity extends FragmentActivity {
 				buttonsControlFragment);
 
 		fragmentTransaction.commit();
+		
+		// disable progress bar
+		this.ui_progress.setEnabled(false);
 	}
 
 	/**
@@ -289,13 +308,24 @@ public class CmmActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * Full screen
+	 * @onClick
+	 * @param view
+	 */
+	public void fullScreen(View view) {
+		contentFragment.disableButtons();
+		contentFragment.showFullButton();
+		contentStorage.fullScreen();
+	}
+	
 	public void displayRateResponse(boolean isSuccess) {
 		String msg = isSuccess ? getResources().getString(
 				R.string.rate_success_msg) : getResources().getString(
 				R.string.rate_fail_msg);
 		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 	}
-
+	
 	/**
 	 * Show new content
 	 */
