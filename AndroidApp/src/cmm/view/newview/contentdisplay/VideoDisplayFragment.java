@@ -1,7 +1,6 @@
 package cmm.view.newview.contentdisplay;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 import cmm.view.R;
-import cmm.view.VideoFullPage;
 
 public class VideoDisplayFragment extends Fragment {
 	private static final String TAG = "VideoDisplayFragment";

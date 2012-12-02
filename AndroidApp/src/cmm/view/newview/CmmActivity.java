@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
-import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 import cmm.model.Rater;
 import cmm.view.R;
@@ -40,7 +39,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/* Text Views */
 	private TextView[] ui_textviews;
-	
+
 	/* Model Objects */
 	private ContentStorage contentStorage;
 	private Rater rater;
@@ -73,8 +72,8 @@ public class CmmActivity extends FragmentActivity {
 		doLayout();
 
 		rater = new Rater(buttonsControlFragment, this.ui_progress);
-		contentStorage = new ContentStorage(contentFragment, buttonsControlFragment, ui_textviews);
-		
+		contentStorage = new ContentStorage(contentFragment,
+				buttonsControlFragment, ui_textviews);
 	}
 
 	@Override
@@ -105,16 +104,10 @@ public class CmmActivity extends FragmentActivity {
 		super.onStop();
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
-		contentStorage.resumeFromFullScreen();
-	}
-	
 	public Point getDimension() {
 		return ui_dimension;
 	}
-	
+
 	/*
 	 * Setup the ui components
 	 */
@@ -146,24 +139,21 @@ public class CmmActivity extends FragmentActivity {
 		// for initial picture
 		initialize = false;
 		ui_content_bg = (ViewGroup) findViewById(R.id.content_layout);
-		
+
 		// content info
-		ui_textviews = new TextView[]{
-				(TextView)findViewById(R.id.ups_number),
-				(TextView)findViewById(R.id.downs_number)};
-		
+		ui_textviews = new TextView[] {
+				(TextView) findViewById(R.id.ups_number),
+				(TextView) findViewById(R.id.downs_number) };
+
 		// progress bar
 		ui_progress = (SeekBar) findViewById(R.id.progress_bar);
 	}
 
-	public void facebook_signin(View view){
-		FacebookHandler.getInstance().doSignin(this, getBaseContext());
+	public void facebook_signintest(View view) {
+		Intent i = new Intent(this, FacebookHandler.class);
+		startActivity(i);
 	}
-	
-	public void facebook_signout(View view){
-		FacebookHandler.getInstance().doSignout(this);
-	}
-	
+
 	/*
 	 * Add listeners if necessary
 	 */
@@ -312,24 +302,13 @@ public class CmmActivity extends FragmentActivity {
 		}
 	}
 
-	/**
-	 * Full screen
-	 * @onClick
-	 * @param view
-	 */
-	public void fullScreen(View view) {
-		contentFragment.disableButtons();
-		contentFragment.showFullButton();
-		contentStorage.fullScreen();
-	}
-	
 	public void displayRateResponse(boolean isSuccess) {
 		String msg = isSuccess ? getResources().getString(
 				R.string.rate_success_msg) : getResources().getString(
 				R.string.rate_fail_msg);
 		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 	}
-	
+
 	/**
 	 * Show new content
 	 */

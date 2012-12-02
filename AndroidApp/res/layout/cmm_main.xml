@@ -3,33 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-	
-    <RelativeLayout
-        android:id="@+id/top_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-	        <LinearLayout 
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_alignParentRight="true"
-	            android:orientation="horizontal">
-		        <Button
-		            android:id="@+id/cmm_signin"
-		            android:layout_width="20dp"
-		            android:layout_height="20dp"
-		            android:background="@drawable/com_facebook_icon"
-		            android:onClick="facebook_signin"
-		            android:layout_marginRight="4dp" />
-		        <Button
-		            android:id="@+id/cmm_signout"
-		            android:layout_width="20dp"
-		            android:layout_height="20dp"
-		            android:background="@drawable/com_facebook_close"
-		            android:onClick="facebook_signout" />
-        </LinearLayout>
-    </RelativeLayout>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,6 +63,22 @@
             android:src="@drawable/happy" />
     </RelativeLayout>
 
+    <!-- <LinearLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#333333"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:onClick="facebook_signintest"
+            android:text="Progress Bar" />
+    </LinearLayout> -->
+
     <RelativeLayout
         android:id="@+id/content_layout"
         android:layout_width="wrap_content"
@@ -113,6 +103,7 @@
         android:layout_width="fill_parent"
         android:layout_height="18dp"
         android:layout_below="@+id/content_layout"
+        android:background="#000000"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="horizontal" >
 

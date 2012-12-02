@@ -1,8 +1,5 @@
 package cmm.view.newview.contentdisplay;
 
-import java.io.ByteArrayOutputStream;
-
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +15,10 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import cmm.model.Content;
 import cmm.view.R;
-import cmm.view.VideoFullPage;
 import cmm.view.newview.CmmActivity;
-import cmm.view.newview.PictureFullActivity;
 
 public class ContentDisplayFragment extends Fragment {
 	private static final String TAG = "ContentDisplayFragment";
@@ -29,16 +26,15 @@ public class ContentDisplayFragment extends Fragment {
 	private static ContentDisplayFragment instance;
 
 	private CmmActivity activity;
-
+	
 	private View ui_view;
 	private Content cur_content;
 	private PictureDisplayFragment picture_fragment;
 	private VideoDisplayFragment video_fragment;
-
+	
 	private Button ui_nextButton;
 	private Button ui_prevButton;
-	private Button ui_fullButton;
-
+	
 	private Animation anim_fadeoutButton;
 
 	public static ContentDisplayFragment getInstance(CmmActivity activity) {
@@ -78,46 +74,43 @@ public class ContentDisplayFragment extends Fragment {
 	}
 
 	public void displayImage(Drawable image) {
-		this.displayImage(image, false);
-	}
-	
-	public void displayImage(Drawable image, boolean forceRedisplay) {
 		handleButtonState();
-		if (cur_content != Content.PICTURE || forceRedisplay) {
+		if (cur_content != Content.PICTURE) {
 			disableAllFragment(Content.PICTURE);
 			picture_fragment.enable();
 			cur_content = Content.PICTURE;
 		}
-
+		
 		// Running out of memory
 
-		/*
-		 * Bitmap bitmap = ((BitmapDrawable) image).getBitmap(); int h0 =
-		 * bitmap.getHeight(); int w0 = bitmap.getWidth(); int height =
-		 * ui_view.getHeight(); int width = ui_view.getWidth(); double w_ratio =
-		 * 1.0 * width / w0; double h_ratio = 1.0 * height / h0; if (h_ratio <
-		 * w_ratio) { width = (int) (h_ratio * w0); } else { height = (int)
-		 * (w_ratio * h0); }
-		 * 
-		 * Log.d(TAG, "screen: h: " + ui_view.getHeight() + ", w: " +
-		 * ui_view.getWidth()); Log.d(TAG, "image: h: " + h0 + ", w: " + w0);
-		 * Log.d(TAG, "cur: h: " + height + ", w: " + width); Drawable d = new
-		 * BitmapDrawable(ui_view.getResources(),
-		 * Bitmap.createScaledBitmap(bitmap, width, height, true));
-		 * picture_fragment.displayMedia(d);
-		 */
+		/*Bitmap bitmap = ((BitmapDrawable) image).getBitmap();
+		int h0 = bitmap.getHeight();
+		int w0 = bitmap.getWidth();
+		int height = ui_view.getHeight();
+		int width = ui_view.getWidth();
+		double w_ratio = 1.0 * width / w0;
+		double h_ratio = 1.0 * height / h0;
+		if (h_ratio < w_ratio) {
+			width = (int) (h_ratio * w0);
+		} else {
+			height = (int) (w_ratio * h0);
+		}
+
+		Log.d(TAG,
+				"screen: h: " + ui_view.getHeight() + ", w: "
+						+ ui_view.getWidth());
+		Log.d(TAG, "image: h: " + h0 + ", w: " + w0);
+		Log.d(TAG, "cur: h: " + height + ", w: " + width);
+		Drawable d = new BitmapDrawable(ui_view.getResources(),
+				Bitmap.createScaledBitmap(bitmap, width, height, true));
+		picture_fragment.displayMedia(d);*/
 		picture_fragment.displayMedia(image);
 
 	}
 
-	
 	public void displayVideo(String link) {
-		displayVideo(link, false);
-	}
-	
-	public void displayVideo(String link, boolean forceRedisplay) {
 		handleButtonState();
-		if (cur_content != Content.VIDEO || forceRedisplay) {
+		if (cur_content != Content.VIDEO) {
 			disableAllFragment(Content.VIDEO);
 			video_fragment.enable();
 
@@ -127,68 +120,34 @@ public class ContentDisplayFragment extends Fragment {
 		video_fragment.displayVideo(link);
 
 	}
-
-	public void displayFullImage(Drawable image) {
-		handleButtonState();
-		Intent intent = new Intent(activity, PictureFullActivity.class);
-
-		Bitmap bitmap = ((BitmapDrawable) image).getBitmap();
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-		byte[] b = baos.toByteArray();
-
-		intent.putExtra(PictureFullActivity.PIC_TAG, b);
-		startActivityForResult(intent, 2);
-	}
 	
-	public void displayFullVideo(String url) {
-		Intent i = new Intent(activity.getApplicationContext(), VideoFullPage.class);
-		i.putExtra("URL", url);
-		startActivityForResult(i, 2);
-	}
-
 	public void disableButtons() {
 		ui_nextButton.setEnabled(false);
 		ui_prevButton.setEnabled(false);
-		ui_fullButton.setEnabled(false);
 	}
-
+	
 	public void EnableButtons() {
 		ui_nextButton.setEnabled(true);
 		ui_prevButton.setEnabled(true);
-		ui_fullButton.setEnabled(true);
 	}
-
+	
 	private void handleButtonState() {
 		if (this.ui_nextButton.getVisibility() == View.VISIBLE) {
 			ui_nextButton.startAnimation(anim_fadeoutButton);
-		}
-
-		if (this.ui_prevButton.getVisibility() == View.VISIBLE) {
 			ui_prevButton.startAnimation(anim_fadeoutButton);
 		}
-
-		if (this.ui_fullButton.getVisibility() == View.VISIBLE) {
-			ui_fullButton.startAnimation(anim_fadeoutButton);
-		}
 	}
-
+	
 	public void showButton() {
 		this.ui_nextButton.setBackgroundResource(R.drawable.next_button);
 		this.ui_prevButton.setBackgroundResource(R.drawable.prev_button);
-		this.ui_fullButton.setBackgroundResource(R.drawable.fullscreen_button);
 	}
 	
-	public void showFullButton() {
-		this.ui_fullButton.setBackgroundResource(R.drawable.fullscreen_button);
-	}
-
 	public void hideButtons() {
 		this.ui_nextButton.setBackgroundColor(Color.TRANSPARENT);
 		this.ui_prevButton.setBackgroundColor(Color.TRANSPARENT);
-		this.ui_fullButton.setBackgroundColor(Color.TRANSPARENT);
 	}
-
+	
 	private void setupComponents() {
 		FragmentTransaction fragmentTransaction = this.getFragmentManager()
 				.beginTransaction();
@@ -201,16 +160,13 @@ public class ContentDisplayFragment extends Fragment {
 		fragmentTransaction.add(R.id.video_fragment, (Fragment) video_fragment);
 
 		fragmentTransaction.commit();
-
+		
 		// UI Setup
 		this.ui_nextButton = (Button) ui_view.findViewById(R.id.next_button);
 		this.ui_prevButton = (Button) ui_view.findViewById(R.id.prev_button);
-		this.ui_fullButton = (Button) ui_view
-				.findViewById(R.id.fullscreen_button);
-
+		
 		// Animation setup
-		anim_fadeoutButton = AnimationUtils.loadAnimation(ui_view.getContext(),
-				R.anim.button_hide);
+		anim_fadeoutButton = AnimationUtils.loadAnimation(ui_view.getContext(), R.anim.button_hide);
 	}
 
 	private void handleEvents() {
