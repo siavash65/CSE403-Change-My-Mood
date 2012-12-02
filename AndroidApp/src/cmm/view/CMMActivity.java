@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
-import cmm.model.FacebookHandler;
+import cmm.view.newview.FacebookHandler;
 
 public class CMMActivity extends Activity{
 	private ImageView imageView;

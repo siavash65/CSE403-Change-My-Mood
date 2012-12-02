@@ -26,12 +26,13 @@
         android:background="#333333"
         android:orientation="vertical" >
 
-        <TextView
+        <Button
             android:id="@+id/textView1"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Progress Bar" />
+            android:text="Progress Bar"
+            android:onClick="facebook_signintest" />
     </LinearLayout>
 
     <LinearLayout
