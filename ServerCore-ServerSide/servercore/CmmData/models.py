@@ -196,7 +196,7 @@ class Picture(models.Model):
         f = FilterCheck(media=m, checked=checked)
         f.save()
             
-#            return True
+        return True
 #        elif len(res) == 1:
 #            return False
 #            #Depreciated
