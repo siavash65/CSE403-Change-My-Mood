@@ -62,12 +62,13 @@
         android:layout_below="@+id/content_layout"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textView3"
+        <FrameLayout
+            android:id="@+id/buttonscontrol_fragment"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Buttons click click~~" />
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+        </FrameLayout>
+        
     </LinearLayout>
 
     <LinearLayout

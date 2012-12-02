@@ -240,11 +240,17 @@ public class CmmActivity extends FragmentActivity {
 	 * @param view
 	 */
 	public void thumbsUp(View view) {
-		Content curCon = navigationFragment.getContent();
-		Mood curMood = navigationFragment.getMood();
 		String mid = contentStorage.getMid();
 	}
 
+	
+	/**
+	 * When thumbs down is clicked
+	 */
+	public void thumbsDown(View view) {
+		String mid = contentStorage.getMid();
+	}
+	
 	/**
 	 * Show new content
 	 */
