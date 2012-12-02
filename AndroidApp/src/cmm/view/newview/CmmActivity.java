@@ -21,7 +21,9 @@ import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
 import cmm.model.Mood;
+import cmm.model.Rater;
 import cmm.view.R;
+import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 import cmm.view.newview.navigation.NavigationFragment;
 
@@ -34,8 +36,9 @@ public class CmmActivity extends FragmentActivity {
 
 	/* Model Objects */
 	private ContentStorage contentStorage;
-	
-	// Shake 
+	private Rater rater;
+
+	// Shake
 	private SensorManager mSensorManager;
 	private float mAccel; // acceleration apart from gravity
 	private float mAccelCurrent; // current acceleration including gravity
@@ -48,6 +51,7 @@ public class CmmActivity extends FragmentActivity {
 	private LinearLayout ui_contentLayout;
 	private NavigationFragment navigationFragment;
 	private ContentDisplayFragment contentFragment;
+	private ButtonsControlFragment buttonsControlFragment;
 	private ViewGroup ui_content_bg;
 
 	/** Called when the activity is first created. */
@@ -60,7 +64,8 @@ public class CmmActivity extends FragmentActivity {
 		handleEvents();
 		doLayout();
 
-		contentStorage = new ContentStorage(contentFragment);
+		contentStorage = new ContentStorage(contentFragment, buttonsControlFragment);
+		rater = new Rater(buttonsControlFragment);
 	}
 
 	@Override
@@ -148,7 +153,6 @@ public class CmmActivity extends FragmentActivity {
 		// Changes the height and width to the specified *pixels*
 		params.height = (int) (1.0 * ui_dimension.x / CONTENT_W_OVER_H);
 
-		
 		// get an instance of FragmentTransaction from your Activity
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -161,11 +165,17 @@ public class CmmActivity extends FragmentActivity {
 		this.contentFragment = ContentDisplayFragment.getInstance(this);
 		fragmentTransaction.add(R.id.content_fragment, contentFragment);
 
+		// add buttoncontrol Fragment
+		this.buttonsControlFragment = ButtonsControlFragment.getInstance(this);
+		fragmentTransaction.add(R.id.buttonscontrol_fragment,
+				buttonsControlFragment);
+
 		fragmentTransaction.commit();
 	}
 
 	/**
 	 * Display Next Image
+	 * 
 	 * @param mood
 	 */
 	public void displayNextImage(Mood mood) {
@@ -180,6 +190,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/**
 	 * Display Next Video
+	 * 
 	 * @param mood
 	 */
 	public void displayNextVideo(Mood mood) {
@@ -196,6 +207,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/**
 	 * Next button event
+	 * 
 	 * @onClick
 	 * @param view
 	 */
@@ -216,6 +228,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/**
 	 * Prev button event
+	 * 
 	 * @onClick
 	 * @param view
 	 */
@@ -233,24 +246,41 @@ public class CmmActivity extends FragmentActivity {
 			}
 		}
 	}
-	
+
 	/**
 	 * When thumbs up is clicked
+	 * 
 	 * @onClick
 	 * @param view
 	 */
 	public void thumbsUp(View view) {
 		String mid = contentStorage.getMid();
+		if (mid != null) {
+			buttonsControlFragment.DisableButton();
+			contentStorage.ratedMid(mid);
+			rater.rateThumbsUp(mid);
+		}
 	}
 
-	
 	/**
 	 * When thumbs down is clicked
 	 */
 	public void thumbsDown(View view) {
 		String mid = contentStorage.getMid();
+		if (mid != null) {
+			buttonsControlFragment.DisableButton();
+			contentStorage.ratedMid(mid);
+			rater.rateThumbsDown(mid);
+		}
 	}
-	
+
+	public void displayRateResponse(boolean isSuccess) {
+		String msg = isSuccess ? getResources().getString(
+				R.string.rate_success_msg) : getResources().getString(
+				R.string.rate_fail_msg);
+		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+	}
+
 	/**
 	 * Show new content
 	 */

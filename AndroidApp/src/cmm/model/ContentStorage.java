@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
-import cmm.view.newview.CmmActivity;
+import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 
 public class ContentStorage {
@@ -35,10 +35,15 @@ public class ContentStorage {
 
 	private String cur_mid;
 
-	private ContentDisplayFragment contentFragment;
+	private Map<String, Boolean> canRateMap;
 
-	public ContentStorage(ContentDisplayFragment contentFragment) {
+	private ContentDisplayFragment contentFragment;
+	private ButtonsControlFragment buttonsControlFragment;
+
+	public ContentStorage(ContentDisplayFragment contentFragment,
+			ButtonsControlFragment buttonControlFragment) {
 		this.contentFragment = contentFragment;
+		this.buttonsControlFragment = buttonControlFragment;
 
 		imageMap = new HashMap<Mood, List<String>>();
 		videoMap = new HashMap<Mood, List<String>>();
@@ -48,6 +53,8 @@ public class ContentStorage {
 
 		midToImage = new HashMap<String, Drawable>();
 		midToVideo = new HashMap<String, String>();
+
+		canRateMap = new HashMap<String, Boolean>();
 
 		for (Mood m : Mood.values()) {
 			imageMap.put(m, new ArrayList<String>());
@@ -60,7 +67,19 @@ public class ContentStorage {
 	public String getMid() {
 		return this.cur_mid;
 	}
-	
+
+	private boolean canRate(String mid) {
+		if (canRateMap.containsKey(mid)) {
+			return canRateMap.get(mid);
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public void ratedMid(String mid) {
+		canRateMap.put(mid, false);
+	}
+
 	public void getNextImage(Mood mood) {
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
@@ -84,6 +103,11 @@ public class ContentStorage {
 			this.cur_mid = mid;
 
 			contentFragment.EnableButtons();
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton();
+			}
 		}
 	}
 
@@ -109,6 +133,11 @@ public class ContentStorage {
 			contentFragment.displayImage(image);
 
 			this.cur_mid = mid;
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton();
+			}
 		}
 
 		contentFragment.EnableButtons();
@@ -144,8 +173,13 @@ public class ContentStorage {
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
 			contentFragment.EnableButtons();
-			
+
 			this.cur_mid = mid;
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton();
+			}
 		}
 
 	}
@@ -171,8 +205,13 @@ public class ContentStorage {
 			String videoUrl = midToVideo.get(mid);
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
-			
+
 			this.cur_mid = mid;
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton();
+			}
 		}
 		contentFragment.EnableButtons();
 		return true;
@@ -230,9 +269,12 @@ public class ContentStorage {
 					URL url = new URL(link);
 					InputStream is = (InputStream) url.getContent();
 					Drawable image = Drawable.createFromStream(is, "src");
-					
+
 					// get mid and store it
 					this.cs.cur_mid = json.getString("mid");
+					if (!canRateMap.containsKey(cs.cur_mid)) {
+						canRateMap.put(cs.cur_mid, true);
+					}
 					
 					// insert image
 					List<String> imageMidList = imageMap.get(mood);
@@ -242,8 +284,6 @@ public class ContentStorage {
 					imgIndex = imageMidList.size() - 1;
 					imageIndex.put(mood, imgIndex);
 					Log.d(TAG, "Inserted Image to list");
-
-					
 
 					return image;
 				} else {
@@ -259,6 +299,11 @@ public class ContentStorage {
 		protected void onPostExecute(Drawable result) {
 			contentFragment.displayImage(result);
 			contentFragment.EnableButtons();
+			if (canRate(cs.cur_mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton();
+			}
 			// Enable Rating here
 		}
 	}
@@ -307,6 +352,11 @@ public class ContentStorage {
 					Log.d(TAG, "Inserted video to list, idx = " + vidIndex
 							+ ", totsize = " + videoMidList.size());
 
+					// mid logic
+					if (!canRateMap.containsKey(cs.cur_mid)) {
+						canRateMap.put(cs.cur_mid, true);
+					}
+					
 					return jresult.getString("url");
 				}
 			} catch (Exception e) {
@@ -319,6 +369,11 @@ public class ContentStorage {
 		protected void onPostExecute(String str) {
 			contentFragment.displayVideo(str);
 			contentFragment.EnableButtons();
+			if (canRate(cs.cur_mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton();
+			}
 		}
 	}
 }
