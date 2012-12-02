@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import cmm.model.Mood;
-import cmm.view.newview.FacebookHandler;
 
 public class MoodPage extends Activity{
 	public static final String MOOD = "Mood";
