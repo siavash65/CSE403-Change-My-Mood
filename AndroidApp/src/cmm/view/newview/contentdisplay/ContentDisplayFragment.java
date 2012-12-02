@@ -80,8 +80,10 @@ public class ContentDisplayFragment extends Fragment {
 			picture_fragment.enable();
 			cur_content = Content.PICTURE;
 		}
+		
+		// Running out of memory
 
-		Bitmap bitmap = ((BitmapDrawable) image).getBitmap();
+		/*Bitmap bitmap = ((BitmapDrawable) image).getBitmap();
 		int h0 = bitmap.getHeight();
 		int w0 = bitmap.getWidth();
 		int height = ui_view.getHeight();
@@ -101,7 +103,8 @@ public class ContentDisplayFragment extends Fragment {
 		Log.d(TAG, "cur: h: " + height + ", w: " + width);
 		Drawable d = new BitmapDrawable(ui_view.getResources(),
 				Bitmap.createScaledBitmap(bitmap, width, height, true));
-		picture_fragment.displayMedia(d);
+		picture_fragment.displayMedia(d);*/
+		picture_fragment.displayMedia(image);
 
 	}
 
@@ -118,6 +121,16 @@ public class ContentDisplayFragment extends Fragment {
 
 	}
 	
+	public void disableButtons() {
+		ui_nextButton.setEnabled(false);
+		ui_prevButton.setEnabled(false);
+	}
+	
+	public void EnableButtons() {
+		ui_nextButton.setEnabled(true);
+		ui_prevButton.setEnabled(true);
+	}
+	
 	private void handleButtonState() {
 		if (this.ui_nextButton.getVisibility() == View.VISIBLE) {
 			ui_nextButton.startAnimation(anim_fadeoutButton);
@@ -130,7 +143,7 @@ public class ContentDisplayFragment extends Fragment {
 		this.ui_prevButton.setBackgroundColor(Color.WHITE);
 	}
 	
-	private void hideButtons() {
+	public void hideButtons() {
 		this.ui_nextButton.setBackgroundColor(Color.TRANSPARENT);
 		this.ui_prevButton.setBackgroundColor(Color.TRANSPARENT);
 	}

@@ -51,8 +51,8 @@ public class VideoDisplayFragment extends Fragment {
 		Log.d(TAG, "displaying url: " + url);
 		this.yid = url.split("=", 2)[1];
 
-		ui_webplayer.loadUrl("file:///android_asset/html/index.html");
 		ui_webplayer.setVisibility(View.INVISIBLE);
+		ui_webplayer.loadUrl("file:///android_asset/html/index.html");
 		ui_webplayer.setWebViewClient(new WebViewClient() {
 			public void onPageFinished(WebView view, String url) {
 				ui_webplayer.loadUrl("javascript:changesrc('" + yid + "')");

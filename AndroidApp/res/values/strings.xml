@@ -6,6 +6,9 @@
     <string name="hello">Hello World, CMMActivity!</string>
     <string name="app_name">CMM</string>
     
+    <!-- New Main Page -->
+    <string name="no_prev">No Previous</string>
+    
     <!-- Main page -->
     <string name="welcome">Welcome to Change My Mood</string>
     <string name="no_signin">Continue without signin</string>

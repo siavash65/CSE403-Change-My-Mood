@@ -24,7 +24,9 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import cmm.model.Content;
+import cmm.model.ContentStorage;
 import cmm.model.Mood;
 import cmm.model.UrlProvider;
 import cmm.view.R;
@@ -40,6 +42,7 @@ public class CmmActivity extends FragmentActivity {
 	/* Model Objects */
 	private String cur_mid;
 	private String cur_url;
+	private ContentStorage contentStorage;
 
 	/* UI objects */
 	private Point ui_dimension;
@@ -56,6 +59,8 @@ public class CmmActivity extends FragmentActivity {
 		setupComponents();
 		handleEvents();
 		doLayout();
+
+		contentStorage = new ContentStorage(contentFragment);
 	}
 
 	@Override
@@ -63,13 +68,13 @@ public class CmmActivity extends FragmentActivity {
 		super.onDestroy();
 		contentFragment.cleanup();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
-		contentFragment.cleanup();  // TODO: is this needed?
+		contentFragment.cleanup(); // TODO: is this needed?
 	}
-	
+
 	/*
 	 * Setup the ui components
 	 */
@@ -129,129 +134,61 @@ public class CmmActivity extends FragmentActivity {
 		fragmentTransaction.commit();
 	}
 
-	public void displayImage(Mood mood) {
+	public void displayNextImage(Mood mood) {
+		contentFragment.disableButtons();
 		contentFragment.showButton();
-		new GetPictureTask(this).execute(mood.ordinal(), Content.PICTURE.ordinal());
+		contentStorage.getNextImage(mood);
+		// new GetPictureTask(this).execute(mood.ordinal(),
+		// Content.PICTURE.ordinal());
 	}
 
-	public void displayVideo(Mood mood) {
+	public void displayNextVideo(Mood mood) {
+		contentFragment.disableButtons();
 		contentFragment.showButton();
-		new GetVideoTask(this).execute(mood.ordinal(), Content.VIDEO.ordinal());
+		contentStorage.getNextVideo(mood);
+		// new GetVideoTask(this).execute(mood.ordinal(),
+		// Content.VIDEO.ordinal());
 	}
-	
+
 	public void nextContent(View view) {
 		Content curCon = navigationFragment.getContent();
 		Mood curMood = navigationFragment.getMood();
 		if (curCon != null && curMood != null) {
 			if (curCon == Content.PICTURE) {
-				displayImage(curMood);
+				displayNextImage(curMood);
 			} else if (curCon == Content.VIDEO) {
-				displayVideo(curMood);
+				displayNextVideo(curMood);
 			}
 		}
 	}
 
-	private class GetVideoTask extends AsyncTask<Integer, Integer, String> {
-		private CmmActivity va;
-		private String yid;
-
-		public GetVideoTask(CmmActivity vact) {
-			super();
-			va = vact;
-		}
-
-		@Override
-		protected String doInBackground(Integer... arg) {
-			try {
-				HttpClient client = new DefaultHttpClient();
-				String vd_url = UrlProvider.getVideoUrl(Mood.fromInt(arg[0]),
-						Content.fromInt(arg[1]));
-
-				HttpGet hg = new HttpGet(vd_url);
-				HttpResponse hr = client.execute(hg);
-				HttpEntity he = hr.getEntity();
-
-				if (he != null) {
-					String result = EntityUtils.toString(he);
-
-					JSONObject jresult = new JSONObject(result);
-					va.cur_mid = jresult.getString("mid");
-					va.cur_url = jresult.getString("url");
-					return va.cur_url;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+	public void prevContent(View view) {
+		Content curCon = navigationFragment.getContent();
+		Mood curMood = navigationFragment.getMood();
+		if (curCon != null && curMood != null) {
+			if (curCon == Content.PICTURE) {
+				displayPrevImage(curMood);
+			} else if (curCon == Content.VIDEO) {
+				displayPrevVideo(curMood);
 			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(String str) {
-			contentFragment.displayVideo(str);
 		}
 	}
 
-	/**
-	 * Android 4.X Need to run networking code on another thread
-	 * 
-	 * @author hunlan
-	 * 
-	 */
-	private class GetPictureTask extends AsyncTask<Integer, Integer, Drawable> {
-		private CmmActivity myactivity;
-
-		public GetPictureTask(CmmActivity myactivity) {
-			super();
-			this.myactivity = myactivity;
+	private void displayPrevImage(Mood mood) {
+		contentFragment.showButton();
+		if (!contentStorage.getPrevImage(mood)) {
+			Toast.makeText(getApplicationContext(), R.string.no_prev,
+					Toast.LENGTH_SHORT).show();
+			contentFragment.hideButtons();
 		}
+	}
 
-		// 0th = mood, 1st = content
-		@Override
-		protected Drawable doInBackground(Integer... params) {
-			try {
-				HttpClient client = new DefaultHttpClient();
-				String url_str = UrlProvider.getPictureUrl(
-						Mood.fromInt(params[0]), Content.fromInt(params[1]));
-
-				Log.d(TAG, "url: " + url_str);
-
-				HttpGet get = new HttpGet(url_str);
-
-				HttpResponse responseGet = client.execute(get);
-
-				HttpEntity resEntityGet = responseGet.getEntity();
-
-				if (resEntityGet != null) {
-					// do something with the response
-					String rsp = EntityUtils.toString(resEntityGet);
-					Log.i("GET RESPONSE", rsp);
-
-					JSONObject json = new JSONObject(rsp);
-
-					String link = json.getString("url");
-					Log.d(TAG, "link: " + link);
-					URL url = new URL(link);
-					InputStream is = (InputStream) url.getContent();
-					Drawable image = Drawable.createFromStream(is, "src");
-
-					// get mid and store it
-					this.myactivity.cur_mid = json.getString("mid");
-					this.myactivity.cur_url = link;
-
-					return image;
-				} else {
-					Log.d(TAG, "resEntityGet is null");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Drawable result) {
-			contentFragment.displayImage(result);
-			// Enable Rating here
+	private void displayPrevVideo(Mood mood) {
+		contentFragment.showButton();
+		if (!contentStorage.getPrevVideo(mood)) {
+			Toast.makeText(getApplicationContext(), R.string.no_prev,
+					Toast.LENGTH_SHORT).show();
+			contentFragment.hideButtons();
 		}
 	}
 }

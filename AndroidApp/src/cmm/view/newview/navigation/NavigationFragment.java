@@ -102,20 +102,8 @@ public class NavigationFragment extends Fragment {
 			fragmentTransaction.commit();
 			this.csf = csFragment;
 		} else if (differentButton) {
-			// get an instance of FragmentTransaction from your Fragment
-			FragmentTransaction fragmentTransaction = this.getFragmentManager()
-					.beginTransaction();
-
-			// remove previous
-			fragmentTransaction.remove(this.csf);
-
-			// add a fragment
-			ContentSelectionFragment csFragment = ContentSelectionFragment
-					.getInstance(activity, mood);
-			fragmentTransaction.add(R.id.content_select_fragment, csFragment);
-			fragmentTransaction.commit();
-			this.csf = csFragment;
-
+			this.csf.setMood(mood);
+			this.csf.newselect();
 		} else {
 			this.csf.reselect();
 		}

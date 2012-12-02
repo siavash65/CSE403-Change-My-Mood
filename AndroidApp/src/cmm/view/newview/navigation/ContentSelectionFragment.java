@@ -54,7 +54,7 @@ public class ContentSelectionFragment extends Fragment {
 	 */
 	public static ContentSelectionFragment getInstance(CmmActivity activity,
 			Mood mood) {
-		if (instance == null || instance.mood != mood) {
+		if (instance == null) {
 			instance = new ContentSelectionFragment(activity, mood);
 		}
 		return instance;
@@ -69,6 +69,10 @@ public class ContentSelectionFragment extends Fragment {
 		this.mood = mood;
 		this.activity = activity;
 		this.displayingContent = false;
+	}
+
+	public void setMood(Mood mood) {
+		this.mood = mood;
 	}
 
 	public Content getContent() {
@@ -96,8 +100,10 @@ public class ContentSelectionFragment extends Fragment {
 
 	public void contentClick(View view) {
 		ui_view.setBackgroundColor(Color.TRANSPARENT);
+
 		// hide button
 		for (Button b : ui_contentButtons) {
+			b.setEnabled(false);
 			if (view == b) {
 				if (b.getId() == R.id.picture_button) {
 					b.setBackgroundResource(R.drawable.content_picture_button_select);
@@ -135,35 +141,56 @@ public class ContentSelectionFragment extends Fragment {
 				Toast.LENGTH_SHORT).show();
 		// Display Content
 		if (view.getId() == R.id.picture_button) {
-			activity.displayImage(mood);
+			activity.displayNextImage(mood);
 		} else if (view.getId() == R.id.video_button) {
-			activity.displayVideo(mood);
+			activity.displayNextVideo(mood);
 		}
 	}
 
+	/**
+	 * After button fadded out
+	 */
 	private void afterFadeOutEnd() {
 		for (Button b : ui_contentButtons) {
+			// hide button
 			b.setVisibility(View.INVISIBLE);
 		}
-		ui_toplevel.startAnimation(anim_scale);
+		ui_toplevel.startAnimation(anim_scale);  // TODO: this is doing twice
 	}
 
 	private void afterScaleEnd() {
 		for (Button b : ui_contentButtons) {
 			b.setVisibility(View.GONE);
+			b.setEnabled(true);
 		}
 		displayingContent = false;
 	}
 
 	public void reselect() {
+		if (!displayingContent) {
+			ui_view.setBackgroundResource(R.drawable.sign_bg_select);
+			for (Button b : ui_contentButtons) {
+				b.setVisibility(View.VISIBLE);
+			}
+			ui_toplevel.startAnimation(anim_scaleback);
+			displayingContent = true;
+		} else {
+			for (Button b : ui_contentButtons) {
+				b.setEnabled(false);
+			}
+			ui_view.setBackgroundColor(Color.TRANSPARENT);
+			ui_toplevel.startAnimation(anim_scale);
+		}
+
+	}
+
+	public void newselect() {
 		ui_view.setBackgroundResource(R.drawable.sign_bg_select);
 		for (Button b : ui_contentButtons) {
 			b.setVisibility(View.VISIBLE);
 		}
-		if (!displayingContent) {
-			ui_toplevel.startAnimation(anim_scaleback);
-			displayingContent = true;
-		}
+		ui_toplevel.startAnimation(anim_scaleback);
+		displayingContent = true;
 	}
 
 	/*
@@ -218,7 +245,7 @@ public class ContentSelectionFragment extends Fragment {
 			});
 		}
 
-		// Animation call back
+		// Animation call back - Fade out = button exit
 		anim_fadeout.setAnimationListener(new AnimationListener() {
 
 			@Override
@@ -249,6 +276,24 @@ public class ContentSelectionFragment extends Fragment {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				afterScaleEnd();
+			}
+		});
+		
+		// Show image
+		anim_scaleback.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				for (Button b : ui_contentButtons) {
+					b.setEnabled(true);
+				}
 			}
 		});
 	}
