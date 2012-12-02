@@ -2,6 +2,7 @@ package cmm.view.newview;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -36,12 +38,14 @@ public class CmmActivity extends FragmentActivity {
 	private float mAccelCurrent; // current acceleration including gravity
 	private float mAccelLast; // last acceleration including gravity
 	private boolean hasShaken;
+	private boolean initialize;
 
 	/* UI objects */
 	private Point ui_dimension;
 	private LinearLayout ui_contentLayout;
 	private NavigationFragment navigationFragment;
 	private ContentDisplayFragment contentFragment;
+	private ViewGroup ui_content_bg;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -111,6 +115,10 @@ public class CmmActivity extends FragmentActivity {
 		mAccel = 0.00f;
 		mAccelCurrent = SensorManager.GRAVITY_EARTH;
 		mAccelLast = SensorManager.GRAVITY_EARTH;
+
+		// for picture
+		initialize = false;
+		ui_content_bg = (ViewGroup) findViewById(R.id.content_layout);
 	}
 
 	/*
@@ -153,6 +161,10 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void displayNextImage(Mood mood) {
+		if (!this.initialize) {
+			this.initialize = true;
+			ui_content_bg.setBackgroundColor(Color.TRANSPARENT);
+		}
 		contentFragment.disableButtons();
 		contentFragment.showButton();
 		contentStorage.getNextImage(mood);
@@ -161,6 +173,10 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void displayNextVideo(Mood mood) {
+		if (!this.initialize) {
+			this.initialize = true;
+			ui_content_bg.setBackgroundColor(Color.TRANSPARENT);
+		}
 		contentFragment.disableButtons();
 		contentFragment.showButton();
 		contentStorage.getNextVideo(mood);
@@ -260,7 +276,7 @@ public class CmmActivity extends FragmentActivity {
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		}
 	};
-	
+
 	private void startTimerThread() {
 		new Thread(new Runnable() {
 			@Override
@@ -271,12 +287,12 @@ public class CmmActivity extends FragmentActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				restartShake();
 			}
 		}).start();
 	}
-	
+
 	private void restartShake() {
 		mSensorManager.registerListener(mSensorListener,
 				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),

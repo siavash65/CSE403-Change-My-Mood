@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/cron")
 public class CronController {
-	private static final boolean DEPLOY = false;
+	private static final boolean DEPLOY = true;
 
 	private static final String SECRET = "cse403secret";
 	private static final String FILTER_URL = "http://changemymood.herokuapp.com/api/filter/";
@@ -44,8 +44,12 @@ public class CronController {
 		for (int i = 0; i < 5; i++) {
 			doUrl(url, "HA", "PI");
 			doUrl(url, "RO", "PI");
+			doUrl(url, "EX", "PI");
+			doUrl(url, "IN", "PI");
 			doUrl(url, "HA", "VI");
 			doUrl(url, "RO", "VI");
+			doUrl(url, "EX", "VI");
+			doUrl(url, "IN", "VI");
 			try {
 				Thread.sleep(60000);
 			} catch (InterruptedException e) {
@@ -66,8 +70,12 @@ public class CronController {
 		for (int i = 0; i < 5; i++) {
 			doUrl(url, "HA", "PI", "broken");
 			doUrl(url, "RO", "PI", "broken");
+			doUrl(url, "EX", "PI", "broken");
+			doUrl(url, "IN", "PI", "broken");
 			doUrl(url, "HA", "VI", "broken");
 			doUrl(url, "RO", "VI", "broken");
+			doUrl(url, "EX", "VI", "broken");
+			doUrl(url, "IN", "VI", "broken");
 			try {
 				Thread.sleep(30000);
 			} catch (InterruptedException e) {
@@ -87,8 +95,12 @@ public class CronController {
 		}
 		doUrl(url, "HA", "PI", "score");
 		doUrl(url, "RO", "PI", "score");
+		doUrl(url, "EX", "PI", "score");
+		doUrl(url, "IN", "PI", "score");
 		doUrl(url, "HA", "VI", "score");
 		doUrl(url, "RO", "VI", "score");
+		doUrl(url, "EX", "VI", "score");
+		doUrl(url, "IN", "VI", "score");
 		return "list";
 	}
 
