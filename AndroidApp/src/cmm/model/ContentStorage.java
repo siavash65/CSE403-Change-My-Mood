@@ -24,51 +24,64 @@ import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 public class ContentStorage {
 	private static final String TAG = "ContentStorage";
 
-	private Map<Mood, List<Drawable>> imageMap;
+	private Map<Mood, List<String>> imageMap;
 	private Map<Mood, List<String>> videoMap;
 
 	private Map<Mood, Integer> imageIndex;
 	private Map<Mood, Integer> videoIndex;
 
+	private Map<String, Drawable> midToImage;
+	private Map<String, String> midToVideo;
+
 	private String cur_mid;
-	private String cur_url;
 
 	private ContentDisplayFragment contentFragment;
 
 	public ContentStorage(ContentDisplayFragment contentFragment) {
 		this.contentFragment = contentFragment;
 
-		imageMap = new HashMap<Mood, List<Drawable>>();
+		imageMap = new HashMap<Mood, List<String>>();
 		videoMap = new HashMap<Mood, List<String>>();
 
 		imageIndex = new HashMap<Mood, Integer>();
 		videoIndex = new HashMap<Mood, Integer>();
 
+		midToImage = new HashMap<String, Drawable>();
+		midToVideo = new HashMap<String, String>();
+
 		for (Mood m : Mood.values()) {
-			imageMap.put(m, new ArrayList<Drawable>());
+			imageMap.put(m, new ArrayList<String>());
 			videoMap.put(m, new ArrayList<String>());
 			imageIndex.put(m, 0);
 			videoIndex.put(m, 0);
 		}
 	}
 
+	public String getMid() {
+		return this.cur_mid;
+	}
+	
 	public void getNextImage(Mood mood) {
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
 		}
 
-		List<Drawable> imageList = imageMap.get(mood);
+		List<String> imageMidList = imageMap.get(mood);
 		int imgIndex = imageIndex.get(mood);
 		imgIndex++;
 
-		if (imgIndex >= imageList.size()) {
+		if (imgIndex >= imageMidList.size()) {
 			// make new thread
 			new GetPictureTask(this).execute(mood.ordinal(),
 					Content.PICTURE.ordinal());
 		} else {
 			// show image in list
+			String mid = imageMidList.get(imgIndex);
+			Drawable image = midToImage.get(mid);
 			imageIndex.put(mood, imgIndex);
-			contentFragment.displayImage(imageList.get(imgIndex));
+			contentFragment.displayImage(image);
+
+			this.cur_mid = mid;
 
 			contentFragment.EnableButtons();
 		}
@@ -79,7 +92,7 @@ public class ContentStorage {
 			throw new IllegalArgumentException("Null mood");
 		}
 
-		List<Drawable> imageList = imageMap.get(mood);
+		List<String> imageMidList = imageMap.get(mood);
 		int imgIndex = imageIndex.get(mood);
 		imgIndex--;
 
@@ -90,8 +103,12 @@ public class ContentStorage {
 			return false;
 		} else {
 			Log.d(TAG, "getting prev image");
+			String mid = imageMidList.get(imgIndex);
+			Drawable image = midToImage.get(mid);
 			imageIndex.put(mood, imgIndex);
-			contentFragment.displayImage(imageList.get(imgIndex));
+			contentFragment.displayImage(image);
+
+			this.cur_mid = mid;
 		}
 
 		contentFragment.EnableButtons();
@@ -112,19 +129,23 @@ public class ContentStorage {
 			throw new IllegalArgumentException("Null mood");
 		}
 
-		List<String> videoList = videoMap.get(mood);
+		List<String> videoMidList = videoMap.get(mood);
 		int vidIndex = videoIndex.get(mood);
 		vidIndex++;
 
-		if (vidIndex >= videoList.size()) {
+		if (vidIndex >= videoMidList.size()) {
 			// make new thread
 			new GetVideoTask(this).execute(mood.ordinal(),
 					Content.VIDEO.ordinal());
 		} else {
 			// show video in list
+			String mid = videoMidList.get(vidIndex);
+			String videoUrl = midToVideo.get(mid);
 			videoIndex.put(mood, vidIndex);
-			contentFragment.displayVideo(videoList.get(vidIndex));
+			contentFragment.displayVideo(videoUrl);
 			contentFragment.EnableButtons();
+			
+			this.cur_mid = mid;
 		}
 
 	}
@@ -134,7 +155,7 @@ public class ContentStorage {
 			throw new IllegalArgumentException("Null mood");
 		}
 
-		List<String> videoList = videoMap.get(mood);
+		List<String> videoMidList = videoMap.get(mood);
 		int vidIndex = videoIndex.get(mood);
 		vidIndex--;
 
@@ -145,9 +166,13 @@ public class ContentStorage {
 			return false;
 		} else {
 			Log.d(TAG, "getting prev video idx: " + vidIndex + ", totsize = "
-					+ videoList.size());
+					+ videoMidList.size());
+			String mid = videoMidList.get(vidIndex);
+			String videoUrl = midToVideo.get(mid);
 			videoIndex.put(mood, vidIndex);
-			contentFragment.displayVideo(videoList.get(vidIndex));
+			contentFragment.displayVideo(videoUrl);
+			
+			this.cur_mid = mid;
 		}
 		contentFragment.EnableButtons();
 		return true;
@@ -205,18 +230,20 @@ public class ContentStorage {
 					URL url = new URL(link);
 					InputStream is = (InputStream) url.getContent();
 					Drawable image = Drawable.createFromStream(is, "src");
-
+					
+					// get mid and store it
+					this.cs.cur_mid = json.getString("mid");
+					
 					// insert image
-					List<Drawable> imageList = imageMap.get(mood);
+					List<String> imageMidList = imageMap.get(mood);
 					int imgIndex = imageIndex.get(mood);
-					imageList.add(image);
-					imgIndex = imageList.size() - 1;
+					imageMidList.add(json.getString("mid"));
+					midToImage.put(json.getString("mid"), image);
+					imgIndex = imageMidList.size() - 1;
 					imageIndex.put(mood, imgIndex);
 					Log.d(TAG, "Inserted Image to list");
 
-					// get mid and store it
-					this.cs.cur_mid = json.getString("mid");
-					this.cs.cur_url = link;
+					
 
 					return image;
 				} else {
@@ -268,19 +295,19 @@ public class ContentStorage {
 					String result = EntityUtils.toString(he);
 
 					JSONObject jresult = new JSONObject(result);
-					cs.cur_mid = jresult.getString("mid");
-					cs.cur_url = jresult.getString("url");
+					this.cs.cur_mid = jresult.getString("mid");
 
 					// insert video
-					List<String> videoList = videoMap.get(mood);
+					List<String> videoMidList = videoMap.get(mood);
 					int vidIndex = videoIndex.get(mood);
-					videoList.add(cs.cur_url);
-					vidIndex = videoList.size() - 1;
+					videoMidList.add(cs.cur_mid);
+					midToVideo.put(cs.cur_mid, jresult.getString("url"));
+					vidIndex = videoMidList.size() - 1;
 					videoIndex.put(mood, vidIndex);
 					Log.d(TAG, "Inserted video to list, idx = " + vidIndex
-							+ ", totsize = " + videoList.size());
+							+ ", totsize = " + videoMidList.size());
 
-					return cs.cur_url;
+					return jresult.getString("url");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

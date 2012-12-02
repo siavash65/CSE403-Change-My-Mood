@@ -29,10 +29,13 @@ public class CmmActivity extends FragmentActivity {
 	/* debug log string */
 	private static final String TAG = "CmmActivity";
 
+	/* Screen Size Ratio For Content Display */
 	private static final double CONTENT_W_OVER_H = 16.0 / 9.0;
 
 	/* Model Objects */
 	private ContentStorage contentStorage;
+	
+	// Shake 
 	private SensorManager mSensorManager;
 	private float mAccel; // acceleration apart from gravity
 	private float mAccelCurrent; // current acceleration including gravity
@@ -116,7 +119,7 @@ public class CmmActivity extends FragmentActivity {
 		mAccelCurrent = SensorManager.GRAVITY_EARTH;
 		mAccelLast = SensorManager.GRAVITY_EARTH;
 
-		// for picture
+		// for initial picture
 		initialize = false;
 		ui_content_bg = (ViewGroup) findViewById(R.id.content_layout);
 	}
@@ -145,6 +148,7 @@ public class CmmActivity extends FragmentActivity {
 		// Changes the height and width to the specified *pixels*
 		params.height = (int) (1.0 * ui_dimension.x / CONTENT_W_OVER_H);
 
+		
 		// get an instance of FragmentTransaction from your Activity
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -160,6 +164,10 @@ public class CmmActivity extends FragmentActivity {
 		fragmentTransaction.commit();
 	}
 
+	/**
+	 * Display Next Image
+	 * @param mood
+	 */
 	public void displayNextImage(Mood mood) {
 		if (!this.initialize) {
 			this.initialize = true;
@@ -168,10 +176,12 @@ public class CmmActivity extends FragmentActivity {
 		contentFragment.disableButtons();
 		contentFragment.showButton();
 		contentStorage.getNextImage(mood);
-		// new GetPictureTask(this).execute(mood.ordinal(),
-		// Content.PICTURE.ordinal());
 	}
 
+	/**
+	 * Display Next Video
+	 * @param mood
+	 */
 	public void displayNextVideo(Mood mood) {
 		if (!this.initialize) {
 			this.initialize = true;
@@ -184,30 +194,60 @@ public class CmmActivity extends FragmentActivity {
 		// Content.VIDEO.ordinal());
 	}
 
+	/**
+	 * Next button event
+	 * @onClick
+	 * @param view
+	 */
 	public void nextContent(View view) {
 		Content curCon = navigationFragment.getContent();
 		Mood curMood = navigationFragment.getMood();
 		if (curCon != null && curMood != null) {
+			// If valid content and mood
 			if (curCon == Content.PICTURE) {
+				// display pic
 				displayNextImage(curMood);
 			} else if (curCon == Content.VIDEO) {
+				// display video
 				displayNextVideo(curMood);
 			}
 		}
 	}
 
+	/**
+	 * Prev button event
+	 * @onClick
+	 * @param view
+	 */
 	public void prevContent(View view) {
 		Content curCon = navigationFragment.getContent();
 		Mood curMood = navigationFragment.getMood();
 		if (curCon != null && curMood != null) {
+			// If valid content and mood
 			if (curCon == Content.PICTURE) {
+				// display pic
 				displayPrevImage(curMood);
 			} else if (curCon == Content.VIDEO) {
+				// display vid
 				displayPrevVideo(curMood);
 			}
 		}
 	}
+	
+	/**
+	 * When thumbs up is clicked
+	 * @onClick
+	 * @param view
+	 */
+	public void thumbsUp(View view) {
+		Content curCon = navigationFragment.getContent();
+		Mood curMood = navigationFragment.getMood();
+		String mid = contentStorage.getMid();
+	}
 
+	/**
+	 * Show new content
+	 */
 	public void newContent() {
 		Content curCon = navigationFragment.getContent();
 		Mood curMood = navigationFragment.getMood();
@@ -220,6 +260,7 @@ public class CmmActivity extends FragmentActivity {
 		}
 	}
 
+	// Displaying previuos image
 	private void displayPrevImage(Mood mood) {
 		contentFragment.showButton();
 		if (!contentStorage.getPrevImage(mood)) {
@@ -229,6 +270,7 @@ public class CmmActivity extends FragmentActivity {
 		}
 	}
 
+	// Displaying previous video
 	private void displayPrevVideo(Mood mood) {
 		contentFragment.showButton();
 		if (!contentStorage.getPrevVideo(mood)) {
@@ -238,12 +280,14 @@ public class CmmActivity extends FragmentActivity {
 		}
 	}
 
+	// Display new image
 	private void displayNewImage(Mood mood) {
 		contentFragment.disableButtons();
 		contentFragment.showButton();
 		contentStorage.getNewImage(mood);
 	}
 
+	// Display new video
 	private void displayNewVideo(Mood mood) {
 		contentFragment.disableButtons();
 		contentFragment.showButton();
