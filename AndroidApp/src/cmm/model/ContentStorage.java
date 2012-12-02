@@ -98,6 +98,15 @@ public class ContentStorage {
 		return true;
 	}
 
+	public void getNewImage(Mood mood) {
+		if (mood == null) {
+			throw new IllegalArgumentException("Null mood");
+		}
+
+		new GetPictureTask(this).execute(mood.ordinal(),
+				Content.PICTURE.ordinal());
+	}
+
 	public void getNextVideo(Mood mood) {
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
@@ -135,12 +144,21 @@ public class ContentStorage {
 			contentFragment.EnableButtons();
 			return false;
 		} else {
-			Log.d(TAG, "getting prev video idx: " + vidIndex + ", totsize = " + videoList.size());
+			Log.d(TAG, "getting prev video idx: " + vidIndex + ", totsize = "
+					+ videoList.size());
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoList.get(vidIndex));
 		}
 		contentFragment.EnableButtons();
 		return true;
+	}
+
+	public void getNewVideo(Mood mood) {
+		if (mood == null) {
+			throw new IllegalArgumentException("Null mood");
+		}
+
+		new GetVideoTask(this).execute(mood.ordinal(), Content.VIDEO.ordinal());
 	}
 
 	/**
@@ -259,7 +277,8 @@ public class ContentStorage {
 					videoList.add(cs.cur_url);
 					vidIndex = videoList.size() - 1;
 					videoIndex.put(mood, vidIndex);
-					Log.d(TAG, "Inserted video to list, idx = " + vidIndex + ", totsize = " + videoList.size());
+					Log.d(TAG, "Inserted video to list, idx = " + vidIndex
+							+ ", totsize = " + videoList.size());
 
 					return cs.cur_url;
 				}

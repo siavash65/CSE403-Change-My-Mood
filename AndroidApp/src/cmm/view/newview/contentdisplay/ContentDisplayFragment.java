@@ -139,8 +139,8 @@ public class ContentDisplayFragment extends Fragment {
 	}
 	
 	public void showButton() {
-		this.ui_nextButton.setBackgroundColor(Color.WHITE);
-		this.ui_prevButton.setBackgroundColor(Color.WHITE);
+		this.ui_nextButton.setBackgroundResource(R.drawable.next_button);
+		this.ui_prevButton.setBackgroundResource(R.drawable.prev_button);
 	}
 	
 	public void hideButtons() {

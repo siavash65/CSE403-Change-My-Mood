@@ -35,58 +35,65 @@ public class CronController {
 
 	@RequestMapping(value = "/pull", method = RequestMethod.GET)
 	public String pullAndFilter(ModelMap model) {
-		if (DEPLOY)  {
-			
-		} else {
-			for(int i = 0; i < 5; i++) {
-				doUrl(COLLECT_URL_NOT_DEPLOY, "HA", "PI");
-				doUrl(COLLECT_URL_NOT_DEPLOY, "RO", "PI");
-				doUrl(COLLECT_URL_NOT_DEPLOY, "HA", "VI");
-				doUrl(COLLECT_URL_NOT_DEPLOY, "RO", "VI");
-				try {
-					Thread.sleep(60000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}			
-		}
-		return "list";
-	}
-	
-	@RequestMapping(value = "/broken", method = RequestMethod.GET)
-	public String brokenFilter(ModelMap model) {
+		String url;
 		if (DEPLOY) {
-			
+			url = COLLECT_URL;
 		} else {
-			for(int i = 0; i < 5; i++) {
-				doUrl(FILTER_URL_NOT_DEPLOY, "HA", "PI", "broken");
-				doUrl(FILTER_URL_NOT_DEPLOY, "RO", "PI", "broken");
-				doUrl(FILTER_URL_NOT_DEPLOY, "HA", "VI", "broken");
-				doUrl(FILTER_URL_NOT_DEPLOY, "RO", "VI", "broken");
-				try {
-					Thread.sleep(30000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			url = COLLECT_URL_NOT_DEPLOY;
+		}
+		for (int i = 0; i < 5; i++) {
+			doUrl(url, "HA", "PI");
+			doUrl(url, "RO", "PI");
+			doUrl(url, "HA", "VI");
+			doUrl(url, "RO", "VI");
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 		return "list";
 	}
-	
-	@RequestMapping(value = "/score", method = RequestMethod.GET)
-	public String scoreFilter(ModelMap model) {
+
+	@RequestMapping(value = "/broken", method = RequestMethod.GET)
+	public String brokenFilter(ModelMap model) {
+		String url;
 		if (DEPLOY) {
-			
+			url = FILTER_URL;
 		} else {
-			doUrl(FILTER_URL_NOT_DEPLOY, "HA", "PI", "score");
-			doUrl(FILTER_URL_NOT_DEPLOY, "RO", "PI", "score");
-			doUrl(FILTER_URL_NOT_DEPLOY, "HA", "VI", "score");
-			doUrl(FILTER_URL_NOT_DEPLOY, "RO", "VI", "score");
+			url = FILTER_URL_NOT_DEPLOY;
+		}
+		for (int i = 0; i < 5; i++) {
+			doUrl(url, "HA", "PI", "broken");
+			doUrl(url, "RO", "PI", "broken");
+			doUrl(url, "HA", "VI", "broken");
+			doUrl(url, "RO", "VI", "broken");
+			try {
+				Thread.sleep(30000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		return "list";
 	}
-	
+
+	@RequestMapping(value = "/score", method = RequestMethod.GET)
+	public String scoreFilter(ModelMap model) {
+		String url;
+		if (DEPLOY) {
+			url = FILTER_URL;	
+		} else {
+			url = FILTER_URL_NOT_DEPLOY;
+		}
+		doUrl(url, "HA", "PI", "score");
+		doUrl(url, "RO", "PI", "score");
+		doUrl(url, "HA", "VI", "score");
+		doUrl(url, "RO", "VI", "score");
+		return "list";
+	}
+
 	// cron job running this
+	@Deprecated
 	@RequestMapping(value = "/upday/{num}", method = RequestMethod.GET)
 	public String addCount(@PathVariable int num, ModelMap model) {
 		// http://www.coderanch.com/t/356021/Servlets/java/Creating-HTTP-request-java-getting
@@ -108,19 +115,19 @@ public class CronController {
 
 		return "list";
 	}
-	
+
 	private void doUrl(String url) {
 		doUrl(url, null, null, null);
 	}
-	
+
 	private void doUrl(String url, String mood) {
 		doUrl(url, mood, null, null);
 	}
-	
+
 	private void doUrl(String url, String mood, String content) {
 		doUrl(url, mood, content, null);
 	}
-	
+
 	private void doUrl(String url, String mood, String content, String filter) {
 		HttpURLConnection connection = null;
 		PrintWriter outWriter = null;
@@ -141,17 +148,17 @@ public class CronController {
 				buff.append("&mood=");
 				buff.append(URLEncoder.encode(mood, "UTF-8"));
 			}
-			
+
 			if (content != null) {
 				buff.append("&content=");
 				buff.append(URLEncoder.encode(content, "UTF-8"));
 			}
-			
+
 			if (filter != null) {
 				buff.append("&filter=");
 				buff.append(URLEncoder.encode(filter, "UTF-8"));
 			}
-			
+
 			outWriter.print(buff.toString());
 			outWriter.flush();
 			outWriter.close();

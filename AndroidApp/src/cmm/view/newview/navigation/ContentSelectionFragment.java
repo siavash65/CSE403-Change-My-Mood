@@ -6,6 +6,7 @@ import java.util.HashSet;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,8 @@ import cmm.view.R;
 import cmm.view.newview.CmmActivity;
 
 public class ContentSelectionFragment extends Fragment {
+	private static final String TAG = "ContentSelectionFragment";
+	
 	private static ContentSelectionFragment instance;
 
 	private CmmActivity activity;
@@ -110,6 +113,12 @@ public class ContentSelectionFragment extends Fragment {
 				} else if (b.getId() == R.id.video_button) {
 					b.setBackgroundResource(R.drawable.content_video_button_select);
 				}
+			} else {
+				if (b.getId() == R.id.picture_button) {
+					b.setBackgroundResource(R.drawable.content_picture_button_default);
+				} else if (b.getId() == R.id.video_button) {
+					b.setBackgroundResource(R.drawable.content_video_button_default);
+				}
 			}
 			b.startAnimation(anim_fadeout);
 		}
@@ -117,6 +126,7 @@ public class ContentSelectionFragment extends Fragment {
 		if (cur_content == null || cur_content != view) {
 			// If no vid/pic set or selected different content
 			if (cur_content != null) {
+				Log.d(TAG, "deseletected");
 				this.cur_content
 						.setBackgroundResource(R.drawable.sign_deselect);
 			}

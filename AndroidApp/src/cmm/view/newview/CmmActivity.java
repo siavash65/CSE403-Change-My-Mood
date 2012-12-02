@@ -1,21 +1,12 @@
 package cmm.view.newview;
 
-import java.io.InputStream;
-import java.net.URL;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -28,7 +19,6 @@ import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
 import cmm.model.Mood;
-import cmm.model.UrlProvider;
 import cmm.view.R;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 import cmm.view.newview.navigation.NavigationFragment;
@@ -40,9 +30,12 @@ public class CmmActivity extends FragmentActivity {
 	private static final double CONTENT_W_OVER_H = 16.0 / 9.0;
 
 	/* Model Objects */
-	private String cur_mid;
-	private String cur_url;
 	private ContentStorage contentStorage;
+	private SensorManager mSensorManager;
+	private float mAccel; // acceleration apart from gravity
+	private float mAccelCurrent; // current acceleration including gravity
+	private float mAccelLast; // last acceleration including gravity
+	private boolean hasShaken;
 
 	/* UI objects */
 	private Point ui_dimension;
@@ -75,6 +68,22 @@ public class CmmActivity extends FragmentActivity {
 		contentFragment.cleanup(); // TODO: is this needed?
 	}
 
+	// http://stackoverflow.com/questions/2317428/android-i-want-to-shake-it
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mSensorManager.registerListener(mSensorListener,
+				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_NORMAL);
+	}
+
+	// http://stackoverflow.com/questions/2317428/android-i-want-to-shake-it
+	@Override
+	protected void onStop() {
+		mSensorManager.unregisterListener(mSensorListener);
+		super.onStop();
+	}
+
 	/*
 	 * Setup the ui components
 	 */
@@ -93,13 +102,22 @@ public class CmmActivity extends FragmentActivity {
 		// set content layout
 		ui_contentLayout = (LinearLayout) this
 				.findViewById(R.id.content_layout);
+
+		// Sensor Event setups
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mSensorManager.registerListener(mSensorListener,
+				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_NORMAL);
+		mAccel = 0.00f;
+		mAccelCurrent = SensorManager.GRAVITY_EARTH;
+		mAccelLast = SensorManager.GRAVITY_EARTH;
 	}
 
 	/*
 	 * Add listeners if necessary
 	 */
 	private void handleEvents() {
-		// TODO
+
 	}
 
 	/*
@@ -174,6 +192,18 @@ public class CmmActivity extends FragmentActivity {
 		}
 	}
 
+	public void newContent() {
+		Content curCon = navigationFragment.getContent();
+		Mood curMood = navigationFragment.getMood();
+		if (curCon != null && curMood != null) {
+			if (curCon == Content.PICTURE) {
+				displayNewImage(curMood);
+			} else if (curCon == Content.VIDEO) {
+				displayNewVideo(curMood);
+			}
+		}
+	}
+
 	private void displayPrevImage(Mood mood) {
 		contentFragment.showButton();
 		if (!contentStorage.getPrevImage(mood)) {
@@ -190,5 +220,67 @@ public class CmmActivity extends FragmentActivity {
 					Toast.LENGTH_SHORT).show();
 			contentFragment.hideButtons();
 		}
+	}
+
+	private void displayNewImage(Mood mood) {
+		contentFragment.disableButtons();
+		contentFragment.showButton();
+		contentStorage.getNewImage(mood);
+	}
+
+	private void displayNewVideo(Mood mood) {
+		contentFragment.disableButtons();
+		contentFragment.showButton();
+		contentStorage.getNewVideo(mood);
+	}
+
+	/*
+	 * From stackoverflow:
+	 * http://stackoverflow.com/questions/2317428/android-i-want-to-shake-it
+	 */
+	private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+		public void onSensorChanged(SensorEvent se) {
+			float x = se.values[0];
+			float y = se.values[1];
+			float z = se.values[2];
+			mAccelLast = mAccelCurrent;
+			mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+			float delta = mAccelCurrent - mAccelLast;
+			mAccel = mAccel * 0.9f + delta; // perform low-cut filter
+
+			if (mAccel > 2 && !hasShaken) {
+				mSensorManager.unregisterListener(mSensorListener);
+				hasShaken = true;
+				newContent();
+				startTimerThread();
+			}
+		}
+
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		}
+	};
+	
+	private void startTimerThread() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				restartShake();
+			}
+		}).start();
+	}
+	
+	private void restartShake() {
+		mSensorManager.registerListener(mSensorListener,
+				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_NORMAL);
+		hasShaken = false;
 	}
 }
