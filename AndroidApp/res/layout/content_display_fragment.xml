@@ -11,13 +11,15 @@
         <FrameLayout
             android:id="@+id/picture_fragment"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/video_fragment"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
         </FrameLayout>
 
         <RelativeLayout
@@ -32,8 +34,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:onClick="nextContent"
-                android:background="@drawable/next_button" />
+                android:background="@drawable/next_button"
+                android:onClick="nextContent" />
 
             <Button
                 android:id="@+id/prev_button"
@@ -42,9 +44,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:onClick="prevContent"
-                android:background="@drawable/prev_button" />
-
+                android:background="@drawable/prev_button"
+                android:onClick="prevContent" />
         </RelativeLayout>
     </RelativeLayout>
 

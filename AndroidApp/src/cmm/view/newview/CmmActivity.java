@@ -16,7 +16,10 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
@@ -34,6 +37,9 @@ public class CmmActivity extends FragmentActivity {
 	/* Screen Size Ratio For Content Display */
 	private static final double CONTENT_W_OVER_H = 16.0 / 9.0;
 
+	/* Text Views */
+	private TextView[] ui_textviews;
+	
 	/* Model Objects */
 	private ContentStorage contentStorage;
 	private Rater rater;
@@ -48,7 +54,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/* UI objects */
 	private Point ui_dimension;
-	private LinearLayout ui_contentLayout;
+	private RelativeLayout ui_contentLayout;
 	private NavigationFragment navigationFragment;
 	private ContentDisplayFragment contentFragment;
 	private ButtonsControlFragment buttonsControlFragment;
@@ -64,8 +70,8 @@ public class CmmActivity extends FragmentActivity {
 		handleEvents();
 		doLayout();
 
-		contentStorage = new ContentStorage(contentFragment, buttonsControlFragment);
 		rater = new Rater(buttonsControlFragment);
+		contentStorage = new ContentStorage(contentFragment, buttonsControlFragment, ui_textviews);
 	}
 
 	@Override
@@ -96,6 +102,10 @@ public class CmmActivity extends FragmentActivity {
 		super.onStop();
 	}
 
+	public Point getDimension() {
+		return ui_dimension;
+	}
+	
 	/*
 	 * Setup the ui components
 	 */
@@ -112,7 +122,7 @@ public class CmmActivity extends FragmentActivity {
 		ui_dimension = size;
 
 		// set content layout
-		ui_contentLayout = (LinearLayout) this
+		ui_contentLayout = (RelativeLayout) this
 				.findViewById(R.id.content_layout);
 
 		// Sensor Event setups
@@ -127,6 +137,11 @@ public class CmmActivity extends FragmentActivity {
 		// for initial picture
 		initialize = false;
 		ui_content_bg = (ViewGroup) findViewById(R.id.content_layout);
+		
+		// content info
+		ui_textviews = new TextView[]{
+				(TextView)findViewById(R.id.ups_number),
+				(TextView)findViewById(R.id.downs_number)};
 	}
 
 	/*
@@ -256,8 +271,8 @@ public class CmmActivity extends FragmentActivity {
 	public void thumbsUp(View view) {
 		String mid = contentStorage.getMid();
 		if (mid != null) {
-			buttonsControlFragment.DisableButton();
-			contentStorage.ratedMid(mid);
+			buttonsControlFragment.DisableButton(true);
+			contentStorage.ratedMid(mid, true);
 			rater.rateThumbsUp(mid);
 		}
 	}
@@ -268,8 +283,8 @@ public class CmmActivity extends FragmentActivity {
 	public void thumbsDown(View view) {
 		String mid = contentStorage.getMid();
 		if (mid != null) {
-			buttonsControlFragment.DisableButton();
-			contentStorage.ratedMid(mid);
+			buttonsControlFragment.DisableButton(false);
+			contentStorage.ratedMid(mid, false);
 			rater.rateThumbsDown(mid);
 		}
 	}

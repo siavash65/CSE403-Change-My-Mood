@@ -4,24 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/thumbsup_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thumbs Up"
-        android:onClick="thumbsUp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/thumbsdown_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thumbs down"
-        android:onClick="thumbsDown" />
+        <Button
+            android:id="@+id/thumbsup_button"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/thumbbutton_up_disabled"
+            android:enabled="false"
+            android:onClick="thumbsUp"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/fullscreen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Full screen" />
+        <Button
+            android:id="@+id/thumbsdown_button"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/thumbbutton_down_disabled"
+            android:enabled="false"
+            android:onClick="thumbsDown"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 </LinearLayout>

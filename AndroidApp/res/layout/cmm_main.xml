@@ -34,7 +34,7 @@
             android:text="Progress Bar" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/content_layout"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -48,9 +48,10 @@
             android:id="@+id/content_fragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical" >
         </FrameLayout>
-    </LinearLayout>
+    </RelativeLayout>
     
     <LinearLayout
         android:id="@+id/content_info_layout"
