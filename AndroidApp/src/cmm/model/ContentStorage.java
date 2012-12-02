@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
+import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import android.widget.TextView;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 
@@ -35,15 +36,20 @@ public class ContentStorage {
 
 	private String cur_mid;
 
+	private Map<String, Integer> canRateMap;
+
 	private ContentDisplayFragment contentFragment;
-	
+	private ButtonsControlFragment buttonsControlFragment;
+
 	/* Set Content info */
-	private TextView[] tv;
+	private TextView[] ui_contentinfo;
 	private String up_info;
 	private String down_info;
-	
-	public ContentStorage(ContentDisplayFragment contentFragment, TextView[] list) {
+
+	public ContentStorage(ContentDisplayFragment contentFragment,
+			ButtonsControlFragment buttonControlFragment, TextView[] list) {
 		this.contentFragment = contentFragment;
+		this.buttonsControlFragment = buttonControlFragment;
 
 		imageMap = new HashMap<Mood, List<String>>();
 		videoMap = new HashMap<Mood, List<String>>();
@@ -54,8 +60,10 @@ public class ContentStorage {
 		midToImage = new HashMap<String, ContentInfo>();
 		midToVideo = new HashMap<String, ContentInfo>();
 
-		tv = list;
-		
+		canRateMap = new HashMap<String, Integer>();
+
+		ui_contentinfo = list;
+
 		for (Mood m : Mood.values()) {
 			imageMap.put(m, new ArrayList<String>());
 			videoMap.put(m, new ArrayList<String>());
@@ -67,7 +75,58 @@ public class ContentStorage {
 	public String getMid() {
 		return this.cur_mid;
 	}
-	
+
+	private boolean canRate(String mid) {
+		if (canRateMap.containsKey(mid)) {
+			return canRateMap.get(mid) == -1;
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	private boolean getRatedValue(String mid) {
+		if (canRateMap.containsKey(mid) && canRateMap.get(mid) != -1) {
+			return canRateMap.get(mid) == Rate.THUMBSUP.ordinal();
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public void ratedMid(String mid, boolean isThumbsUp) {
+		if (mid == null) {
+			throw new IllegalArgumentException("null mid");
+		}
+		
+		if (midToImage.containsKey(mid)) {
+			ContentInfo contentInfo = midToImage.get(mid);
+			String up = contentInfo.getUpInfo();
+			String down = contentInfo.getDownInfo();
+			if (isThumbsUp) {
+				int up_int = Integer.parseInt(up);
+				up = "" + (up_int + 1);
+			} else {
+				int down_int = Integer.parseInt(down);
+				down = "" + (down_int + 1);
+			}
+
+			ContentInfo newInfo = new ContentInfo(contentInfo.getVideo(),
+					contentInfo.getPicture(), up, down);
+			midToImage.put(mid, newInfo);
+		} else if (midToVideo.containsKey(mid)) {
+			ContentInfo contentInfo = midToVideo.get(mid);
+			ContentInfo newInfo = new ContentInfo(contentInfo.getVideo(),
+					contentInfo.getPicture(), contentInfo.getUpInfo(),
+					contentInfo.getDownInfo());
+			midToVideo.put(mid, newInfo);
+		}
+
+		canRateMap.put(mid, isThumbsUp ? Rate.THUMBSUP.ordinal()
+				: Rate.THUMBSDOWN.ordinal());
+		up_info = midToImage.get(mid).getUpInfo();
+		down_info = midToImage.get(mid).getDownInfo();
+		this.setText();
+	}
+
 	public void getNextImage(Mood mood) {
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
@@ -94,6 +153,12 @@ public class ContentStorage {
 			setText();
 
 			contentFragment.EnableButtons();
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment
+						.DisableButton(getRatedValue(this.cur_mid));
+			}
 		}
 	}
 
@@ -121,6 +186,14 @@ public class ContentStorage {
 			contentFragment.displayImage(image);
 
 			this.cur_mid = mid;
+
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment
+						.DisableButton(getRatedValue(this.cur_mid));
+			}
+
 			setText();
 		}
 
@@ -159,8 +232,16 @@ public class ContentStorage {
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
 			contentFragment.EnableButtons();
-			
+
 			this.cur_mid = mid;
+
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment
+						.DisableButton(getRatedValue(this.cur_mid));
+			}
+
 			setText();
 		}
 	}
@@ -188,9 +269,18 @@ public class ContentStorage {
 			down_info = midToImage.get(mid).getDownInfo();
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
-			
+
 			this.cur_mid = mid;
+
+			if (canRate(mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment
+						.DisableButton(getRatedValue(this.cur_mid));
+			}
+
 			setText();
+
 		}
 		contentFragment.EnableButtons();
 		return true;
@@ -203,10 +293,10 @@ public class ContentStorage {
 
 		new GetVideoTask(this).execute(mood.ordinal(), Content.VIDEO.ordinal());
 	}
-	
-	private void setText(){
-		tv[0].setText("Up: " + up_info);
-		tv[1].setText("Down: " + down_info);
+
+	private void setText() {
+		ui_contentinfo[0].setText("Up: " + up_info);
+		ui_contentinfo[1].setText("Down: " + down_info);
 	}
 
 	/**
@@ -253,18 +343,23 @@ public class ContentStorage {
 					URL url = new URL(link);
 					InputStream is = (InputStream) url.getContent();
 					Drawable image = Drawable.createFromStream(is, "src");
-					
+
 					// get mid and store it
 					this.cs.cur_mid = json.getString("mid");
+
+					if (!canRateMap.containsKey(cs.cur_mid)) {
+						canRateMap.put(cs.cur_mid, -1);
+					}
+
 					this.cs.up_info = json.getString("ups");
 					this.cs.down_info = json.getString("downs");
-					
+
 					// insert image
 					List<String> imageMidList = imageMap.get(mood);
 					int imgIndex = imageIndex.get(mood);
 					imageMidList.add(json.getString("mid"));
-					midToImage.put(json.getString("mid"), 
-							new ContentInfo(null, image, this.cs.up_info, this.cs.down_info));
+					midToImage.put(json.getString("mid"), new ContentInfo(null,
+							image, this.cs.up_info, this.cs.down_info));
 					imgIndex = imageMidList.size() - 1;
 					imageIndex.put(mood, imgIndex);
 					Log.d(TAG, "Inserted Image to list");
@@ -283,6 +378,11 @@ public class ContentStorage {
 		protected void onPostExecute(Drawable result) {
 			contentFragment.displayImage(result);
 			contentFragment.EnableButtons();
+			if (canRate(cs.cur_mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton(getRatedValue(cs.cur_mid));
+			}
 			// Enable Rating here
 			setText();
 		}
@@ -323,17 +423,23 @@ public class ContentStorage {
 					this.cs.cur_mid = jresult.getString("mid");
 					this.cs.up_info = jresult.getString("ups");
 					this.cs.down_info = jresult.getString("downs");
-					
+
 					// insert video
 					List<String> videoMidList = videoMap.get(mood);
 					int vidIndex = videoIndex.get(mood);
 					videoMidList.add(cs.cur_mid);
-					midToVideo.put(cs.cur_mid, new ContentInfo(
-							jresult.getString("url"), null, this.cs.up_info, this.cs.down_info));
+					midToVideo.put(cs.cur_mid,
+							new ContentInfo(jresult.getString("url"), null,
+									this.cs.up_info, this.cs.down_info));
 					vidIndex = videoMidList.size() - 1;
 					videoIndex.put(mood, vidIndex);
 					Log.d(TAG, "Inserted video to list, idx = " + vidIndex
 							+ ", totsize = " + videoMidList.size());
+
+					// mid logic
+					if (!canRateMap.containsKey(cs.cur_mid)) {
+						canRateMap.put(cs.cur_mid, -1);
+					}
 
 					return jresult.getString("url");
 				}
@@ -347,6 +453,12 @@ public class ContentStorage {
 		protected void onPostExecute(String str) {
 			contentFragment.displayVideo(str);
 			contentFragment.EnableButtons();
+
+			if (canRate(cs.cur_mid)) {
+				buttonsControlFragment.EnableButton();
+			} else {
+				buttonsControlFragment.DisableButton(getRatedValue(cs.cur_mid));
+			}
 			setText();
 		}
 	}

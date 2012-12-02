@@ -35,7 +35,7 @@
             android:onClick="facebook_signintest" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/content_layout"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -49,9 +49,10 @@
             android:id="@+id/content_fragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical" >
         </FrameLayout>
-    </LinearLayout>
+    </RelativeLayout>
     
     <LinearLayout
         android:id="@+id/content_info_layout"
@@ -87,12 +88,13 @@
         android:layout_below="@+id/content_info_layout"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textView3"
+        <FrameLayout
+            android:id="@+id/buttonscontrol_fragment"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Buttons click click~~" />
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+        </FrameLayout>
+        
     </LinearLayout>
 
     <LinearLayout

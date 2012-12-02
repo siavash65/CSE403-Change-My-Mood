@@ -36,4 +36,5 @@ public class ContentInfo {
 	public String getDownInfo(){
 		return down;
 	}
+
 }

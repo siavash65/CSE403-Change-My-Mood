@@ -17,13 +17,17 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
 import cmm.model.Mood;
+import cmm.model.Rater;
 import cmm.view.R;
+import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 import cmm.view.newview.navigation.NavigationFragment;
 
@@ -35,12 +39,13 @@ public class CmmActivity extends FragmentActivity {
 	private static final double CONTENT_W_OVER_H = 16.0 / 9.0;
 
 	/* Text Views */
-	private TextView[] tv;
+	private TextView[] ui_textviews;
 	
 	/* Model Objects */
 	private ContentStorage contentStorage;
-	
-	// Shake 
+	private Rater rater;
+
+	// Shake
 	private SensorManager mSensorManager;
 	private float mAccel; // acceleration apart from gravity
 	private float mAccelCurrent; // current acceleration including gravity
@@ -50,9 +55,10 @@ public class CmmActivity extends FragmentActivity {
 
 	/* UI objects */
 	private Point ui_dimension;
-	private LinearLayout ui_contentLayout;
+	private RelativeLayout ui_contentLayout;
 	private NavigationFragment navigationFragment;
 	private ContentDisplayFragment contentFragment;
+	private ButtonsControlFragment buttonsControlFragment;
 	private ViewGroup ui_content_bg;
 
 	/** Called when the activity is first created. */
@@ -65,10 +71,8 @@ public class CmmActivity extends FragmentActivity {
 		handleEvents();
 		doLayout();
 
-		tv = new TextView[]{
-				(TextView)findViewById(R.id.ups_number),
-				(TextView)findViewById(R.id.downs_number)};
-		contentStorage = new ContentStorage(contentFragment, tv);
+		rater = new Rater(buttonsControlFragment);
+		contentStorage = new ContentStorage(contentFragment, buttonsControlFragment, ui_textviews);
 	}
 
 	@Override
@@ -99,6 +103,10 @@ public class CmmActivity extends FragmentActivity {
 		super.onStop();
 	}
 
+	public Point getDimension() {
+		return ui_dimension;
+	}
+	
 	/*
 	 * Setup the ui components
 	 */
@@ -115,7 +123,7 @@ public class CmmActivity extends FragmentActivity {
 		ui_dimension = size;
 
 		// set content layout
-		ui_contentLayout = (LinearLayout) this
+		ui_contentLayout = (RelativeLayout) this
 				.findViewById(R.id.content_layout);
 
 		// Sensor Event setups
@@ -130,6 +138,11 @@ public class CmmActivity extends FragmentActivity {
 		// for initial picture
 		initialize = false;
 		ui_content_bg = (ViewGroup) findViewById(R.id.content_layout);
+		
+		// content info
+		ui_textviews = new TextView[]{
+				(TextView)findViewById(R.id.ups_number),
+				(TextView)findViewById(R.id.downs_number)};
 	}
 
 	public void facebook_signintest(View view){
@@ -161,7 +174,6 @@ public class CmmActivity extends FragmentActivity {
 		// Changes the height and width to the specified *pixels*
 		params.height = (int) (1.0 * ui_dimension.x / CONTENT_W_OVER_H);
 
-		
 		// get an instance of FragmentTransaction from your Activity
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -174,11 +186,17 @@ public class CmmActivity extends FragmentActivity {
 		this.contentFragment = ContentDisplayFragment.getInstance(this);
 		fragmentTransaction.add(R.id.content_fragment, contentFragment);
 
+		// add buttoncontrol Fragment
+		this.buttonsControlFragment = ButtonsControlFragment.getInstance(this);
+		fragmentTransaction.add(R.id.buttonscontrol_fragment,
+				buttonsControlFragment);
+
 		fragmentTransaction.commit();
 	}
 
 	/**
 	 * Display Next Image
+	 * 
 	 * @param mood
 	 */
 	public void displayNextImage(Mood mood) {
@@ -193,6 +211,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/**
 	 * Display Next Video
+	 * 
 	 * @param mood
 	 */
 	public void displayNextVideo(Mood mood) {
@@ -209,6 +228,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/**
 	 * Next button event
+	 * 
 	 * @onClick
 	 * @param view
 	 */
@@ -229,6 +249,7 @@ public class CmmActivity extends FragmentActivity {
 
 	/**
 	 * Prev button event
+	 * 
 	 * @onClick
 	 * @param view
 	 */
@@ -246,16 +267,39 @@ public class CmmActivity extends FragmentActivity {
 			}
 		}
 	}
-	
+
 	/**
 	 * When thumbs up is clicked
+	 * 
 	 * @onClick
 	 * @param view
 	 */
 	public void thumbsUp(View view) {
-		Content curCon = navigationFragment.getContent();
-		Mood curMood = navigationFragment.getMood();
 		String mid = contentStorage.getMid();
+		if (mid != null) {
+			buttonsControlFragment.DisableButton(true);
+			contentStorage.ratedMid(mid, true);
+			rater.rateThumbsUp(mid);
+		}
+	}
+
+	/**
+	 * When thumbs down is clicked
+	 */
+	public void thumbsDown(View view) {
+		String mid = contentStorage.getMid();
+		if (mid != null) {
+			buttonsControlFragment.DisableButton(false);
+			contentStorage.ratedMid(mid, false);
+			rater.rateThumbsDown(mid);
+		}
+	}
+
+	public void displayRateResponse(boolean isSuccess) {
+		String msg = isSuccess ? getResources().getString(
+				R.string.rate_success_msg) : getResources().getString(
+				R.string.rate_fail_msg);
+		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
