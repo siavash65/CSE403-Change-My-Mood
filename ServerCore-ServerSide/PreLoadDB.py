@@ -16,8 +16,8 @@ if __name__ == "__main__":
     from servercore.CmmData.models import Mood
     
     moods = [Mood.INSPIRED]
-    num_data_needed = 32
+    num_data_needed = 100
     
     for mood in moods:
-        # PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed, 200)
+        PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed, 200)
         VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), num_data_needed, 100)
