@@ -17,15 +17,18 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.SeekBar;
 import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 
 public class Rater {
 	private static final String TAG = "Rater";
 	
 	private ButtonsControlFragment bsf;
+	private SeekBar ui_progress;
 
-	public Rater(ButtonsControlFragment buttoncontrol_fragment) {
+	public Rater(ButtonsControlFragment buttoncontrol_fragment, SeekBar progress) {
 		this.bsf = buttoncontrol_fragment;
+		this.ui_progress = progress;
 	}
 
 	public void rateThumbsUp(String mid) {
@@ -37,11 +40,12 @@ public class Rater {
 	}
 
 	private class RatePictureTask extends AsyncTask<String, Integer, Boolean> {
-
+		private boolean isThumbsUp;
 		// 0th = mid 1st = rank
 		@Override
 		protected Boolean doInBackground(String... params) {
 			try {
+				isThumbsUp = Integer.parseInt(params[1]) == Rate.THUMBSUP.ordinal();
 				HttpClient client = new DefaultHttpClient();
 				String postURL = UrlProvider.getRankUrl();
 				HttpPost post = new HttpPost(postURL);
@@ -76,6 +80,19 @@ public class Rater {
 		@Override
 		protected void onPostExecute(Boolean s) {
 			bsf.displayResponse(s);
+			int progress = ui_progress.getProgress(); 
+			if (isThumbsUp) {
+				progress = progress + 15;
+				if (progress > 100) {
+					progress = 100;
+				}
+			} else {
+				progress = progress - 15;
+				if (progress < 0) {
+					progress = 0;
+				}
+			}
+			ui_progress.setProgress(progress);
 		}
 
 	}

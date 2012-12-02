@@ -35,10 +35,10 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 import cmm.model.Content;
+import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
-import cmm.view.newview.FacebookHandler;
 
 public class VideoActivity extends Activity {
 	private MenuInflater inflater;

@@ -3,7 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
+	
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+	        <LinearLayout 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentRight="true"
+	            android:orientation="horizontal">
+		        <Button
+		            android:id="@+id/cmm_signin"
+		            android:layout_width="20dp"
+		            android:layout_height="20dp"
+		            android:background="@drawable/com_facebook_icon"
+		            android:onClick="facebook_signin"
+		            android:layout_marginRight="4dp" />
+		        <Button
+		            android:id="@+id/cmm_signout"
+		            android:layout_width="20dp"
+		            android:layout_height="20dp"
+		            android:background="@drawable/com_facebook_close"
+		            android:onClick="facebook_signout" />
+        </LinearLayout>
+    </RelativeLayout>
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,21 +45,49 @@
         android:orientation="vertical" >
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#333333"
-        android:orientation="vertical" >
+        android:layout_below="@+id/top_bar"
+        android:background="#333333" >
 
-        <Button
+        <SeekBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:max="100"
+            android:progress="50"
+            android:thumb="@drawable/seek_thumb_normal" />
+
+        <!--
+             <TextView
             android:id="@+id/textView1"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Progress Bar"
-            android:onClick="facebook_signintest" />
-    </LinearLayout>
+            android:text="Progress Bar" />
+        -->
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/progress_bar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/sad" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/progress_bar"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/happy" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/content_layout"
@@ -53,31 +107,32 @@
             android:orientation="vertical" >
         </FrameLayout>
     </RelativeLayout>
-    
+
     <LinearLayout
         android:id="@+id/content_info_layout"
         android:layout_width="fill_parent"
         android:layout_height="18dp"
         android:layout_below="@+id/content_layout"
         android:gravity="center_vertical|center_horizontal"
-        android:background="#000000"
-        android:orientation="horizontal">
-    	<TextView 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="14dp"
-	        android:layout_weight="1"
-	        android:gravity="center"
-	        android:id="@+id/ups_number" />
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="14dp"
-	        android:layout_weight="1"
-	        android:gravity="center"
-	        android:id="@+id/downs_number" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/ups_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/downs_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="14dp" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/buttons_layout"
         android:layout_width="wrap_content"
@@ -94,7 +149,6 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
         </FrameLayout>
-        
     </LinearLayout>
 
     <LinearLayout

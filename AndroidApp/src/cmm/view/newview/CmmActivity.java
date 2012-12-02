@@ -18,10 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
+import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 import cmm.model.Rater;
 import cmm.view.R;
@@ -58,6 +60,7 @@ public class CmmActivity extends FragmentActivity {
 	private ContentDisplayFragment contentFragment;
 	private ButtonsControlFragment buttonsControlFragment;
 	private ViewGroup ui_content_bg;
+	private SeekBar ui_progress;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -69,8 +72,9 @@ public class CmmActivity extends FragmentActivity {
 		handleEvents();
 		doLayout();
 
-		rater = new Rater(buttonsControlFragment);
+		rater = new Rater(buttonsControlFragment, this.ui_progress);
 		contentStorage = new ContentStorage(contentFragment, buttonsControlFragment, ui_textviews);
+		
 	}
 
 	@Override
@@ -101,6 +105,12 @@ public class CmmActivity extends FragmentActivity {
 		super.onStop();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+		contentStorage.resumeFromFullScreen();
+	}
+	
 	public Point getDimension() {
 		return ui_dimension;
 	}
@@ -141,11 +151,17 @@ public class CmmActivity extends FragmentActivity {
 		ui_textviews = new TextView[]{
 				(TextView)findViewById(R.id.ups_number),
 				(TextView)findViewById(R.id.downs_number)};
+		
+		// progress bar
+		ui_progress = (SeekBar) findViewById(R.id.progress_bar);
 	}
 
-	public void facebook_signintest(View view){
-		Intent i = new Intent(this, FacebookHandler.class);
-		startActivity(i);
+	public void facebook_signin(View view){
+		FacebookHandler.getInstance().doSignin(this, getBaseContext());
+	}
+	
+	public void facebook_signout(View view){
+		FacebookHandler.getInstance().doSignout(this);
 	}
 	
 	/*
@@ -190,6 +206,9 @@ public class CmmActivity extends FragmentActivity {
 				buttonsControlFragment);
 
 		fragmentTransaction.commit();
+		
+		// disable progress bar
+		this.ui_progress.setEnabled(false);
 	}
 
 	/**
@@ -293,13 +312,24 @@ public class CmmActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * Full screen
+	 * @onClick
+	 * @param view
+	 */
+	public void fullScreen(View view) {
+		contentFragment.disableButtons();
+		contentFragment.showFullButton();
+		contentStorage.fullScreen();
+	}
+	
 	public void displayRateResponse(boolean isSuccess) {
 		String msg = isSuccess ? getResources().getString(
 				R.string.rate_success_msg) : getResources().getString(
 				R.string.rate_fail_msg);
 		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 	}
-
+	
 	/**
 	 * Show new content
 	 */

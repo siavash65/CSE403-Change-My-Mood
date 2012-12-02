@@ -36,10 +36,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import cmm.model.Content;
+import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
-import cmm.view.newview.FacebookHandler;
 
 public class PictureActivity extends Activity {
 	/* debug log string */
