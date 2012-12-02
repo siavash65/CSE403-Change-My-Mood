@@ -15,7 +15,7 @@ if __name__ == "__main__":
     from servercore.CmmCore.ContentDataOrganizer.ContentDataOrganizer import ContentDataOrganizer
     from servercore.CmmData.models import Mood
     
-    moods = [Mood.INSPIRED]
+    moods = [Mood.EXCITED]
     num_data_needed = 100
     
     for mood in moods:
