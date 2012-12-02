@@ -40,9 +40,13 @@ FEED_BACK_WEIGHT = 200
 
 HAPPY_PRIME_TERM = 'funny'
 ROMANTIC_PRIME_TERM = 'love'
+EXCITED_PRIME_TERM = 'excited'
+INSPIRED_PRIME_TERM = 'inspired'
 
 HAPPY_SEC_TERMS = ['hilarious', 'comical', 'humorous', 'entertaining']
 ROMANTIC_SEC_TERMS = ['loving', 'romantic', 'affection', 'passionate']
+EXCITED_SEC_TERMS = ['energy', 'awesome', 'energize', 'power']
+INSPIRED_SEC_TERMS = ['moving', 'motivated', 'motivating', 'stimulated']
 
 def computeInitialScore(isPicture = True, isPrimeMatch=False, numSecond=0, \
                         views=0, comments=0, favs=0):

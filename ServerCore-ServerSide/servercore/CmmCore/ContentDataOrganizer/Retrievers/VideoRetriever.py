@@ -21,21 +21,29 @@ _MAX_RESULTS = 50
 # youtube object
 yt = gdata.youtube.service.YouTubeService()
 
-# Get primary term
+# get primary terms
 def getPrimeTerm(mood):
     if mood == Mood.HAPPY:
         return ContentRetriever.HAPPY_PRIME_TERM
     elif mood == Mood.ROMANTIC:
         return ContentRetriever.ROMANTIC_PRIME_TERM
+    elif mood == Mood.EXCITED:
+        return ContentRetriever.EXCITED_PRIME_TERM
+    elif mood == Mood.INSPIRED:
+        return ContentRetriever.INSPIRED_PRIME_TERM
     
     raise Exception('mood is not happy or romantic...')
 
-#Get secondary term
+# get secondary terms
 def getSecTerm(mood):
     if mood == Mood.HAPPY:
         return ContentRetriever.HAPPY_SEC_TERMS
     elif mood == Mood.ROMANTIC:
         return ContentRetriever.ROMANTIC_SEC_TERMS
+    elif mood == Mood.EXCITED:
+        return ContentRetriever.EXCITED_SEC_TERMS
+    elif mood == Mood.INSPIRED:
+        return ContentRetriever.INSPIRED_SEC_TERMS
     
     raise Exception('mood is not happy or romantic...')
 

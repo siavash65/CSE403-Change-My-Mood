@@ -23,6 +23,10 @@ def getPrimeTerm(mood):
         return ContentRetriever.HAPPY_PRIME_TERM
     elif mood == Mood.ROMANTIC:
         return ContentRetriever.ROMANTIC_PRIME_TERM
+    elif mood == Mood.EXCITED:
+        return ContentRetriever.EXCITED_PRIME_TERM
+    elif mood == Mood.INSPIRED:
+        return ContentRetriever.INSPIRED_PRIME_TERM
     
     raise Exception('mood is not happy or romantic...')
 
@@ -32,6 +36,10 @@ def getSecTerm(mood):
         return ContentRetriever.HAPPY_SEC_TERMS
     elif mood == Mood.ROMANTIC:
         return ContentRetriever.ROMANTIC_SEC_TERMS
+    elif mood == Mood.EXCITED:
+        return ContentRetriever.EXCITED_SEC_TERMS
+    elif mood == Mood.INSPIRED:
+        return ContentRetriever.INSPIRED_SEC_TERMS
     
     raise Exception('mood is not happy or romantic...')
 

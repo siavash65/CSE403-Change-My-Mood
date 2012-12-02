@@ -21,8 +21,8 @@ class ContentDataOrganizer():
     # Data parameters
     HAPPY_TERMS = ['funny', 'hilarious', 'comical', 'humorous', 'entertaining']
     ROMANTIC_TERMS = ['love', 'loving', 'romantic', 'affection', 'passionate']
-    EXCITED_TERMS = ['excited']
-    INSPIRED_TERMS = ['inspired']
+    EXCITED_TERMS = ['excited', 'energy', 'awesome', 'energize', 'power']
+    INSPIRED_TERMS = ['inspired', 'moving', 'motivated', 'motivating', 'stimulated']
     
     NUM_DATA = 100
     PARTITION_NUM = 20
