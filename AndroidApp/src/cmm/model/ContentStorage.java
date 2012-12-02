@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
-import cmm.view.newview.CmmActivity;
+import android.widget.TextView;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 
 public class ContentStorage {
@@ -30,14 +30,19 @@ public class ContentStorage {
 	private Map<Mood, Integer> imageIndex;
 	private Map<Mood, Integer> videoIndex;
 
-	private Map<String, Drawable> midToImage;
-	private Map<String, String> midToVideo;
+	private Map<String, ContentInfo> midToImage;
+	private Map<String, ContentInfo> midToVideo;
 
 	private String cur_mid;
 
 	private ContentDisplayFragment contentFragment;
-
-	public ContentStorage(ContentDisplayFragment contentFragment) {
+	
+	/* Set Content info */
+	private TextView[] tv;
+	private String up_info;
+	private String down_info;
+	
+	public ContentStorage(ContentDisplayFragment contentFragment, TextView[] list) {
 		this.contentFragment = contentFragment;
 
 		imageMap = new HashMap<Mood, List<String>>();
@@ -46,9 +51,11 @@ public class ContentStorage {
 		imageIndex = new HashMap<Mood, Integer>();
 		videoIndex = new HashMap<Mood, Integer>();
 
-		midToImage = new HashMap<String, Drawable>();
-		midToVideo = new HashMap<String, String>();
+		midToImage = new HashMap<String, ContentInfo>();
+		midToVideo = new HashMap<String, ContentInfo>();
 
+		tv = list;
+		
 		for (Mood m : Mood.values()) {
 			imageMap.put(m, new ArrayList<String>());
 			videoMap.put(m, new ArrayList<String>());
@@ -77,11 +84,14 @@ public class ContentStorage {
 		} else {
 			// show image in list
 			String mid = imageMidList.get(imgIndex);
-			Drawable image = midToImage.get(mid);
+			Drawable image = midToImage.get(mid).getPicture();
+			up_info = midToImage.get(mid).getUpInfo();
+			down_info = midToImage.get(mid).getDownInfo();
 			imageIndex.put(mood, imgIndex);
 			contentFragment.displayImage(image);
 
 			this.cur_mid = mid;
+			setText();
 
 			contentFragment.EnableButtons();
 		}
@@ -104,11 +114,14 @@ public class ContentStorage {
 		} else {
 			Log.d(TAG, "getting prev image");
 			String mid = imageMidList.get(imgIndex);
-			Drawable image = midToImage.get(mid);
+			Drawable image = midToImage.get(mid).getPicture();
+			up_info = midToImage.get(mid).getUpInfo();
+			down_info = midToImage.get(mid).getDownInfo();
 			imageIndex.put(mood, imgIndex);
 			contentFragment.displayImage(image);
 
 			this.cur_mid = mid;
+			setText();
 		}
 
 		contentFragment.EnableButtons();
@@ -140,14 +153,16 @@ public class ContentStorage {
 		} else {
 			// show video in list
 			String mid = videoMidList.get(vidIndex);
-			String videoUrl = midToVideo.get(mid);
+			String videoUrl = midToVideo.get(mid).getVideo();
+			up_info = midToImage.get(mid).getUpInfo();
+			down_info = midToImage.get(mid).getDownInfo();
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
 			contentFragment.EnableButtons();
 			
 			this.cur_mid = mid;
+			setText();
 		}
-
 	}
 
 	public boolean getPrevVideo(Mood mood) {
@@ -168,11 +183,14 @@ public class ContentStorage {
 			Log.d(TAG, "getting prev video idx: " + vidIndex + ", totsize = "
 					+ videoMidList.size());
 			String mid = videoMidList.get(vidIndex);
-			String videoUrl = midToVideo.get(mid);
+			String videoUrl = midToVideo.get(mid).getVideo();
+			up_info = midToImage.get(mid).getUpInfo();
+			down_info = midToImage.get(mid).getDownInfo();
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
 			
 			this.cur_mid = mid;
+			setText();
 		}
 		contentFragment.EnableButtons();
 		return true;
@@ -184,6 +202,11 @@ public class ContentStorage {
 		}
 
 		new GetVideoTask(this).execute(mood.ordinal(), Content.VIDEO.ordinal());
+	}
+	
+	private void setText(){
+		tv[0].setText("Up: " + up_info);
+		tv[1].setText("Down: " + down_info);
 	}
 
 	/**
@@ -233,17 +256,18 @@ public class ContentStorage {
 					
 					// get mid and store it
 					this.cs.cur_mid = json.getString("mid");
+					this.cs.up_info = json.getString("ups");
+					this.cs.down_info = json.getString("downs");
 					
 					// insert image
 					List<String> imageMidList = imageMap.get(mood);
 					int imgIndex = imageIndex.get(mood);
 					imageMidList.add(json.getString("mid"));
-					midToImage.put(json.getString("mid"), image);
+					midToImage.put(json.getString("mid"), 
+							new ContentInfo(null, image, this.cs.up_info, this.cs.down_info));
 					imgIndex = imageMidList.size() - 1;
 					imageIndex.put(mood, imgIndex);
 					Log.d(TAG, "Inserted Image to list");
-
-					
 
 					return image;
 				} else {
@@ -260,6 +284,7 @@ public class ContentStorage {
 			contentFragment.displayImage(result);
 			contentFragment.EnableButtons();
 			// Enable Rating here
+			setText();
 		}
 	}
 
@@ -296,12 +321,15 @@ public class ContentStorage {
 
 					JSONObject jresult = new JSONObject(result);
 					this.cs.cur_mid = jresult.getString("mid");
-
+					this.cs.up_info = jresult.getString("ups");
+					this.cs.down_info = jresult.getString("downs");
+					
 					// insert video
 					List<String> videoMidList = videoMap.get(mood);
 					int vidIndex = videoIndex.get(mood);
 					videoMidList.add(cs.cur_mid);
-					midToVideo.put(cs.cur_mid, jresult.getString("url"));
+					midToVideo.put(cs.cur_mid, new ContentInfo(
+							jresult.getString("url"), null, this.cs.up_info, this.cs.down_info));
 					vidIndex = videoMidList.size() - 1;
 					videoIndex.put(mood, vidIndex);
 					Log.d(TAG, "Inserted video to list, idx = " + vidIndex
@@ -319,6 +347,7 @@ public class ContentStorage {
 		protected void onPostExecute(String str) {
 			contentFragment.displayVideo(str);
 			contentFragment.EnableButtons();
+			setText();
 		}
 	}
 }

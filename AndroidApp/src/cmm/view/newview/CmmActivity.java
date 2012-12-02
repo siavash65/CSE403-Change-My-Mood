@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
@@ -32,6 +33,9 @@ public class CmmActivity extends FragmentActivity {
 	/* Screen Size Ratio For Content Display */
 	private static final double CONTENT_W_OVER_H = 16.0 / 9.0;
 
+	/* Text Views */
+	private TextView[] tv;
+	
 	/* Model Objects */
 	private ContentStorage contentStorage;
 	
@@ -60,7 +64,10 @@ public class CmmActivity extends FragmentActivity {
 		handleEvents();
 		doLayout();
 
-		contentStorage = new ContentStorage(contentFragment);
+		tv = new TextView[]{
+				(TextView)findViewById(R.id.ups_number),
+				(TextView)findViewById(R.id.downs_number)};
+		contentStorage = new ContentStorage(contentFragment, tv);
 	}
 
 	@Override
