@@ -14,11 +14,14 @@ if __name__ == "__main__":
     from servercore import CmmData  
     addData = Media.objects.all()
     count = 0
+    i = 0
     for m in addData:
+        i += 1
+        print str(i) + '/' + str(len(addData))
         if not m.is_valid():
             CmmData.models.destory(m.id, m.content_type)
             count += 1
-    print "Deleted " + count + " invalid data"
+    print "Deleted " + str(count) + " invalid data"
         
     
     
