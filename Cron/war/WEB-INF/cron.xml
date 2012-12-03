@@ -3,18 +3,18 @@
   <cron>
     <url>/cron/broken</url>
     <description>Take out broken every min</description>
-    <schedule>every 30 minutes from 08:00 to 08:20</schedule>
+    <schedule>every 10 minutes from 19:40 to 23:20</schedule>
   </cron>
   
   <cron>
     <url>/cron/score</url>
     <description>Take out broken every min</description>
-    <schedule>every 30 minutes from 08:04 to 08:24</schedule>
+    <schedule>every 10 minutes from 19:44 to 23:24</schedule>
   </cron>
   
   <cron>
     <url>/cron/pull</url>
     <description>Take out broken every min</description>
-    <schedule>every 30 minutes from 08:05 to 08:25</schedule>
+    <schedule>every 10 minutes from 19:45 to 23:25</schedule>
   </cron>
 </cronentries>
