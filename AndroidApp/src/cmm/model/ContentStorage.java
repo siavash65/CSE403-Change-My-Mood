@@ -18,9 +18,11 @@ import org.json.JSONObject;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
-import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import android.widget.TextView;
+import cmm.view.newview.CmmActivity;
+import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
+import cmm.view.newview.contentinfo.ContentInfoFragment;
 
 public class ContentStorage {
 	private static final String TAG = "ContentStorage";
@@ -40,14 +42,15 @@ public class ContentStorage {
 
 	private ContentDisplayFragment contentFragment;
 	private ButtonsControlFragment buttonsControlFragment;
+	private ContentInfoFragment contentInfoFragment;
 
 	/* Set Content info */
-	private TextView[] ui_contentinfo;
+	//private TextView[] ui_contentinfo;
 	private String up_info;
 	private String down_info;
 
 	public ContentStorage(ContentDisplayFragment contentFragment,
-			ButtonsControlFragment buttonControlFragment, TextView[] list) {
+			ButtonsControlFragment buttonControlFragment, ContentInfoFragment contentInfoFragment) { // TextView[] list) {
 		this.contentFragment = contentFragment;
 		this.buttonsControlFragment = buttonControlFragment;
 
@@ -62,7 +65,8 @@ public class ContentStorage {
 
 		canRateMap = new HashMap<String, Integer>();
 
-		ui_contentinfo = list;
+		// ui_contentinfo = list;
+		this.contentInfoFragment = contentInfoFragment;
 
 		for (Mood m : Mood.values()) {
 			imageMap.put(m, new ArrayList<String>());
@@ -338,8 +342,9 @@ public class ContentStorage {
 	}
 
 	private void setText() {
-		ui_contentinfo[0].setText("Up: " + up_info);
-		ui_contentinfo[1].setText("Down: " + down_info);
+		// ui_contentinfo[0].setText("Up: " + up_info);
+		// ui_contentinfo[1].setText("Down: " + down_info);
+		this.contentInfoFragment.setText(up_info, down_info);
 	}
 
 	/**
@@ -405,7 +410,7 @@ public class ContentStorage {
 							image, this.cs.up_info, this.cs.down_info));
 					imgIndex = imageMidList.size() - 1;
 					imageIndex.put(mood, imgIndex);
-					Log.d(TAG, "Inserted Image to list");
+					Log.d(TAG, "Inserted Image to list, size = " + imgIndex);
 
 					return image;
 				} else {

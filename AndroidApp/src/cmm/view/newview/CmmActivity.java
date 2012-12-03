@@ -30,6 +30,7 @@ import cmm.model.Rater;
 import cmm.view.R;
 import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
+import cmm.view.newview.contentinfo.ContentInfoFragment;
 import cmm.view.newview.navigation.NavigationFragment;
 
 public class CmmActivity extends FragmentActivity {
@@ -40,7 +41,7 @@ public class CmmActivity extends FragmentActivity {
 	private static final double CONTENT_W_OVER_H = 16.0 / 9.0;
 
 	/* Text Views */
-	private TextView[] ui_textviews;
+	// private TextView[] ui_textviews;
 
 	/* Model Objects */
 	private ContentStorage contentStorage;
@@ -60,6 +61,7 @@ public class CmmActivity extends FragmentActivity {
 	private NavigationFragment navigationFragment;
 	private ContentDisplayFragment contentFragment;
 	private ButtonsControlFragment buttonsControlFragment;
+	private ContentInfoFragment contentInfoFragment;
 	private ViewGroup ui_content_bg;
 	private SeekBar ui_progress;
 
@@ -75,7 +77,7 @@ public class CmmActivity extends FragmentActivity {
 
 		rater = new Rater(buttonsControlFragment, this.ui_progress);
 		contentStorage = new ContentStorage(contentFragment,
-				buttonsControlFragment, ui_textviews);
+				buttonsControlFragment, contentInfoFragment);
 	}
 
 	@Override
@@ -148,9 +150,9 @@ public class CmmActivity extends FragmentActivity {
 		ui_content_bg = (ViewGroup) findViewById(R.id.content_layout);
 
 		// content info
-		ui_textviews = new TextView[] {
-				(TextView) findViewById(R.id.ups_number),
-				(TextView) findViewById(R.id.downs_number) };
+		// ui_textviews = new TextView[] {
+		// (TextView) super.findViewById(R.id.ups_number),
+		// (TextView) super.findViewById(R.id.downs_number) };
 
 		// progress bar
 		ui_progress = (SeekBar) findViewById(R.id.progress_bar);
@@ -209,6 +211,11 @@ public class CmmActivity extends FragmentActivity {
 		this.buttonsControlFragment = ButtonsControlFragment.getInstance(this);
 		fragmentTransaction.add(R.id.buttonscontrol_fragment,
 				buttonsControlFragment);
+
+		// content info fragment
+		this.contentInfoFragment = ContentInfoFragment.getInstance();
+		fragmentTransaction
+				.add(R.id.content_info_fragment, contentInfoFragment);
 
 		fragmentTransaction.commit();
 
@@ -342,6 +349,13 @@ public class CmmActivity extends FragmentActivity {
 				displayNewVideo(curMood);
 			}
 		}
+	}
+
+	public void setText(String up_info, String down_info) {
+		Log.d(TAG, "Setting up: " + up_info + ", down: " + down_info);
+		// ui_textviews[0].setText("Up: " + up_info);
+		// ui_textviews[1].setText("Down: " + down_info);
+		contentInfoFragment.setText(up_info, down_info);
 	}
 
 	// Displaying previuos image
