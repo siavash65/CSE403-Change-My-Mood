@@ -81,6 +81,7 @@ public class CmmActivity extends FragmentActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		contentFragment.cleanup();
+		initialize = false;
 	}
 
 	@Override
@@ -216,10 +217,6 @@ public class CmmActivity extends FragmentActivity {
 	 * @param mood
 	 */
 	public void displayNextImage(Mood mood) {
-		if (!this.initialize) {
-			this.initialize = true;
-			ui_content_bg.setBackgroundColor(Color.TRANSPARENT);
-		}
 		contentFragment.disableButtons();
 		contentFragment.showButton();
 		contentStorage.getNextImage(mood);
@@ -231,10 +228,6 @@ public class CmmActivity extends FragmentActivity {
 	 * @param mood
 	 */
 	public void displayNextVideo(Mood mood) {
-		if (!this.initialize) {
-			this.initialize = true;
-			ui_content_bg.setBackgroundColor(Color.TRANSPARENT);
-		}
 		contentFragment.disableButtons();
 		contentFragment.showButton();
 		contentStorage.getNextVideo(mood);
@@ -321,7 +314,7 @@ public class CmmActivity extends FragmentActivity {
 	/**
 	 * Show new content
 	 */
-	public void newContent() {
+	public void newContent() {		
 		Content curCon = navigationFragment.getContent();
 		Mood curMood = navigationFragment.getMood();
 		if (curCon != null && curMood != null) {
