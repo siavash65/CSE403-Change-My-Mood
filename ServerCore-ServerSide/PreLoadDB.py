@@ -17,6 +17,8 @@ if __name__ == "__main__":
     
     moods = [Mood.HAPPY, Mood.ROMANTIC, Mood.INSPIRED, Mood.EXCITED]
     fill_up_to = 100
+    min_pic = 40
+    min_vid = 20
     # num_data_needed = 100
     
     for mood in moods:
@@ -24,6 +26,13 @@ if __name__ == "__main__":
         pic_num = 0 if pic_num < 0 else pic_num
         vid_num = fill_up_to - len(Media.objects.filter(moods = mood, content_type="VI"))
         vid_num = 0 if vid_num < 0 else vid_num
+        
+        print 'adding ' + str(pic_num) + ' num of pic' 
+        print 'adding ' + str(vid_num) + ' num of vid' 
+        
+        part_num_pic = min_pic if pic_num * 3 < min_pic else pic_num * 3
+        part_num_vid = min_vid if vid_num * 3 < min_vid else vid_num * 3
+        
         
         PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), pic_num, 200)
         VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), vid_num, 100)
