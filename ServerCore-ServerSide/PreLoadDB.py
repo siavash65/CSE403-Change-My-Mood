@@ -17,7 +17,7 @@ if __name__ == "__main__":
     
     moods = [Mood.HAPPY, Mood.ROMANTIC, Mood.INSPIRED, Mood.EXCITED]
     fill_up_to = 100
-    min_pic = 40
+    min_pic = 25
     min_vid = 20
     # num_data_needed = 100
     
