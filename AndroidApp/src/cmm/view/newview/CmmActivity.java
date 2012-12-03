@@ -150,7 +150,7 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void facebook_signintest(View view) {
-		Intent i = new Intent(this, FacebookHandler.class);
+		Intent i = new Intent(this, CmmFacebookActivity.class);//FacebookHandler.class);
 		startActivity(i);
 	}
 

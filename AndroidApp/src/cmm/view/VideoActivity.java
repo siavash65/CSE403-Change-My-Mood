@@ -16,7 +16,7 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
+//import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -47,6 +47,7 @@ public class VideoActivity extends Activity {
 	private WebView ui_webplayer;
 	
 	private String vid;
+	
 	private int vid_mood_type;
 	private int vid_content_type;
 	private int video_width;
@@ -57,7 +58,7 @@ public class VideoActivity extends Activity {
 	private String save_resume;
 	
 	/** Called when the activity is first created. */
-	@SuppressLint("SetJavaScriptEnabled")
+	//@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
