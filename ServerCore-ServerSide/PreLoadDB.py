@@ -34,5 +34,5 @@ if __name__ == "__main__":
         part_num_vid = min_vid if vid_num * 3 < min_vid else vid_num * 3
         
         
-        PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), pic_num, 200)
-        VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), vid_num, 100)
+        PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), pic_num, part_num_pic)
+        VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), vid_num, part_num_vid)
