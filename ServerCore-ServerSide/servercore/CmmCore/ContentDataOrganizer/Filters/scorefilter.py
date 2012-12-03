@@ -47,8 +47,8 @@ class ScoreFilter(FilterInterface):
             s = m.score
             if s.final_score != -1:
                 score_map[m.id] = s.final_score
-            else:
-                score_map[m.id] = s.initial_score
+            # else:
+            #    score_map[m.id] = s.initial_score
 
         # short circult
         if len(score_map) == 0:

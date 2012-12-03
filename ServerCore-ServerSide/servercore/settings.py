@@ -2,7 +2,7 @@
 import dj_database_url
 import os.path
 
-DEPLOY = True
+DEPLOY = False
 IS_TEST_SERVER = False
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
