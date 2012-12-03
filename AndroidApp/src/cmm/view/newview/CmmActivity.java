@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
+import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 import cmm.model.Rater;
 import cmm.view.R;
@@ -150,8 +151,16 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void facebook_signintest(View view) {
-		Intent i = new Intent(this, CmmFacebookActivity.class);//FacebookHandler.class);
+		Intent i = new Intent(this, CmmFacebookActivity.class);// FacebookHandler.class);
 		startActivity(i);
+	}
+
+	public void facebook_signin(View view) {
+		FacebookHandler.getInstance().doSignin(this, getBaseContext());
+	}
+
+	public void facebook_signout(View view) {
+		FacebookHandler.getInstance().doSignout(this);
 	}
 
 	/*
@@ -196,7 +205,7 @@ public class CmmActivity extends FragmentActivity {
 				buttonsControlFragment);
 
 		fragmentTransaction.commit();
-		
+
 		// disable progress bar
 		this.ui_progress.setEnabled(false);
 	}

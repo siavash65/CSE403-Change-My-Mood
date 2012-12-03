@@ -38,7 +38,6 @@ import cmm.model.Content;
 import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
-import cmm.view.newview.FacebookHandler;
 
 public class VideoActivity extends Activity {
 	private MenuInflater inflater;

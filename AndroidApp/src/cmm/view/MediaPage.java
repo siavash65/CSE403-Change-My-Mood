@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import cmm.model.Content;
-import cmm.view.newview.FacebookHandler;
 
 public class MediaPage extends Activity{
 	public static String CONTENT = "Content";

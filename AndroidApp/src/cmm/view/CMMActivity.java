@@ -3,13 +3,11 @@ package cmm.view;
 import java.util.Stack;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
-import cmm.view.newview.FacebookHandler;
 
 public class CMMActivity extends Activity{
 	private ImageView imageView;
