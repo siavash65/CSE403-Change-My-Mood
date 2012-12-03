@@ -70,6 +70,20 @@ class Media(models.Model):
             chosen_ones = (dlist[:10])[0]
             for c in chosen_ones:
                 c.delete()
+                
+    def is_valid(self):
+        try:
+            self.score
+            self.rank
+            if self.content_type == Media.PICTURE:
+                self.picture
+            elif self.content_type == Media.VIDEO:
+                self.video
+            else:
+                return False
+            return True
+        except:
+            return False 
     
     def __unicode__(self):
         return str(self.id)
@@ -245,21 +259,33 @@ def destory(mid, content):
         return False
     
     # delete in Rank
-    Rank.objects.get(media=mid).delete()
-    
+    try:
+        Rank.objects.get(media=mid).delete()
+    except Exception:
+        print "delete no Rank"
+        
     # delete in Score
-    Score.objects.get(media=mid).delete()
+    try:
+        Score.objects.get(media=mid).delete()
+    except Exception:
+        print "delete no Score"  
     
     # delete FilterCheck
-    FilterCheck.objects.get(media=mid).delete()
+    try:
+        FilterCheck.objects.get(media=mid).delete()
+    except Exception:
+        print "delete no FilterCheck" 
     
     # delete in Content
-    if content == Media.PICTURE:
-        Picture.objects.get(media=mid).delete()
-    elif content == Media.VIDEO:
-        Video.objects.get(media=mid).delete()
-    else:
-        return False
+    try:
+        if content == Media.PICTURE:
+            Picture.objects.get(media=mid).delete()
+        elif content == Media.VIDEO:
+            Video.objects.get(media=mid).delete()
+        else:
+            return False
+    except:
+        print "delete no Content" 
     
     m.delete()
     return True
