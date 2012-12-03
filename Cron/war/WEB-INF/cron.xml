@@ -15,6 +15,6 @@
   <cron>
     <url>/cron/pull</url>
     <description>Take out broken every min</description>
-    <schedule>every 10 minutes from 10:30 to 11:20</schedule>
+    <schedule>every 30 minutes from 08:05 to 08:25</schedule>
   </cron>
 </cronentries>

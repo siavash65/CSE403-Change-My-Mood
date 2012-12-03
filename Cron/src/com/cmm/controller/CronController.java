@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/cron")
 public class CronController {
-	private static final boolean DEPLOY = true;
+	private static final boolean DEPLOY = false;
 
 	private static final String SECRET = "cse403secret";
 	private static final String FILTER_URL = "http://changemymood.herokuapp.com/api/filter/";
