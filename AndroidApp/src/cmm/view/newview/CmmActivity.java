@@ -106,6 +106,11 @@ public class CmmActivity extends FragmentActivity {
 		super.onStop();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		contentStorage.resumeFromFullScreen();
+	}
+
 	public Point getDimension() {
 		return ui_dimension;
 	}
@@ -209,7 +214,7 @@ public class CmmActivity extends FragmentActivity {
 
 		// disable progress bar
 		this.ui_progress.setEnabled(false);
-		
+
 	}
 
 	/**
@@ -303,6 +308,18 @@ public class CmmActivity extends FragmentActivity {
 			contentStorage.ratedMid(mid, false);
 			rater.rateThumbsDown(mid);
 		}
+	}
+
+	/**
+	 * Full screen
+	 * 
+	 * @onClick
+	 * @param view
+	 */
+	public void fullScreen(View view) {
+		contentFragment.disableButtons();
+		contentFragment.showFullButton();
+		contentStorage.fullScreen();
 	}
 
 	public void displayRateResponse(boolean isSuccess) {

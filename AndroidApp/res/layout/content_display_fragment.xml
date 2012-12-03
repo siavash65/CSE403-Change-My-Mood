@@ -46,6 +46,16 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/prev_button"
                 android:onClick="prevContent" />
+
+            <Button
+                android:id="@+id/fullscreen_button"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/fullscreen_button"
+                android:gravity="center_horizontal"
+                android:onClick="fullScreen" />
         </RelativeLayout>
     </RelativeLayout>
 

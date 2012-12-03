@@ -76,6 +76,14 @@ public class ContentStorage {
 		return this.cur_mid;
 	}
 
+	public String getCurrentVideoUrl() {
+		if (!midToVideo.containsKey(cur_mid)) {
+			throw new IllegalArgumentException("currently not video");
+		}
+
+		return midToVideo.get(cur_mid).getVideo();
+	}
+
 	private boolean canRate(String mid) {
 		if (canRateMap.containsKey(mid)) {
 			return canRateMap.get(mid) == -1;
@@ -96,7 +104,7 @@ public class ContentStorage {
 		if (mid == null) {
 			throw new IllegalArgumentException("null mid");
 		}
-		
+
 		if (midToImage.containsKey(mid)) {
 			ContentInfo contentInfo = midToImage.get(mid);
 			String up = contentInfo.getUpInfo();
@@ -292,6 +300,41 @@ public class ContentStorage {
 		}
 
 		new GetVideoTask(this).execute(mood.ordinal(), Content.VIDEO.ordinal());
+	}
+
+	public void fullScreen() {
+		if (cur_mid == null) {
+			Log.d(TAG, "null mid");
+			return; // throw new IllegalStateException();
+		}
+
+		if (midToImage.containsKey(cur_mid)) {
+			contentFragment.displayFullImage(midToImage.get(cur_mid)
+					.getPicture());
+		} else if (midToVideo.containsKey(cur_mid)) {
+			contentFragment
+					.displayFullVideo(midToVideo.get(cur_mid).getVideo());
+		} else {
+			throw new IllegalArgumentException("cur_mid corrupted");
+		}
+	}
+
+	public void resumeFromFullScreen() {
+		if (cur_mid == null) {
+			throw new IllegalStateException();
+		}
+
+		if (midToImage.containsKey(cur_mid)) {
+			Log.d(TAG, "redisplay Picture");
+			contentFragment.displayImage(midToImage.get(cur_mid).getPicture(),
+					true);
+		} else if (midToVideo.containsKey(cur_mid)) {
+			contentFragment.displayVideo(midToVideo.get(cur_mid).getVideo(),
+					true);
+		} else {
+			throw new IllegalArgumentException("cur_mid corrupted");
+		}
+		contentFragment.EnableButtons();
 	}
 
 	private void setText() {
