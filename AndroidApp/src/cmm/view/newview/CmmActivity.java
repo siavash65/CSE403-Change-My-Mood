@@ -17,6 +17,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -81,7 +82,6 @@ public class CmmActivity extends FragmentActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		contentFragment.cleanup();
-		initialize = false;
 	}
 
 	@Override
@@ -209,6 +209,7 @@ public class CmmActivity extends FragmentActivity {
 
 		// disable progress bar
 		this.ui_progress.setEnabled(false);
+		
 	}
 
 	/**
@@ -314,7 +315,7 @@ public class CmmActivity extends FragmentActivity {
 	/**
 	 * Show new content
 	 */
-	public void newContent() {		
+	public void newContent() {
 		Content curCon = navigationFragment.getContent();
 		Mood curMood = navigationFragment.getMood();
 		if (curCon != null && curMood != null) {

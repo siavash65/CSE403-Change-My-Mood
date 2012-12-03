@@ -28,6 +28,7 @@ public class NavigationFragment extends Fragment {
 	private Mood mood;
 
 	public NavigationFragment(CmmActivity activity) {
+		super();
 		this.activity = activity;
 	}
 	

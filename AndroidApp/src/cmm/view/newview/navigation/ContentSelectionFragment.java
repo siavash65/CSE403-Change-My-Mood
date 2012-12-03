@@ -69,6 +69,7 @@ public class ContentSelectionFragment extends Fragment {
 	 * @param mood
 	 */
 	private ContentSelectionFragment(CmmActivity activity, Mood mood) {
+		super();
 		this.mood = mood;
 		this.activity = activity;
 		this.displayingContent = false;

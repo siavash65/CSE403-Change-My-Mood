@@ -1,5 +1,6 @@
 package cmm.view.newview.contentdisplay;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,7 +25,7 @@ public class PictureDisplayFragment extends Fragment {
 	}
 
 	private PictureDisplayFragment() {
-
+		super();
 	}
 
 	@Override
@@ -42,12 +43,15 @@ public class PictureDisplayFragment extends Fragment {
 		return view;
 	}
 
-	public void displayMedia(Drawable image) {		
+	public void displayMedia(Drawable image) {	
+		ui_view.findViewById(R.id.picture_parent).setBackgroundColor(Color.BLACK);
 		imageView.setImageDrawable(image);
 	}
 	
 	public void disable() {
-		ui_view.setVisibility(View.GONE);
+		if (ui_view != null) {
+			ui_view.setVisibility(View.GONE);
+		}
 	}
 	
 	public void enable() {

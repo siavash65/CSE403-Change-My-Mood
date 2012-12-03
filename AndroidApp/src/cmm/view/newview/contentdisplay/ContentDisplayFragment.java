@@ -45,6 +45,7 @@ public class ContentDisplayFragment extends Fragment {
 	}
 
 	private ContentDisplayFragment(CmmActivity activity) {
+		super();
 		this.activity = activity;
 	}
 
@@ -188,6 +189,7 @@ public class ContentDisplayFragment extends Fragment {
 
 	private void doLayout() {
 		hideButtons();
+		this.cleanup();
 	}
 
 	private void disableAllFragment(Content exception) {

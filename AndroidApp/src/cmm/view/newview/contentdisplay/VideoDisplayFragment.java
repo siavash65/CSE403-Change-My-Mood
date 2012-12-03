@@ -33,6 +33,7 @@ public class VideoDisplayFragment extends Fragment {
 	}
 
 	private VideoDisplayFragment(Activity activity) {
+		super();
 		this.activity = activity;
 	}
 
@@ -66,9 +67,13 @@ public class VideoDisplayFragment extends Fragment {
 	}
 
 	public void disable() {
-		ui_view.setVisibility(View.GONE);
-		ui_webplayer.loadUrl("javascript:close()");
-		ui_webplayer.loadData("", "text/html", "utf-8");
+		if (ui_view != null) {
+			ui_view.setVisibility(View.GONE);
+		}
+		if (ui_webplayer != null) {
+			ui_webplayer.loadUrl("javascript:close()");
+			ui_webplayer.loadData("", "text/html", "utf-8");
+		}
 	}
 
 	private void doVideoSettings() {
