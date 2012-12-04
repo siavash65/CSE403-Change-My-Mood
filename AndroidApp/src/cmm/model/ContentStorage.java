@@ -292,8 +292,8 @@ public class ContentStorage {
 			// show video in list
 			String mid = videoMidList.get(vidIndex);
 			String videoUrl = midToVideo.get(mid).getVideo();
-			up_info = midToImage.get(mid).getUpInfo();
-			down_info = midToImage.get(mid).getDownInfo();
+			up_info = midToVideo.get(mid).getUpInfo();
+			down_info = midToVideo.get(mid).getDownInfo();
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
 			contentFragment.EnableButtons();
@@ -330,8 +330,8 @@ public class ContentStorage {
 					+ videoMidList.size());
 			String mid = videoMidList.get(vidIndex);
 			String videoUrl = midToVideo.get(mid).getVideo();
-			up_info = midToImage.get(mid).getUpInfo();
-			down_info = midToImage.get(mid).getDownInfo();
+			up_info = midToVideo.get(mid).getUpInfo();
+			down_info = midToVideo.get(mid).getDownInfo();
 			videoIndex.put(mood, vidIndex);
 			contentFragment.displayVideo(videoUrl);
 
