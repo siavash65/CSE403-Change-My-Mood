@@ -18,16 +18,17 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import cmm.model.Content;
+import cmm.model.ContentStorage;
 import cmm.model.Mood;
 import cmm.view.R;
 import cmm.view.newview.CmmActivity;
 
 public class ContentSelectionFragment extends Fragment {
 	private static final String TAG = "ContentSelectionFragment";
-	
+
 	private static ContentSelectionFragment instance;
 
-	private CmmActivity activity;
+	private ContentStorage contentStorage;
 
 	// views
 	private View ui_view;
@@ -55,10 +56,10 @@ public class ContentSelectionFragment extends Fragment {
 	 * @param mood
 	 * @return
 	 */
-	public static ContentSelectionFragment getInstance(CmmActivity activity,
-			Mood mood) {
+	public static ContentSelectionFragment getInstance(
+			ContentStorage contentStorage, Mood mood) {
 		if (instance == null) {
-			instance = new ContentSelectionFragment(activity, mood);
+			instance = new ContentSelectionFragment(contentStorage, mood);
 		}
 		return instance;
 	}
@@ -68,10 +69,10 @@ public class ContentSelectionFragment extends Fragment {
 	 * 
 	 * @param mood
 	 */
-	private ContentSelectionFragment(CmmActivity activity, Mood mood) {
+	private ContentSelectionFragment(ContentStorage contentStorage, Mood mood) {
 		super();
 		this.mood = mood;
-		this.activity = activity;
+		this.contentStorage = contentStorage;
 		this.displayingContent = false;
 	}
 
@@ -152,9 +153,11 @@ public class ContentSelectionFragment extends Fragment {
 				Toast.LENGTH_SHORT).show();
 		// Display Content
 		if (view.getId() == R.id.picture_button) {
-			activity.displayNextImage(mood);
+			// activity.displayNextImage(mood);
+			contentStorage.getNextImage(mood);
 		} else if (view.getId() == R.id.video_button) {
-			activity.displayNextVideo(mood);
+			// activity.displayNextVideo(mood);
+			contentStorage.getNextVideo(mood);
 		}
 	}
 
@@ -166,7 +169,7 @@ public class ContentSelectionFragment extends Fragment {
 			// hide button
 			b.setVisibility(View.INVISIBLE);
 		}
-		ui_toplevel.startAnimation(anim_scale);  // TODO: this is doing twice
+		ui_toplevel.startAnimation(anim_scale); // TODO: this is doing twice
 	}
 
 	private void afterScaleEnd() {
@@ -289,7 +292,7 @@ public class ContentSelectionFragment extends Fragment {
 				afterScaleEnd();
 			}
 		});
-		
+
 		// Show image
 		anim_scaleback.setAnimationListener(new AnimationListener() {
 			@Override

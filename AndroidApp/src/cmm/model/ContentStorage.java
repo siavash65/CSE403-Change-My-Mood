@@ -15,10 +15,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 import cmm.view.newview.CmmActivity;
 import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
@@ -26,6 +26,8 @@ import cmm.view.newview.contentinfo.ContentInfoFragment;
 
 public class ContentStorage {
 	private static final String TAG = "ContentStorage";
+	private static final String INIT = "contentstorageinit";
+	private static final String SHARD_TAG = "ContentStorageShardPref";
 
 	private Map<Mood, List<String>> imageMap;
 	private Map<Mood, List<String>> videoMap;
@@ -45,12 +47,33 @@ public class ContentStorage {
 	private ContentInfoFragment contentInfoFragment;
 
 	/* Set Content info */
-	//private TextView[] ui_contentinfo;
+	// private TextView[] ui_contentinfo;
 	private String up_info;
 	private String down_info;
 
-	public ContentStorage(ContentDisplayFragment contentFragment,
-			ButtonsControlFragment buttonControlFragment, ContentInfoFragment contentInfoFragment) { // TextView[] list) {
+	// private boolean init;
+	private CmmActivity activity;
+
+	private static ContentStorage instance;
+	
+	public static ContentStorage getInstance(ContentDisplayFragment contentFragment,
+			ButtonsControlFragment buttonControlFragment,
+			ContentInfoFragment contentInfoFragment, CmmActivity activity) {
+
+		Log.d(TAG, "Get Instance");
+		if (instance == null) {
+			instance = new ContentStorage(contentFragment, buttonControlFragment, contentInfoFragment, activity);
+		}
+		instance.initImageMap();
+		instance.initVideoMap();
+		return instance;
+	}
+	
+	private ContentStorage(ContentDisplayFragment contentFragment,
+			ButtonsControlFragment buttonControlFragment,
+			ContentInfoFragment contentInfoFragment, CmmActivity activity) { // TextView[]
+																				// list)
+																				// {
 		this.contentFragment = contentFragment;
 		this.buttonsControlFragment = buttonControlFragment;
 
@@ -71,9 +94,31 @@ public class ContentStorage {
 		for (Mood m : Mood.values()) {
 			imageMap.put(m, new ArrayList<String>());
 			videoMap.put(m, new ArrayList<String>());
-			imageIndex.put(m, 0);
-			videoIndex.put(m, 0);
+			imageIndex.put(m, -1);
+			videoIndex.put(m, -1);
 		}
+
+		this.activity = activity;
+
+		Log.d(TAG, "Finish Constructor");
+	}
+
+	private void initImageMap() {
+		imageMap.clear();
+		imageMap = new HashMap<Mood, List<String>>();
+		for (Mood m : Mood.values()) {
+			imageMap.put(m, new ArrayList<String>());
+		}
+		Log.d(TAG, "Cleared image map");
+	}
+
+	private void initVideoMap() {
+		videoMap.clear();
+		videoMap = new HashMap<Mood, List<String>>();
+		for (Mood m : Mood.values()) {
+			videoMap.put(m, new ArrayList<String>());
+		}
+		Log.d(TAG, "Cleared video map");
 	}
 
 	public String getMid() {
@@ -139,10 +184,17 @@ public class ContentStorage {
 		this.setText();
 	}
 
+	/**
+	 * Display Next Image
+	 * 
+	 * @param mood
+	 */
 	public void getNextImage(Mood mood) {
+		Log.d(TAG, "getNewImage");
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
 		}
+		// initializeMaps();
 
 		List<String> imageMidList = imageMap.get(mood);
 		int imgIndex = imageIndex.get(mood);
@@ -185,7 +237,7 @@ public class ContentStorage {
 
 		if (imgIndex < 0) {
 			// Maybe display something here?
-			Log.d(TAG, "img index " + mood.value + " is < 0");
+			Log.d(TAG, "img index " + imgIndex + ", " + mood.value + " is < 0");
 			contentFragment.EnableButtons();
 			return false;
 		} else {
@@ -217,7 +269,7 @@ public class ContentStorage {
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
 		}
-
+		// initializeMaps();
 		new GetPictureTask(this).execute(mood.ordinal(),
 				Content.PICTURE.ordinal());
 	}
@@ -226,6 +278,7 @@ public class ContentStorage {
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
 		}
+		// initializeMaps();
 
 		List<String> videoMidList = videoMap.get(mood);
 		int vidIndex = videoIndex.get(mood);
@@ -302,6 +355,7 @@ public class ContentStorage {
 		if (mood == null) {
 			throw new IllegalArgumentException("Null mood");
 		}
+		// initializeMaps();
 
 		new GetVideoTask(this).execute(mood.ordinal(), Content.VIDEO.ordinal());
 	}
@@ -408,9 +462,11 @@ public class ContentStorage {
 					imageMidList.add(json.getString("mid"));
 					midToImage.put(json.getString("mid"), new ContentInfo(null,
 							image, this.cs.up_info, this.cs.down_info));
+					Log.d(TAG, imageMidList.toString());
 					imgIndex = imageMidList.size() - 1;
 					imageIndex.put(mood, imgIndex);
-					Log.d(TAG, "Inserted Image to list, size = " + imgIndex);
+					Log.d(TAG, "Inserted Image (" + mood.value + ", "
+							+ content.value + ")to list, size = " + imgIndex);
 
 					return image;
 				} else {

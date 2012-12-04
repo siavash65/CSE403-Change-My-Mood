@@ -13,12 +13,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import cmm.model.Content;
+import cmm.model.ContentStorage;
 import cmm.model.Mood;
 import cmm.view.R;
-import cmm.view.newview.CmmActivity;
 
 public class NavigationFragment extends Fragment {
-	private CmmActivity activity;
+	private ContentStorage contentStorage;
 	
 	private View ui_view;
 	private Collection<Button> ui_moodButtons;
@@ -27,9 +27,9 @@ public class NavigationFragment extends Fragment {
 	
 	private Mood mood;
 
-	public NavigationFragment(CmmActivity activity) {
+	public NavigationFragment(ContentStorage contentStorage) {
 		super();
-		this.activity = activity;
+		this.contentStorage = contentStorage;
 	}
 	
 	@Override
@@ -98,7 +98,7 @@ public class NavigationFragment extends Fragment {
 
 			// add a fragment
 			ContentSelectionFragment csFragment = ContentSelectionFragment
-					.getInstance(activity, mood);
+					.getInstance(contentStorage, mood);
 			fragmentTransaction.add(R.id.content_select_fragment, csFragment);
 			fragmentTransaction.commit();
 			this.csf = csFragment;

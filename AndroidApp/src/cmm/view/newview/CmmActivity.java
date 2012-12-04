@@ -76,8 +76,15 @@ public class CmmActivity extends FragmentActivity {
 		doLayout();
 
 		rater = new Rater(buttonsControlFragment, this.ui_progress);
-		contentStorage = new ContentStorage(contentFragment,
-				buttonsControlFragment, contentInfoFragment);
+		contentStorage = ContentStorage.getInstance(contentFragment,
+				buttonsControlFragment, contentInfoFragment, this);
+		// get an instance of FragmentTransaction from your Activity
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+				.beginTransaction();
+		// add navigation fragment
+		this.navigationFragment = new NavigationFragment(contentStorage);
+		fragmentTransaction.add(R.id.navigation_fragment, navigationFragment);
+		fragmentTransaction.commit();
 	}
 
 	@Override
@@ -198,10 +205,6 @@ public class CmmActivity extends FragmentActivity {
 		// get an instance of FragmentTransaction from your Activity
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
 				.beginTransaction();
-
-		// add navigation fragment
-		this.navigationFragment = new NavigationFragment(this);
-		fragmentTransaction.add(R.id.navigation_fragment, navigationFragment);
 
 		// add content fragment
 		this.contentFragment = ContentDisplayFragment.getInstance(this);
