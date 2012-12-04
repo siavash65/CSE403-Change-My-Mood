@@ -1,65 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
-    
 <LinearLayout  
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
     
-   <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/aboutus_title"
-        android:textSize="20sp" />
-   
-	<TextView
-	    android:layout_width="wrap_content"
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:text="@string/AboutUsInfo"
-	    android:textSize="14sp" />
+	    android:layout_weight="0.2"
+	    android:padding="10dp">
+	    
+	<LinearLayout  
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    
+	   <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aboutus_title"
+	        android:textSize="20sp" />
+	   
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/AboutUsInfo"
+		    android:textSize="14sp" />
+		
+	    <TextView 
+	        android:autoLink="web"
+	        android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/websiteLink"
+		    android:textSize="14sp"
+	        />
+		
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/siavash"
+		    android:textSize="14sp" />
 	
-    <TextView 
-        android:autoLink="web"
-        android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/websiteLink"
-	    android:textSize="14sp"
-        />
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/lin"
+		    android:textSize="14sp" />
 	
-	<TextView
-	    android:layout_width="wrap_content"
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/garrett"
+		    android:textSize="14sp" />
+	
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/hyunjoon"
+		    android:textSize="14sp" />
+	
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/youngmin"
+		    android:textSize="14sp" />
+		</LinearLayout>
+	
+	</ScrollView>
+	
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:text="@string/siavash"
-	    android:textSize="14sp" />
-
-	<TextView
-	    android:layout_width="wrap_content"
+	    android:layout_weight="0.8"
+	    android:padding="10dp">
+	    
+	    <ImageView 
+	       xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:text="@string/lin"
-	    android:textSize="14sp" />
-
-	<TextView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/garrett"
-	    android:textSize="14sp" />
-
-	<TextView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/hyunjoon"
-	    android:textSize="14sp" />
-
-	<TextView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/youngmin"
-	    android:textSize="14sp" />
-	</LinearLayout>
-
-</ScrollView>
+	    android:background="@drawable/five"
+	    android:padding="10dp"/>
+	    
+	</ScrollView>
+    
+</LinearLayout>
