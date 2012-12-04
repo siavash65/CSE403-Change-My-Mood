@@ -3,7 +3,6 @@ package cmm.view.newview;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -14,19 +13,22 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import cmm.model.Content;
 import cmm.model.ContentStorage;
 import cmm.model.FacebookHandler;
 import cmm.model.Mood;
 import cmm.model.Rater;
+import cmm.view.AboutUs;
+import cmm.view.ContactUs;
 import cmm.view.R;
 import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
@@ -87,6 +89,35 @@ public class CmmActivity extends FragmentActivity {
 		fragmentTransaction.commit();
 	}
 
+	// create menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_basic, menu);
+        return true;
+    }
+    
+    // handle menu activity 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	Intent intent = new Intent();
+    	switch(item.getItemId()){
+    		case R.id.aboutus_menu:
+	    		intent.setClass(this, AboutUs.class);
+	    		startActivity(intent);
+	    		return true;
+    		case R.id.contactus_menu:
+	    		intent.setClass(this, ContactUs.class);
+	    		startActivity(intent);
+	    		return true;
+    		case R.id.signout_menu:
+    			//FacebookHandler.getInstance().doSignout(this, menu, inflater);
+				return true;
+	    	default:
+	    		return super.onOptionsItemSelected(item);
+    	}
+    }
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -173,7 +204,9 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void facebook_signin(View view) {
-		FacebookHandler.getInstance().doSignin(this, getBaseContext());
+		Intent intent = new Intent(this, CmmFacebookActivity.class);
+		startActivity(intent);
+		//FacebookHandler.getInstance().doSignin(this, getBaseContext());
 	}
 
 	public void facebook_signout(View view) {
