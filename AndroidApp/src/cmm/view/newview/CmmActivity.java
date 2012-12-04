@@ -68,7 +68,7 @@ public class CmmActivity extends FragmentActivity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(null);
 		this.setContentView(R.layout.cmm_main);
 
 		setupComponents();
@@ -91,6 +91,8 @@ public class CmmActivity extends FragmentActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		contentFragment.cleanup();
+		// reset layout
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 	}
 
 	@Override
