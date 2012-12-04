@@ -56,6 +56,12 @@ public class ButtonsControlFragment extends Fragment {
 	}
 
 	public void EnableButton() {
+		if (ui_up.getVisibility() == View.INVISIBLE) {
+			ui_up.setVisibility(View.VISIBLE);
+		}
+		if (ui_down.getVisibility() == View.INVISIBLE) {
+			ui_down.setVisibility(View.VISIBLE);
+		}
 		this.ui_up.setEnabled(true);
 		this.ui_down.setEnabled(true);
 
@@ -100,5 +106,7 @@ public class ButtonsControlFragment extends Fragment {
 				.getDimension().x));
 		this.ui_down.setHeight((int) (RATE_BUTTON_CONSTANT * activity
 				.getDimension().x));
+		ui_up.setVisibility(View.INVISIBLE);
+		ui_down.setVisibility(View.INVISIBLE);
 	}
 }
