@@ -41,6 +41,7 @@ public class CmmFacebookActivity extends FacebookActivity {
 								Toast.makeText(getApplicationContext(),
 										"Hello " + user.getName(),
 										Toast.LENGTH_SHORT).show();
+								
 							}
 						}
 					});

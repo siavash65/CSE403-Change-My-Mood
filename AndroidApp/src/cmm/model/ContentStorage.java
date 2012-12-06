@@ -169,18 +169,22 @@ public class ContentStorage {
 			ContentInfo newInfo = new ContentInfo(contentInfo.getVideo(),
 					contentInfo.getPicture(), up, down);
 			midToImage.put(mid, newInfo);
+			
+			up_info = midToImage.get(mid).getUpInfo();
+			down_info = midToImage.get(mid).getDownInfo();
 		} else if (midToVideo.containsKey(mid)) {
 			ContentInfo contentInfo = midToVideo.get(mid);
 			ContentInfo newInfo = new ContentInfo(contentInfo.getVideo(),
 					contentInfo.getPicture(), contentInfo.getUpInfo(),
 					contentInfo.getDownInfo());
 			midToVideo.put(mid, newInfo);
+
+			up_info = midToVideo.get(mid).getUpInfo();
+			down_info = midToVideo.get(mid).getDownInfo();
 		}
 
 		canRateMap.put(mid, isThumbsUp ? Rate.THUMBSUP.ordinal()
 				: Rate.THUMBSDOWN.ordinal());
-		up_info = midToImage.get(mid).getUpInfo();
-		down_info = midToImage.get(mid).getDownInfo();
 		this.setText();
 	}
 

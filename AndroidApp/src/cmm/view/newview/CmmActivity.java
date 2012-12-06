@@ -121,9 +121,9 @@ public class CmmActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		contentFragment.cleanup();
 		// reset layout
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+		contentFragment.cleanup();
 	}
 
 	@Override
