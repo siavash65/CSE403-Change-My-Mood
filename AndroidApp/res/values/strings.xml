@@ -31,7 +31,7 @@
     <!-- Content page -->
     <string name="thumbs_up">Thumbs Up</string>
     <string name="thumbs_down">Thumbs Down</string>
-    <string name="rate_success_msg">Successfully Rated</string>
+    <string name="rate_success_msg">rating sent to server</string>
     <string name="rate_fail_msg">Sorry!</string>
     
     <!-- ContactUS -->

@@ -39,6 +39,22 @@ public class Rater {
 		new RatePictureTask().execute(mid, Rate.THUMBSDOWN.ordinal() + "");
 	}
 
+	public void updateProgress(boolean isThumbsUp) {
+		int progress = ui_progress.getProgress(); 
+		if (isThumbsUp) {
+			progress = progress + 15;
+			if (progress > 100) {
+				progress = 100;
+			}
+		} else {
+			progress = progress - 15;
+			if (progress < 0) {
+				progress = 0;
+			}
+		}
+		ui_progress.setProgress(progress);
+	}
+	
 	private class RatePictureTask extends AsyncTask<String, Integer, Boolean> {
 		private boolean isThumbsUp;
 		// 0th = mid 1st = rank
@@ -80,19 +96,6 @@ public class Rater {
 		@Override
 		protected void onPostExecute(Boolean s) {
 			bsf.displayResponse(s);
-			int progress = ui_progress.getProgress(); 
-			if (isThumbsUp) {
-				progress = progress + 15;
-				if (progress > 100) {
-					progress = 100;
-				}
-			} else {
-				progress = progress - 15;
-				if (progress < 0) {
-					progress = 0;
-				}
-			}
-			ui_progress.setProgress(progress);
 		}
 
 	}

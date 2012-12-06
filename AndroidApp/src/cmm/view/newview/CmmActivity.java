@@ -136,6 +136,8 @@ public class CmmActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (contentStorage != null)
+			contentStorage.resumeFromFullScreen();
 		mSensorManager.registerListener(mSensorListener,
 				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_NORMAL);
@@ -339,7 +341,10 @@ public class CmmActivity extends FragmentActivity {
 		if (mid != null) {
 			buttonsControlFragment.DisableButton(true);
 			contentStorage.ratedMid(mid, true);
-			rater.rateThumbsUp(mid);
+			rater.updateProgress(true);
+			if (CmmFacebookActivity.isSignedIn) {
+				rater.rateThumbsUp(mid);
+			}
 		}
 	}
 
@@ -351,7 +356,10 @@ public class CmmActivity extends FragmentActivity {
 		if (mid != null) {
 			buttonsControlFragment.DisableButton(false);
 			contentStorage.ratedMid(mid, false);
-			rater.rateThumbsDown(mid);
+			rater.updateProgress(false);
+			if (CmmFacebookActivity.isSignedIn) {
+				rater.rateThumbsUp(mid);
+			}
 		}
 	}
 

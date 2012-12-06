@@ -12,6 +12,8 @@ import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
 public class CmmFacebookActivity extends FacebookActivity {
+	public static boolean isSignedIn = false;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,6 +28,7 @@ public class CmmFacebookActivity extends FacebookActivity {
 	protected void onSessionStateChange(SessionState state, Exception exception) {
 		// user has either logged in or not ...
 		if (state.isOpened()) {
+			this.isSignedIn = true;
 			// make request to the /me API
 			Request request = Request.newMeRequest(this.getSession(),
 					new Request.GraphUserCallback() {
@@ -46,6 +49,10 @@ public class CmmFacebookActivity extends FacebookActivity {
 						}
 					});
 			Request.executeBatchAsync(request);
+		} else if (state.isClosed()) {
+			Toast.makeText(getApplicationContext(),
+					"Logged out",
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 }

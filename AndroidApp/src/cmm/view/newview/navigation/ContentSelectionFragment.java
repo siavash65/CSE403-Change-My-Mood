@@ -149,8 +149,6 @@ public class ContentSelectionFragment extends Fragment {
 			}
 		}
 
-		Toast.makeText(view.getContext(), "mood = " + mood.value,
-				Toast.LENGTH_SHORT).show();
 		// Display Content
 		if (view.getId() == R.id.picture_button) {
 			// activity.displayNextImage(mood);

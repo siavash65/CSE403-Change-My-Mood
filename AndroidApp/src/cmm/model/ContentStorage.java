@@ -383,7 +383,8 @@ public class ContentStorage {
 
 	public void resumeFromFullScreen() {
 		if (cur_mid == null) {
-			throw new IllegalStateException();
+			Log.d(TAG, "no mid");
+			return;
 		}
 
 		if (midToImage.containsKey(cur_mid)) {
