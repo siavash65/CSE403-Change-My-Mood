@@ -56,6 +56,7 @@ public class CmmActivity extends FragmentActivity {
 	private float mAccelLast; // last acceleration including gravity
 	private boolean hasShaken;
 	private boolean initialize;
+	private boolean facebookredirect;
 
 	/* UI objects */
 	private Point ui_dimension;
@@ -136,8 +137,10 @@ public class CmmActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (contentStorage != null)
+		if (contentStorage != null && facebookredirect) {
 			contentStorage.resumeFromFullScreen();
+			facebookredirect = false;
+		}
 		mSensorManager.registerListener(mSensorListener,
 				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_NORMAL);
@@ -206,6 +209,7 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void facebook_signin(View view) {
+		facebookredirect = true;
 		Intent intent = new Intent(this, CmmFacebookActivity.class);
 		startActivity(intent);
 		//FacebookHandler.getInstance().doSignin(this, getBaseContext());

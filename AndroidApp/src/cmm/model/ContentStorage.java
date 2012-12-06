@@ -15,10 +15,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.ViewGroup;
+import cmm.view.R;
 import cmm.view.newview.CmmActivity;
 import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
