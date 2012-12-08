@@ -82,27 +82,30 @@ public class CmmActivity extends FragmentActivity {
 		if (!isOnline()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			// Add the buttons
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			               // User clicked OK button
-			        	   startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-			        	   finish();
-			           }
-			       });
-			builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			               // User cancelled the dialog
-			        	   finish();
-			           }
-			       });
+			builder.setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// User clicked OK button
+							startActivity(new Intent(
+									Settings.ACTION_WIFI_SETTINGS));
+							finish();
+						}
+					});
+			builder.setNegativeButton("Exit",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// User cancelled the dialog
+							finish();
+						}
+					});
 
 			// Create the AlertDialog
 			AlertDialog dialog = builder.create();
 			dialog.show();
-//			startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-//			this.finish();
+			// startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+			// this.finish();
 		}
-		
+
 		setupComponents();
 		handleEvents();
 		doLayout();
@@ -120,33 +123,33 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	// create menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_basic, menu);
-        return true;
-    }
-    
-    // handle menu activity 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	Intent intent = new Intent();
-    	switch(item.getItemId()){
-    		case R.id.aboutus_menu:
-	    		intent.setClass(this, AboutUs.class);
-	    		startActivity(intent);
-	    		return true;
-    		case R.id.contactus_menu:
-	    		intent.setClass(this, ContactUs.class);
-	    		startActivity(intent);
-	    		return true;
-    		case R.id.signout_menu:
-    			//FacebookHandler.getInstance().doSignout(this, menu, inflater);
-				return true;
-	    	default:
-	    		return super.onOptionsItemSelected(item);
-    	}
-    }
+		return true;
+	}
+
+	// handle menu activity
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = new Intent();
+		switch (item.getItemId()) {
+		case R.id.aboutus_menu:
+			intent.setClass(this, AboutUs.class);
+			startActivity(intent);
+			return true;
+		case R.id.contactus_menu:
+			intent.setClass(this, ContactUs.class);
+			startActivity(intent);
+			return true;
+		case R.id.signout_menu:
+			// FacebookHandler.getInstance().doSignout(this, menu, inflater);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	
 	@Override
 	protected void onDestroy() {
@@ -241,11 +244,11 @@ public class CmmActivity extends FragmentActivity {
 		facebookredirect = true;
 		Intent intent = new Intent(this, CmmFacebookActivity.class);
 		startActivity(intent);
-		//FacebookHandler.getInstance().doSignin(this, getBaseContext());
+		// FacebookHandler.getInstance().doSignin(this, getBaseContext());
 	}
 
 	public void facebook_signout(View view) {
-		//FacebookHandler.getInstance().doSignout(this);
+		// FacebookHandler.getInstance().doSignout(this);
 	}
 
 	/*
@@ -408,13 +411,27 @@ public class CmmActivity extends FragmentActivity {
 		contentStorage.fullScreen();
 	}
 
+	/**
+	 * Go to about us
+	 * 
+	 * @onClick
+	 * @param view
+	 */
+
+	public void startAboutUs(View view) {
+		Intent intent = new Intent();
+		intent.setClass(this, AboutUs.class);
+		startActivity(intent);
+	}
 	public void displayRateResponse(boolean isSuccess) {
 		String msg = isSuccess ? getResources().getString(
 				R.string.rate_success_msg) : getResources().getString(
 				R.string.rate_fail_msg);
 		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 	}
+	
 
+	
 	/**
 	 * Show new content
 	 */
@@ -520,14 +537,13 @@ public class CmmActivity extends FragmentActivity {
 				SensorManager.SENSOR_DELAY_NORMAL);
 		hasShaken = false;
 	}
-	
+
 	private boolean isOnline() {
-	    ConnectivityManager cm =
-	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-	        return true;
-	    }
-	    return false;
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
 	}
 }
