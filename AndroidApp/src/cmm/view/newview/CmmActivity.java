@@ -245,7 +245,7 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void facebook_signout(View view) {
-		FacebookHandler.getInstance().doSignout(this);
+		//FacebookHandler.getInstance().doSignout(this);
 	}
 
 	/*
