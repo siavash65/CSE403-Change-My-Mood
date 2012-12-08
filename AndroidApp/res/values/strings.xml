@@ -88,5 +88,9 @@
     <string name="notready">This is not ready yet. Please wait our updates!</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    
+    <string name="flash">Flash</string>
+    
+    <string name="flash_page">https://docs.google.com/open?id=0B-wnXVcJVHaXRDRwTmZxQTZSNXc</string>
    
 </resources>

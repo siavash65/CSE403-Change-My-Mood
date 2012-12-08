@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/aboutus_menu"
+    <item android:id="@+id/flash" android:title="@string/flash"></item><item android:id="@+id/aboutus_menu"
           android:title="@string/str_menu_aboutus" />
     <item android:id="@+id/contactus_menu"
           android:title="@string/str_menu_contactus" />
+    
 </menu>

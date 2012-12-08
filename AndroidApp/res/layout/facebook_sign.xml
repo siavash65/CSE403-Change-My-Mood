@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     tools:context="cmm.model.FacebookHandler" >
     <com.facebook.LoginButton
         android:id="@+id/login_button"
@@ -11,5 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:padding="50dp"
         android:onClick="login" />
 </RelativeLayout>

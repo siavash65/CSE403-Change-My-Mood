@@ -12,6 +12,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
@@ -143,6 +144,10 @@ public class CmmActivity extends FragmentActivity {
 			intent.setClass(this, ContactUs.class);
 			startActivity(intent);
 			return true;
+		case R.id.flash:
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getResources()
+					.getString(R.string.flash_page)));
+			startActivity(intent);
 		case R.id.signout_menu:
 			// FacebookHandler.getInstance().doSignout(this, menu, inflater);
 			return true;
@@ -150,7 +155,7 @@ public class CmmActivity extends FragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -423,15 +428,14 @@ public class CmmActivity extends FragmentActivity {
 		intent.setClass(this, AboutUs.class);
 		startActivity(intent);
 	}
+
 	public void displayRateResponse(boolean isSuccess) {
 		String msg = isSuccess ? getResources().getString(
 				R.string.rate_success_msg) : getResources().getString(
 				R.string.rate_fail_msg);
 		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 	}
-	
 
-	
 	/**
 	 * Show new content
 	 */
