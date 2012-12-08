@@ -93,7 +93,7 @@
     <string name="flash">Flash</string>
     
     <string name="flash_page">https://docs.google.com/open?id=0B-wnXVcJVHaXRDRwTmZxQTZSNXc</string>
-    <string name="failure">Action Failed</string>
+    <string name="failure">action failed, please check your wireless connection</string>
     <string name="welcome">Welcome Back</string>
    
 </resources>

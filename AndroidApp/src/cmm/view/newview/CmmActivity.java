@@ -80,33 +80,6 @@ public class CmmActivity extends FragmentActivity {
 		super.onCreate(null);
 		this.setContentView(R.layout.cmm_main);
 
-		if (!isOnline()) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			// Add the buttons
-			builder.setPositiveButton("OK",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							// User clicked OK button
-							startActivity(new Intent(
-									Settings.ACTION_WIFI_SETTINGS));
-							finish();
-						}
-					});
-			builder.setNegativeButton("Exit",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							// User cancelled the dialog
-							finish();
-						}
-					});
-
-			// Create the AlertDialog
-			AlertDialog dialog = builder.create();
-			dialog.show();
-			// startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-			// this.finish();
-		}
-
 		setupComponents();
 		handleEvents();
 		doLayout();
@@ -558,14 +531,5 @@ public class CmmActivity extends FragmentActivity {
 				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
 				SensorManager.SENSOR_DELAY_NORMAL);
 		hasShaken = false;
-	}
-
-	private boolean isOnline() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-			return true;
-		}
-		return false;
 	}
 }
