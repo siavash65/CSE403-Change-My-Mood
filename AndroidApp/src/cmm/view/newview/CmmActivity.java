@@ -62,7 +62,7 @@ public class CmmActivity extends FragmentActivity {
 	private float mAccelLast; // last acceleration including gravity
 	private boolean hasShaken;
 	private boolean initialize;
-	private boolean facebookredirect;
+	private boolean redirected;
 
 	/* UI objects */
 	private Point ui_dimension;
@@ -168,15 +168,16 @@ public class CmmActivity extends FragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		contentFragment.cleanup(); // TODO: is this needed?
+		redirected = true;
 	}
 
 	// http://stackoverflow.com/questions/2317428/android-i-want-to-shake-it
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (contentStorage != null && facebookredirect) {
+		if (contentStorage != null && redirected) {
 			contentStorage.resumeFromFullScreen();
-			facebookredirect = false;
+			redirected = false;
 		}
 		mSensorManager.registerListener(mSensorListener,
 				mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -188,6 +189,7 @@ public class CmmActivity extends FragmentActivity {
 	protected void onStop() {
 		mSensorManager.unregisterListener(mSensorListener);
 		super.onStop();
+		redirected = true;
 	}
 
 	@Override
@@ -246,7 +248,7 @@ public class CmmActivity extends FragmentActivity {
 	}
 
 	public void facebook_signin(View view) {
-		facebookredirect = true;
+		redirected = true;
 		Intent intent = new Intent(this, CmmFacebookActivity.class);
 		startActivity(intent);
 		// FacebookHandler.getInstance().doSignin(this, getBaseContext());
