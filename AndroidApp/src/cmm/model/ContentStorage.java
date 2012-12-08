@@ -15,12 +15,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import com.facebook.FacebookActivity;
+
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ViewGroup;
 import cmm.view.R;
 import cmm.view.newview.CmmActivity;
+import cmm.view.newview.CmmFacebookActivity;
 import cmm.view.newview.buttonscontrol.ButtonsControlFragment;
 import cmm.view.newview.contentdisplay.ContentDisplayFragment;
 import cmm.view.newview.contentinfo.ContentInfoFragment;
@@ -42,6 +45,7 @@ public class ContentStorage {
 	private String cur_mid;
 
 	private Map<String, Integer> canRateMap;
+	private Map<String, Boolean> realRate;
 
 	private ContentDisplayFragment contentFragment;
 	private ButtonsControlFragment buttonsControlFragment;
@@ -56,20 +60,22 @@ public class ContentStorage {
 	private CmmActivity activity;
 
 	private static ContentStorage instance;
-	
-	public static ContentStorage getInstance(ContentDisplayFragment contentFragment,
+
+	public static ContentStorage getInstance(
+			ContentDisplayFragment contentFragment,
 			ButtonsControlFragment buttonControlFragment,
 			ContentInfoFragment contentInfoFragment, CmmActivity activity) {
 
 		Log.d(TAG, "Get Instance");
 		if (instance == null) {
-			instance = new ContentStorage(contentFragment, buttonControlFragment, contentInfoFragment, activity);
+			instance = new ContentStorage(contentFragment,
+					buttonControlFragment, contentInfoFragment, activity);
 		}
 		instance.initImageMap();
 		instance.initVideoMap();
 		return instance;
 	}
-	
+
 	private ContentStorage(ContentDisplayFragment contentFragment,
 			ButtonsControlFragment buttonControlFragment,
 			ContentInfoFragment contentInfoFragment, CmmActivity activity) { // TextView[]
@@ -88,6 +94,7 @@ public class ContentStorage {
 		midToVideo = new HashMap<String, ContentInfo>();
 
 		canRateMap = new HashMap<String, Integer>();
+		realRate = new HashMap<String, Boolean>();
 
 		// ui_contentinfo = list;
 		this.contentInfoFragment = contentInfoFragment;
@@ -136,7 +143,11 @@ public class ContentStorage {
 
 	private boolean canRate(String mid) {
 		if (canRateMap.containsKey(mid)) {
-			return canRateMap.get(mid) == -1;
+			if (CmmFacebookActivity.isSignedIn) {
+				return canRateMap.get(mid) == -1;
+			} else {
+				return true;
+			}
 		} else {
 			throw new IllegalArgumentException();
 		}
@@ -150,7 +161,7 @@ public class ContentStorage {
 		}
 	}
 
-	public void ratedMid(String mid, boolean isThumbsUp) {
+	public void ratedMid(String mid, boolean isThumbsUp, boolean isRealRate) {
 		if (mid == null) {
 			throw new IllegalArgumentException("null mid");
 		}
@@ -159,34 +170,57 @@ public class ContentStorage {
 			ContentInfo contentInfo = midToImage.get(mid);
 			String up = contentInfo.getUpInfo();
 			String down = contentInfo.getDownInfo();
-			if (isThumbsUp) {
-				int up_int = Integer.parseInt(up);
-				up = "" + (up_int + 1);
-			} else {
-				int down_int = Integer.parseInt(down);
-				down = "" + (down_int + 1);
+
+			if (isRealRate) {
+				if (isThumbsUp) {
+					int up_int = Integer.parseInt(up);
+					up = "" + (up_int + 1);
+				} else {
+					int down_int = Integer.parseInt(down);
+					down = "" + (down_int + 1);
+				}
 			}
 
 			ContentInfo newInfo = new ContentInfo(contentInfo.getVideo(),
 					contentInfo.getPicture(), up, down);
 			midToImage.put(mid, newInfo);
-			
+
 			up_info = midToImage.get(mid).getUpInfo();
 			down_info = midToImage.get(mid).getDownInfo();
 		} else if (midToVideo.containsKey(mid)) {
 			ContentInfo contentInfo = midToVideo.get(mid);
+
+			String up = contentInfo.getUpInfo();
+			String down = contentInfo.getDownInfo();
+
+			if (isRealRate) {
+				if (isThumbsUp) {
+					int up_int = Integer.parseInt(up);
+					up = "" + (up_int + 1);
+				} else {
+					int down_int = Integer.parseInt(down);
+					down = "" + (down_int + 1);
+				}
+			}
+
 			ContentInfo newInfo = new ContentInfo(contentInfo.getVideo(),
-					contentInfo.getPicture(), contentInfo.getUpInfo(),
-					contentInfo.getDownInfo());
+					contentInfo.getPicture(), up, down);
+
+			//
+			// ContentInfo newInfo = new ContentInfo(contentInfo.getVideo(),
+			// contentInfo.getPicture(), contentInfo.getUpInfo(),
+			// contentInfo.getDownInfo());
 			midToVideo.put(mid, newInfo);
 
 			up_info = midToVideo.get(mid).getUpInfo();
 			down_info = midToVideo.get(mid).getDownInfo();
 		}
 
-		canRateMap.put(mid, isThumbsUp ? Rate.THUMBSUP.ordinal()
-				: Rate.THUMBSDOWN.ordinal());
-		this.setText();
+		if (isRealRate) {
+			canRateMap.put(mid, isThumbsUp ? Rate.THUMBSUP.ordinal()
+					: Rate.THUMBSDOWN.ordinal());
+		}
+		// this.setText();
 	}
 
 	/**
@@ -388,6 +422,7 @@ public class ContentStorage {
 			return;
 		}
 
+		// For Content
 		if (midToImage.containsKey(cur_mid)) {
 			Log.d(TAG, "redisplay Picture");
 			contentFragment.displayImage(midToImage.get(cur_mid).getPicture(),
@@ -398,10 +433,19 @@ public class ContentStorage {
 		} else {
 			throw new IllegalArgumentException("cur_mid corrupted");
 		}
+		
+		// For rate buttons
+		if (canRate(cur_mid)) {
+			buttonsControlFragment.EnableButton();
+		} else {
+			buttonsControlFragment
+					.DisableButton(getRatedValue(this.cur_mid));
+		}
+		
 		contentFragment.EnableButtons();
 	}
 
-	private void setText() {
+	public void setText() {
 		// ui_contentinfo[0].setText("Up: " + up_info);
 		// ui_contentinfo[1].setText("Down: " + down_info);
 		this.contentInfoFragment.setText(up_info, down_info);
@@ -486,6 +530,11 @@ public class ContentStorage {
 
 		@Override
 		protected void onPostExecute(Drawable result) {
+			if (result == null) {
+				cs.activity.failedToast();
+				Log.d(TAG, "No Wireless");
+				return;
+			}
 			contentFragment.displayImage(result);
 			contentFragment.EnableButtons();
 			if (canRate(cs.cur_mid)) {
@@ -561,6 +610,12 @@ public class ContentStorage {
 
 		@Override
 		protected void onPostExecute(String str) {
+			if (str == null) {
+				cs.activity.failedToast();
+				Log.d(TAG, "No Wireless");
+				return;
+			}
+
 			contentFragment.displayVideo(str);
 			contentFragment.EnableButtons();
 

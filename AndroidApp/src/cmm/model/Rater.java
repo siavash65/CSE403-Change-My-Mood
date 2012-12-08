@@ -43,13 +43,13 @@ public class Rater {
 		int progress = ui_progress.getProgress(); 
 		if (isThumbsUp) {
 			progress = progress + 15;
-			if (progress > 100) {
-				progress = 100;
+			if (progress > 95) {
+				progress = 95;
 			}
 		} else {
 			progress = progress - 15;
-			if (progress < 0) {
-				progress = 0;
+			if (progress < 5) {
+				progress = 5;
 			}
 		}
 		ui_progress.setProgress(progress);

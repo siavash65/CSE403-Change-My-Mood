@@ -383,10 +383,13 @@ public class CmmActivity extends FragmentActivity {
 		String mid = contentStorage.getMid();
 		if (mid != null) {
 			buttonsControlFragment.DisableButton(true);
-			contentStorage.ratedMid(mid, true);
+			contentStorage.ratedMid(mid, true, CmmFacebookActivity.isSignedIn);
 			rater.updateProgress(true);
 			if (CmmFacebookActivity.isSignedIn) {
 				rater.rateThumbsUp(mid);
+				contentStorage.setText();
+			} else {
+				this.pleaseLogIn();
 			}
 		}
 	}
@@ -398,10 +401,13 @@ public class CmmActivity extends FragmentActivity {
 		String mid = contentStorage.getMid();
 		if (mid != null) {
 			buttonsControlFragment.DisableButton(false);
-			contentStorage.ratedMid(mid, false);
+			contentStorage.ratedMid(mid, false, CmmFacebookActivity.isSignedIn);
 			rater.updateProgress(false);
 			if (CmmFacebookActivity.isSignedIn) {
 				rater.rateThumbsUp(mid);
+				contentStorage.setText();
+			} else {
+				this.pleaseLogIn();
 			}
 		}
 	}
@@ -460,6 +466,16 @@ public class CmmActivity extends FragmentActivity {
 		contentInfoFragment.setText(up_info, down_info);
 	}
 
+	public void pleaseLogIn() {
+		Toast.makeText(getApplicationContext(), R.string.pls_log_in,
+				Toast.LENGTH_SHORT).show();
+	}
+	
+	public void failedToast() {
+		Toast.makeText(getApplicationContext(), R.string.failure,
+				Toast.LENGTH_SHORT).show();
+	}
+	
 	// Displaying previuos image
 	private void displayPrevImage(Mood mood) {
 		contentFragment.showButton();

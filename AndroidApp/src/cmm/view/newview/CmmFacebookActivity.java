@@ -13,7 +13,7 @@ import com.facebook.model.GraphUser;
 
 public class CmmFacebookActivity extends FacebookActivity {
 	public static boolean isSignedIn = false;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,17 +41,21 @@ public class CmmFacebookActivity extends FacebookActivity {
 								// findViewById(R.id.welcome);
 								// welcome.setText("Hello " + user.getName() +
 								// "!");
-								Toast.makeText(getApplicationContext(),
-										"Hello " + user.getName(),
+								Toast.makeText(
+										getApplicationContext(),
+										getResources().getString(
+												R.string.welcome)
+												+ " " + user.getName(),
 										Toast.LENGTH_SHORT).show();
-								
+
 							}
 						}
 					});
 			Request.executeBatchAsync(request);
 		} else if (state.isClosed()) {
-			Toast.makeText(getApplicationContext(),
-					"Logged out",
+
+			this.isSignedIn = false;
+			Toast.makeText(getApplicationContext(), "Logged out",
 					Toast.LENGTH_SHORT).show();
 		}
 	}

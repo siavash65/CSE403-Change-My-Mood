@@ -33,6 +33,7 @@
     <string name="thumbs_down">Thumbs Down</string>
     <string name="rate_success_msg">rating sent to server</string>
     <string name="rate_fail_msg">Sorry!</string>
+    <string name="pls_log_in">login to send rating to server</string>
     
     <!-- ContactUS -->
     <string name="contactus_title">Contact Us</string>
@@ -92,5 +93,7 @@
     <string name="flash">Flash</string>
     
     <string name="flash_page">https://docs.google.com/open?id=0B-wnXVcJVHaXRDRwTmZxQTZSNXc</string>
+    <string name="failure">Action Failed</string>
+    <string name="welcome">Welcome Back</string>
    
 </resources>
