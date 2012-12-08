@@ -12,10 +12,10 @@ import android.widget.ImageView;
 public class CMMActivity extends Activity{
 	private ImageView imageView;
 	int i=0;
-	int imgid[] = {R.drawable.background1, R.drawable.background2, R.drawable.background3, R.drawable.background4, R.drawable.background5,
+	/*int imgid[] = {R.drawable.background1, R.drawable.background2, R.drawable.background3, R.drawable.background4, R.drawable.background5,
 			R.drawable.background6, R.drawable.background7, R.drawable.background8, R.drawable.background9, 
 			R.drawable.background10, R.drawable.background11, R.drawable.background12, R.drawable.background13,
-			R.drawable.background14, R.drawable.background15, R.drawable.background16};
+			R.drawable.background14, R.drawable.background15, R.drawable.background16};*/
 	
 	RefreshHandler refreshHandler = new RefreshHandler();
 	
@@ -52,9 +52,9 @@ public class CMMActivity extends Activity{
 	public void changeBackground(){
 		refreshHandler.sleep(2000);
 		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-		imageView.setImageResource(imgid[i]);
+		//imageView.setImageResource(imgid[i]);
 		i++;
-		if(i==imgid.length)
+		//if(i==imgid.length)
 			i = 0;
     }
 	
