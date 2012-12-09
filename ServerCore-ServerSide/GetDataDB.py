@@ -23,7 +23,7 @@ if __name__ == "__main__":
                 url = p.picture.url
                 up = p.rank.thumbs_up
                 dw = p.rank.thumbs_down
-                print 'U: ' + str(up) + 'D: ' + str(dw) + ', URL:' + url
+                print 'mid = ' + str(p.id) + ', U: ' + str(up) + ', D: ' + str(dw) + ', URL:' + url
             except Exception:
                 print 'exception'
         
@@ -34,6 +34,6 @@ if __name__ == "__main__":
                 url = v.picture.url
                 up = v.rank.thumbs_up
                 dw = v.rank.thumbs_down
-                print 'U: ' + str(up) + 'D: ' + str(dw) + ', URL:' + url
+                print 'mid = ' + str(v.id) + ', U: ' + str(up) + ', D: ' + str(dw) + ', URL:' + url
             except Exception:
                 print 'exception'
