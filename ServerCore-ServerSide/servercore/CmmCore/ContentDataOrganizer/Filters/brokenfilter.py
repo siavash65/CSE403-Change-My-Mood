@@ -124,6 +124,9 @@ class BrokenFilter(FilterInterface):
     @staticmethod
     def _falsifyAllMedia(medias):
         for m in medias:
-            m.filtercheck.checked = False
-            m.filtercheck.save()
+            try:
+                m.filtercheck.checked = False
+                m.filtercheck.save()
+            except Exception:
+                print 'No filtercheck.check for mid = ' + str(m.id)
             
