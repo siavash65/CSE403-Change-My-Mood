@@ -16,7 +16,7 @@ if __name__ == "__main__":
     medias = Media.objects.all()
     for m in medias:
         try:
-            if m.rank.thumbs_down > 3:
+            if m.rank.thumbs_down > 2:
                 for i in range(0,30):
                     m.thumbs_down()
         except Exception:
