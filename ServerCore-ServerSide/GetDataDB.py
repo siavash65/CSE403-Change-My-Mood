@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     from servercore.CmmData.models import Mood, Media
     
-    moods = [Mood.HAPPY, Mood.ROMANTIC, Mood.INSPIRED, Mood.EXCITED]
+    moods = [Mood.HAPPY, Mood.ROMANTIC] # , Mood.INSPIRED, Mood.EXCITED]
     for mood in moods:
         
         pictures = Media.objects.filter(moods = mood, content_type = "PI")
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         print 'Videos:'
         for v in videos:
             try:
-                url = v.picture.url
+                url = v.video.url
                 up = v.rank.thumbs_up
                 dw = v.rank.thumbs_down
                 print 'mid = ' + str(v.id) + ', U: ' + str(up) + ', D: ' + str(dw) + ', URL:' + url
