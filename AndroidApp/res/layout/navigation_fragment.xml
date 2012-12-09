@@ -29,8 +29,8 @@
                 android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
-                android:text="Funny"
-                android:textColor="#555555" />
+                android:text="@string/newmood_funny"
+                android:textColor="#999999" />
         </LinearLayout>
 
         <LinearLayout
@@ -47,8 +47,8 @@
                 android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
-                android:text="Romantic"
-                android:textColor="#555555" />
+                android:text="@string/newmood_romantic"
+                android:textColor="#999999" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,8 +65,8 @@
                 android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
-                android:text="Enervate"
-                android:textColor="#555555" />
+                android:text="@string/newmood_enervate"
+                android:textColor="#999999" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,8 +83,8 @@
                 android:background="@drawable/mood_button"
                 android:paddingBottom="12dp"
                 android:paddingTop="12dp"
-                android:text="Inspiring"
-                android:textColor="#555555" />
+                android:text="@string/newmood_inspiring"
+                android:textColor="#999999" />
         </LinearLayout>
     </LinearLayout>
 

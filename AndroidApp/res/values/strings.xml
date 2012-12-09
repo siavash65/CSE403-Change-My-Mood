@@ -28,6 +28,12 @@
     <string name="mood_inspire">Inspire Me</string>
     <string name="mood_romantic">Need Some Romance</string>
     
+    <string name="newmood_funny">Funny</string>
+    <string name="newmood_romantic">Romantic</string>
+    <string name="newmood_enervate">Enervate</string>
+    <string name="newmood_inspiring">Inspiring</string>
+    
+    
     <!-- Content page -->
     <string name="thumbs_up">Thumbs Up</string>
     <string name="thumbs_down">Thumbs Down</string>

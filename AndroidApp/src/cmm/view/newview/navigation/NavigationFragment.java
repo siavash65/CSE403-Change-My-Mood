@@ -98,7 +98,7 @@ public class NavigationFragment extends Fragment {
 			// Disable Button
 			if (ui_currentButton != null) {
 				ui_currentButton.setBackgroundResource(R.drawable.mood_button);
-				ui_currentButton.setTextColor(Color.DKGRAY);
+				ui_currentButton.setTextColor(Color.LTGRAY);
 			}
 			
 			// Enable Button
@@ -159,7 +159,7 @@ public class NavigationFragment extends Fragment {
 	 */
 	private void doLayout() {
 		for (Button b : ui_moodButtons) {
-			b.setTextColor(Color.DKGRAY);
+			b.setTextColor(Color.LTGRAY);
 		}
 	}
 }
