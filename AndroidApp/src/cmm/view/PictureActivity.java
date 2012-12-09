@@ -40,6 +40,11 @@ import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
 
+/**
+ * This class is deprecated 
+ *
+ */
+@Deprecated
 public class PictureActivity extends Activity {
 	/* debug log string */
 	private static final String TAG = "PictureActivity";

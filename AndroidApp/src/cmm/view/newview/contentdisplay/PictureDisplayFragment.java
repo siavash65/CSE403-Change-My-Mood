@@ -11,12 +11,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import cmm.view.R;
 
+/**
+ * This class handles the displaying of pictures
+ * @author hunlan
+ *
+ */
 public class PictureDisplayFragment extends Fragment {
 	private static PictureDisplayFragment instance;
 
 	private View ui_view;
 	private ImageView imageView;
 
+	/**
+	 * Singleton
+	 * @return
+	 */
 	public static PictureDisplayFragment getInstance() {
 		if (instance == null) {
 			instance = new PictureDisplayFragment();
@@ -28,6 +37,9 @@ public class PictureDisplayFragment extends Fragment {
 		super();
 	}
 
+	/**
+	 * On startup
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -43,11 +55,13 @@ public class PictureDisplayFragment extends Fragment {
 		return view;
 	}
 
+	// Display media
 	public void displayMedia(Drawable image) {	
 		ui_view.findViewById(R.id.picture_parent).setBackgroundColor(Color.BLACK);
 		imageView.setImageDrawable(image);
 	}
 	
+	// Remove media
 	public void disable() {
 		if (ui_view != null) {
 			ui_view.setVisibility(View.GONE);

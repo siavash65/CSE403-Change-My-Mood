@@ -23,13 +23,23 @@ import cmm.view.VideoFullPage;
 import cmm.view.newview.CmmActivity;
 import cmm.view.newview.PictureFullActivity;
 
+/**
+ * This class is the class for displaying either picture of video
+ * 
+ * @author hunlan
+ * 
+ */
 public class ContentDisplayFragment extends Fragment {
+	/* Debug logger tag */
 	private static final String TAG = "ContentDisplayFragment";
 
+	/* Singleton */
 	private static ContentDisplayFragment instance;
 
+	/* For updating main */
 	private CmmActivity activity;
 
+	/* UI views/components */
 	private View ui_view;
 	private Content cur_content;
 	private PictureDisplayFragment picture_fragment;
@@ -41,6 +51,12 @@ public class ContentDisplayFragment extends Fragment {
 
 	private Animation anim_fadeoutButton;
 
+	/**
+	 * Singleton constructor, pass me activity and i will call the update main
+	 * 
+	 * @param activity
+	 * @return
+	 */
 	public static ContentDisplayFragment getInstance(CmmActivity activity) {
 		if (instance == null) {
 			instance = new ContentDisplayFragment(activity);
@@ -48,11 +64,15 @@ public class ContentDisplayFragment extends Fragment {
 		return instance;
 	}
 
+	// singleton pattern
 	private ContentDisplayFragment(CmmActivity activity) {
 		super();
 		this.activity = activity;
 	}
 
+	/**
+	 * Called on startup
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -68,6 +88,10 @@ public class ContentDisplayFragment extends Fragment {
 		return view;
 	}
 
+	/**
+	 * Cleanup, important for video because closing the app will not stop the
+	 * video from playing
+	 */
 	public void cleanup() {
 		if (picture_fragment != null) {
 			picture_fragment.disable();
@@ -78,6 +102,11 @@ public class ContentDisplayFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Display Image
+	 * 
+	 * @param image
+	 */
 	public void displayImage(Drawable image) {
 		this.displayImage(image, false);
 	}
@@ -111,6 +140,11 @@ public class ContentDisplayFragment extends Fragment {
 
 	}
 
+	/**
+	 * Display Video
+	 * 
+	 * @param link
+	 */
 	public void displayVideo(String link) {
 		displayVideo(link, false);
 	}
@@ -128,6 +162,11 @@ public class ContentDisplayFragment extends Fragment {
 
 	}
 
+	/**
+	 * Full screen image
+	 * 
+	 * @param image
+	 */
 	public void displayFullImage(Drawable image) {
 		handleButtonState();
 		Intent intent = new Intent(activity, PictureFullActivity.class);
@@ -141,6 +180,11 @@ public class ContentDisplayFragment extends Fragment {
 		startActivityForResult(intent, 2);
 	}
 
+	/**
+	 * Full screen video
+	 * 
+	 * @param url
+	 */
 	public void displayFullVideo(String url) {
 		Intent i = new Intent(activity.getApplicationContext(),
 				VideoFullPage.class);
@@ -148,18 +192,21 @@ public class ContentDisplayFragment extends Fragment {
 		startActivityForResult(i, 2);
 	}
 
+	// disable buttons which are next/prev and full
 	public void disableButtons() {
 		ui_nextButton.setEnabled(false);
 		ui_prevButton.setEnabled(false);
 		ui_fullButton.setEnabled(false);
 	}
 
+	// enable buttons which are next/prev and full
 	public void EnableButtons() {
 		ui_nextButton.setEnabled(true);
 		ui_prevButton.setEnabled(true);
 		ui_fullButton.setEnabled(true);
 	}
 
+	// Start different animation depending on different visibility
 	private void handleButtonState() {
 		if (this.ui_nextButton.getVisibility() == View.VISIBLE) {
 			ui_nextButton.startAnimation(anim_fadeoutButton);
@@ -174,22 +221,26 @@ public class ContentDisplayFragment extends Fragment {
 		}
 	}
 
+	// show the buttons for pressing
 	public void showButton() {
 		this.ui_nextButton.setBackgroundResource(R.drawable.next_button);
 		this.ui_prevButton.setBackgroundResource(R.drawable.prev_button);
 		this.ui_fullButton.setBackgroundResource(R.drawable.fullscreen_button);
 	}
 
+	// Only show the full screen button for pressing
 	public void showFullButton() {
 		this.ui_fullButton.setBackgroundResource(R.drawable.fullscreen_button);
 	}
 
+	// Hide the buttons
 	public void hideButtons() {
 		this.ui_nextButton.setBackgroundColor(Color.TRANSPARENT);
 		this.ui_prevButton.setBackgroundColor(Color.TRANSPARENT);
 		this.ui_fullButton.setBackgroundColor(Color.TRANSPARENT);
 	}
 
+	// Assigning pointers to actual views/components in xml
 	private void setupComponents() {
 		FragmentTransaction fragmentTransaction = this.getFragmentManager()
 				.beginTransaction();
@@ -208,12 +259,13 @@ public class ContentDisplayFragment extends Fragment {
 		this.ui_prevButton = (Button) ui_view.findViewById(R.id.prev_button);
 		this.ui_fullButton = (Button) ui_view
 				.findViewById(R.id.fullscreen_button);
-		
+
 		// Animation setup
 		anim_fadeoutButton = AnimationUtils.loadAnimation(ui_view.getContext(),
 				R.anim.button_hide);
 	}
 
+	// Handle animation events
 	private void handleEvents() {
 		anim_fadeoutButton.setAnimationListener(new AnimationListener() {
 			@Override
@@ -231,11 +283,13 @@ public class ContentDisplayFragment extends Fragment {
 		});
 	}
 
+	// Do Layout
 	private void doLayout() {
 		hideButtons();
 		this.cleanup();
 	}
 
+	// Disable the fragment on quit
 	private void disableAllFragment(Content exception) {
 		if (exception != Content.PICTURE && picture_fragment != null) {
 			picture_fragment.disable();

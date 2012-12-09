@@ -23,6 +23,11 @@ import cmm.model.Mood;
 import cmm.view.R;
 import cmm.view.newview.CmmActivity;
 
+/**
+ * This class handles the 2nd level navigation bar at the bottom of the screen
+ * @author hunlan
+ *
+ */
 public class ContentSelectionFragment extends Fragment {
 	private static final String TAG = "ContentSelectionFragment";
 

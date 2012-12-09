@@ -9,6 +9,12 @@ import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ * This class is deprecated 
+ *
+ */
+
+@Deprecated
 public class CMMActivity extends Activity{
 	private ImageView imageView;
 	int i=0;

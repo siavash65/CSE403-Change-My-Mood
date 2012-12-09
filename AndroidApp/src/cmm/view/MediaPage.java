@@ -1,6 +1,7 @@
 package cmm.view;
 
 import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import cmm.model.Content;
 
+/**
+ * This class is deprecated 
+ *
+ */
+@Deprecated
 public class MediaPage extends Activity{
 	public static String CONTENT = "Content";
 	private Intent intent;

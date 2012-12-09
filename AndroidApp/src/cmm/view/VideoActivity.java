@@ -39,6 +39,11 @@ import cmm.model.Mood;
 import cmm.model.Rate;
 import cmm.model.UrlProvider;
 
+/**
+ * This class is deprecated 
+ *
+ */
+@Deprecated
 public class VideoActivity extends Activity {
 	private MenuInflater inflater;
 	private Menu menu;

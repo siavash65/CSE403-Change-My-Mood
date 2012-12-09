@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import cmm.view.R;
 
+/**
+ * This class handles the construction of showing rating ups/downs
+ * @author hunlan/Joon
+ *
+ */
 public class ContentInfoFragment extends Fragment {
 	private static final String TAG = "ContentInfoFragment";
 

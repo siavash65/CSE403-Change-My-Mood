@@ -14,6 +14,11 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 import cmm.view.R;
 
+/**
+ * This class handles displaying of video
+ * @author hunlan
+ *
+ */
 public class VideoDisplayFragment extends Fragment {
 	private static final String TAG = "VideoDisplayFragment";
 
@@ -25,6 +30,11 @@ public class VideoDisplayFragment extends Fragment {
 
 	private Activity activity;
 
+	/**
+	 * Singleton
+	 * @param activity
+	 * @return
+	 */
 	public static VideoDisplayFragment getInstance(Activity activity) {
 		if (instance == null) {
 			instance = new VideoDisplayFragment(activity);
@@ -37,6 +47,9 @@ public class VideoDisplayFragment extends Fragment {
 		this.activity = activity;
 	}
 
+	/**
+	 * On startup
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -48,7 +61,14 @@ public class VideoDisplayFragment extends Fragment {
 		return view;
 	}
 
+	// Displaying youtube video from youtube url
+	// precondition: url is not null
 	public void displayVideo(String url) {
+		if (url == null) {
+			Log.d(TAG, "something wrong, url is null");
+			return;
+		}
+		
 		Log.d(TAG, "displaying url: " + url);
 		this.yid = url.split("=", 2)[1];
 
@@ -62,10 +82,12 @@ public class VideoDisplayFragment extends Fragment {
 		});
 	}
 
+	// Enable webview
 	public void enable() {
 		ui_view.setVisibility(View.VISIBLE);
 	}
 
+	// Disable webview and stop the video from playing
 	public void disable() {
 		if (ui_view != null) {
 			ui_view.setVisibility(View.GONE);
@@ -76,6 +98,7 @@ public class VideoDisplayFragment extends Fragment {
 		}
 	}
 
+	// Bunch of crazy stuff to make youtube work
 	private void doVideoSettings() {
 		// Set java script enable
 		ui_webplayer.getSettings().setJavaScriptEnabled(true);

@@ -16,7 +16,12 @@ import cmm.model.Content;
 import cmm.model.ContentStorage;
 import cmm.model.Mood;
 import cmm.view.R;
-
+/**
+ * This class handles the 1st level tabs for selecting
+ * a mood
+ * @author hunlan
+ *
+ */
 public class NavigationFragment extends Fragment {
 	private ContentStorage contentStorage;
 	
@@ -27,11 +32,18 @@ public class NavigationFragment extends Fragment {
 	
 	private Mood mood;
 
+	/**
+	 * Constructor
+	 * @param contentStorage
+	 */
 	public NavigationFragment(ContentStorage contentStorage) {
 		super();
 		this.contentStorage = contentStorage;
 	}
 	
+	/**
+	 * On start up
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,6 +70,10 @@ public class NavigationFragment extends Fragment {
 		return csf.getContent();
 	}
 	
+	/**
+	 * When user select a mood
+	 * @param view
+	 */
 	public void moodClick(View view) {
 		Button clickedButton = (Button) view;
 

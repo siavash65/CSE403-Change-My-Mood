@@ -11,6 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import cmm.model.Mood;
 
+/**
+ * This class is deprecated 
+ *
+ */
+@Deprecated
 public class MoodPage extends Activity{
 	public static final String MOOD = "Mood";
 	private Intent intent;

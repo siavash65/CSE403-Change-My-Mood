@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.Toast;
 import cmm.view.R;
 
+/**
+ * This class is deprecated 
+ *
+ */
+@Deprecated
 //import com.facebook.FacebookActivity;
 //import com.facebook.SessionState;
 
