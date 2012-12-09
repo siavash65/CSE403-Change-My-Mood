@@ -89,7 +89,7 @@ class Media(models.Model):
         return str(self.id)
 
 class Score(models.Model):
-    COMPUTE_FINAL_NUM = 10
+    COMPUTE_FINAL_NUM = 3
     
     media = models.OneToOneField(Media, primary_key=True)
     initial_score = models.IntegerField()

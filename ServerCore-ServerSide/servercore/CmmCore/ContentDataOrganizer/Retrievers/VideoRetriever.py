@@ -163,17 +163,17 @@ def pullAndFilter(mood, terms, add_num, partition_num):
     ScoreFilter._calculateFinalScore(medias)
     
     #mediaData = Media.objects.filter(moods=mood, score__final_score__gt=-1).order_by('score__final_score')
-    mediaData = [] # Media.objects.filter(moods=mood, score__final_score__gt=-1).order_by('score__final_score')
-    allData = Media.objects.filter(moods=mood, content_type=Media.VIDEO)
-    dataDict = {}
-    for m in allData:
-        if m.score.final_score == -1:
-            dataDict[m] = m.score.initial_score
-        else:
-            dataDict[m] = m.score.final_score
-    
-    for key, value in sorted(dataDict.iteritems(), key=lambda (k,v): (v,k)):
-        mediaData.append(key)
+    mediaData = Media.objects.filter(moods=mood, score__final_score__gt=-1).order_by('score__final_score')
+#    allData = Media.objects.filter(moods=mood, content_type=Media.VIDEO)
+#    dataDict = {}
+#    for m in allData:
+#        if m.score.final_score == -1:
+#            dataDict[m] = m.score.initial_score
+#        else:
+#            dataDict[m] = m.score.final_score
+#    
+#    for key, value in sorted(dataDict.iteritems(), key=lambda (k,v): (v,k)):
+#        mediaData.append(key)
     
     if len(mediaData) == 0:
         return preadd
