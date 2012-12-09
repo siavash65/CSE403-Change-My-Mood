@@ -13,11 +13,11 @@ if __name__ == "__main__":
 
     from servercore.CmmData.models import Media
     
-    mids = []
-    for mid in mids:
+    medias = Media.objects.all()
+    for m in medias:
         try:
-            m = Media.objects.get(id=mid)
-            for i in range(0,10):
-                m.thumbs_down()
+            if m.rank.thumbs_down > 3:
+                for i in range(0,30):
+                    m.thumbs_down()
         except Exception:
             print 'exception'
