@@ -85,7 +85,7 @@ public class CmmActivity extends FragmentActivity {
 		doLayout();
 
 		rater = new Rater(buttonsControlFragment, this.ui_progress);
-		contentStorage = ContentStorage.getInstance(contentFragment,
+		contentStorage = new ContentStorage(contentFragment,
 				buttonsControlFragment, contentInfoFragment, this);
 		// get an instance of FragmentTransaction from your Activity
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
@@ -260,16 +260,16 @@ public class CmmActivity extends FragmentActivity {
 				.beginTransaction();
 
 		// add content fragment
-		this.contentFragment = ContentDisplayFragment.getInstance(this);
+		this.contentFragment = new ContentDisplayFragment(this);
 		fragmentTransaction.add(R.id.content_fragment, contentFragment);
 
 		// add buttoncontrol Fragment
-		this.buttonsControlFragment = ButtonsControlFragment.getInstance(this);
+		this.buttonsControlFragment = new ButtonsControlFragment(this);
 		fragmentTransaction.add(R.id.buttonscontrol_fragment,
 				buttonsControlFragment);
 
 		// content info fragment
-		this.contentInfoFragment = ContentInfoFragment.getInstance();
+		this.contentInfoFragment = new ContentInfoFragment();
 		fragmentTransaction
 				.add(R.id.content_info_fragment, contentInfoFragment);
 
@@ -377,7 +377,7 @@ public class CmmActivity extends FragmentActivity {
 			contentStorage.ratedMid(mid, false, CmmFacebookActivity.isSignedIn);
 			rater.updateProgress(false);
 			if (CmmFacebookActivity.isSignedIn) {
-				rater.rateThumbsUp(mid);
+				rater.rateThumbsDown(mid);
 				contentStorage.setText();
 			} else {
 				this.pleaseLogIn();

@@ -17,23 +17,10 @@ import cmm.view.R;
  *
  */
 public class PictureDisplayFragment extends Fragment {
-	private static PictureDisplayFragment instance;
-
 	private View ui_view;
 	private ImageView imageView;
 
-	/**
-	 * Singleton
-	 * @return
-	 */
-	public static PictureDisplayFragment getInstance() {
-		if (instance == null) {
-			instance = new PictureDisplayFragment();
-		}
-		return instance;
-	}
-
-	private PictureDisplayFragment() {
+	public PictureDisplayFragment() {
 		super();
 	}
 

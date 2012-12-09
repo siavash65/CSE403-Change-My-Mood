@@ -21,9 +21,6 @@ public class ButtonsControlFragment extends Fragment {
 	/* Rate button ratio (width/height) */
 	private static final double RATE_BUTTON_CONSTANT = 0.20;
 
-	/* Singleton instance */
-	private static ButtonsControlFragment instance;
-
 	/* UI components */
 	private View ui_view;
 	private Button ui_up;
@@ -31,20 +28,8 @@ public class ButtonsControlFragment extends Fragment {
 
 	private CmmActivity activity;
 
-	/**
-	 * Singleton constructor, pls pass us CmmActivity so we could update it
-	 * @param activity
-	 * @return Instance of ButtonControlFragment
-	 */
-	public static ButtonsControlFragment getInstance(CmmActivity activity) {
-		if (instance == null) {
-			instance = new ButtonsControlFragment(activity);
-		}
-		return instance;
-	}
-
 	// part of singletion pattern
-	private ButtonsControlFragment(CmmActivity activity) {
+	public ButtonsControlFragment(CmmActivity activity) {
 		super();
 		this.activity = activity;
 	}

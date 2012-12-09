@@ -22,27 +22,13 @@ import cmm.view.R;
 public class VideoDisplayFragment extends Fragment {
 	private static final String TAG = "VideoDisplayFragment";
 
-	private static VideoDisplayFragment instance;
-
 	private View ui_view;
 	private WebView ui_webplayer;
 	private String yid;
 
 	private Activity activity;
 
-	/**
-	 * Singleton
-	 * @param activity
-	 * @return
-	 */
-	public static VideoDisplayFragment getInstance(Activity activity) {
-		if (instance == null) {
-			instance = new VideoDisplayFragment(activity);
-		}
-		return instance;
-	}
-
-	private VideoDisplayFragment(Activity activity) {
+	public VideoDisplayFragment(Activity activity) {
 		super();
 		this.activity = activity;
 	}

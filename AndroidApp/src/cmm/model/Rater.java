@@ -62,6 +62,7 @@ public class Rater {
 		protected Boolean doInBackground(String... params) {
 			try {
 				isThumbsUp = Integer.parseInt(params[1]) == Rate.THUMBSUP.ordinal();
+				Log.d(TAG, "isup = " + isThumbsUp);
 				HttpClient client = new DefaultHttpClient();
 				String postURL = UrlProvider.getRankUrl();
 				HttpPost post = new HttpPost(postURL);

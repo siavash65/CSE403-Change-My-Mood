@@ -113,8 +113,7 @@ public class NavigationFragment extends Fragment {
 					.beginTransaction();
 
 			// add a fragment
-			ContentSelectionFragment csFragment = ContentSelectionFragment
-					.getInstance(contentStorage, mood);
+			ContentSelectionFragment csFragment = new ContentSelectionFragment(contentStorage, mood);
 			fragmentTransaction.add(R.id.content_select_fragment, csFragment);
 			fragmentTransaction.commit();
 			this.csf = csFragment;

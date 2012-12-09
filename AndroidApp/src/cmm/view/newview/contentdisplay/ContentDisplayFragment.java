@@ -33,9 +33,6 @@ public class ContentDisplayFragment extends Fragment {
 	/* Debug logger tag */
 	private static final String TAG = "ContentDisplayFragment";
 
-	/* Singleton */
-	private static ContentDisplayFragment instance;
-
 	/* For updating main */
 	private CmmActivity activity;
 
@@ -51,21 +48,8 @@ public class ContentDisplayFragment extends Fragment {
 
 	private Animation anim_fadeoutButton;
 
-	/**
-	 * Singleton constructor, pass me activity and i will call the update main
-	 * 
-	 * @param activity
-	 * @return
-	 */
-	public static ContentDisplayFragment getInstance(CmmActivity activity) {
-		if (instance == null) {
-			instance = new ContentDisplayFragment(activity);
-		}
-		return instance;
-	}
-
 	// singleton pattern
-	private ContentDisplayFragment(CmmActivity activity) {
+	public ContentDisplayFragment(CmmActivity activity) {
 		super();
 		this.activity = activity;
 	}
@@ -245,11 +229,11 @@ public class ContentDisplayFragment extends Fragment {
 		FragmentTransaction fragmentTransaction = this.getFragmentManager()
 				.beginTransaction();
 
-		picture_fragment = PictureDisplayFragment.getInstance();
+		picture_fragment = new PictureDisplayFragment();
 		fragmentTransaction.add(R.id.picture_fragment,
 				(Fragment) picture_fragment);
 
-		video_fragment = VideoDisplayFragment.getInstance(activity);
+		video_fragment = new VideoDisplayFragment(activity);
 		fragmentTransaction.add(R.id.video_fragment, (Fragment) video_fragment);
 
 		fragmentTransaction.commit();

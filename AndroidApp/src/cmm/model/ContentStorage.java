@@ -45,7 +45,6 @@ public class ContentStorage {
 	private String cur_mid;
 
 	private Map<String, Integer> canRateMap;
-	private Map<String, Boolean> realRate;
 
 	private ContentDisplayFragment contentFragment;
 	private ButtonsControlFragment buttonsControlFragment;
@@ -59,24 +58,22 @@ public class ContentStorage {
 	// private boolean init;
 	private CmmActivity activity;
 
-	private static ContentStorage instance;
+//	public static ContentStorage getInstance(
+//			ContentDisplayFragment contentFragment,
+//			ButtonsControlFragment buttonControlFragment,
+//			ContentInfoFragment contentInfoFragment, CmmActivity activity) {
+//
+//		Log.d(TAG, "Get Instance");
+//		if (instance == null) {
+//			instance = new ContentStorage(contentFragment,
+//					buttonControlFragment, contentInfoFragment, activity);
+//		}
+//		instance.initImageMap();
+//		instance.initVideoMap();
+//		return instance;
+//	}
 
-	public static ContentStorage getInstance(
-			ContentDisplayFragment contentFragment,
-			ButtonsControlFragment buttonControlFragment,
-			ContentInfoFragment contentInfoFragment, CmmActivity activity) {
-
-		Log.d(TAG, "Get Instance");
-		if (instance == null) {
-			instance = new ContentStorage(contentFragment,
-					buttonControlFragment, contentInfoFragment, activity);
-		}
-		instance.initImageMap();
-		instance.initVideoMap();
-		return instance;
-	}
-
-	private ContentStorage(ContentDisplayFragment contentFragment,
+	public ContentStorage(ContentDisplayFragment contentFragment,
 			ButtonsControlFragment buttonControlFragment,
 			ContentInfoFragment contentInfoFragment, CmmActivity activity) { // TextView[]
 																				// list)
@@ -94,7 +91,6 @@ public class ContentStorage {
 		midToVideo = new HashMap<String, ContentInfo>();
 
 		canRateMap = new HashMap<String, Integer>();
-		realRate = new HashMap<String, Boolean>();
 
 		// ui_contentinfo = list;
 		this.contentInfoFragment = contentInfoFragment;

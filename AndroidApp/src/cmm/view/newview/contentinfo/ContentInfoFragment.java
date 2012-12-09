@@ -16,18 +16,9 @@ import cmm.view.R;
  */
 public class ContentInfoFragment extends Fragment {
 	private static final String TAG = "ContentInfoFragment";
-
-	private static ContentInfoFragment instance;
 	
 	private View ui_view;
 	private TextView[] ui_textviews;
-
-	public static ContentInfoFragment getInstance() {
-		if (instance == null) {
-			instance = new ContentInfoFragment();
-		}
-		return instance;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -31,8 +31,6 @@ import cmm.view.newview.CmmActivity;
 public class ContentSelectionFragment extends Fragment {
 	private static final String TAG = "ContentSelectionFragment";
 
-	private static ContentSelectionFragment instance;
-
 	private ContentStorage contentStorage;
 
 	// views
@@ -56,25 +54,11 @@ public class ContentSelectionFragment extends Fragment {
 	private boolean displayingContent;
 
 	/**
-	 * Get instance method
-	 * 
-	 * @param mood
-	 * @return
-	 */
-	public static ContentSelectionFragment getInstance(
-			ContentStorage contentStorage, Mood mood) {
-		if (instance == null) {
-			instance = new ContentSelectionFragment(contentStorage, mood);
-		}
-		return instance;
-	}
-
-	/**
 	 * private constructor
 	 * 
 	 * @param mood
 	 */
-	private ContentSelectionFragment(ContentStorage contentStorage, Mood mood) {
+	public ContentSelectionFragment(ContentStorage contentStorage, Mood mood) {
 		super();
 		this.mood = mood;
 		this.contentStorage = contentStorage;
