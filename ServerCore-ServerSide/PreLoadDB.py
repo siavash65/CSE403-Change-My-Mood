@@ -16,6 +16,7 @@ if __name__ == "__main__":
     from servercore.CmmData.models import Mood, Media
     
     moods = [Mood.HAPPY, Mood.ROMANTIC, Mood.INSPIRED, Mood.EXCITED]
+    picOnly = True
     fill_up_to = 100
     min_pic = 25
     min_vid = 20
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     for mood in moods:
         pic_num = fill_up_to - len(Media.objects.filter(moods = mood, content_type="PI"))
         pic_num = 0 if pic_num < 0 else pic_num
+        
         vid_num = fill_up_to - len(Media.objects.filter(moods = mood, content_type="VI"))
         vid_num = 0 if vid_num < 0 else vid_num
         
@@ -35,4 +37,6 @@ if __name__ == "__main__":
         
         
         PictureRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), pic_num, part_num_pic)
-        VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), vid_num, part_num_vid)
+        
+        if not picOnly:
+            VideoRetriever.pullAndFilter(mood, ContentDataOrganizer._getRandomTerms(mood), vid_num, part_num_vid)
