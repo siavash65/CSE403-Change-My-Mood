@@ -15,7 +15,7 @@ if __name__ == "__main__":
     from servercore.CmmCore.ContentDataOrganizer.ContentDataOrganizer import ContentDataOrganizer
     from servercore.CmmData.models import Mood, Media
     
-    moods = [Mood.HAPPY, Mood.ROMANTIC, Mood.INSPIRED, Mood.EXCITED]
+    moods = [Mood.HAPPY, Mood.ROMANTIC] # , Mood.INSPIRED, Mood.EXCITED]
     picOnly = True
     fill_up_to = 100
     min_pic = 25
